@@ -248,7 +248,7 @@ void Map::test_Map(short n, short m)
     {
         this->_game_field_level[i] = new Cell[this->_m];
     }
-
+	 
     for (short i = 0; i < this->_n - 1; i++)
     {
         this->_game_field_level[0][i].set_type(35);
