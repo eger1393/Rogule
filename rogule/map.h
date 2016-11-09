@@ -2,9 +2,6 @@
 
 #include "stdafx.h"
 
-#define STROKI 30
-#define STOLBI 70
-
 using namespace std;
 
 class Cell
