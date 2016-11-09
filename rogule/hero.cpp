@@ -12,16 +12,16 @@ Hero::Hero(short x, short y)
 
 void Hero::set_hero(Map level, short x, short y)
 {
-	level.get_cell(this->_x, this->_y).set_type(' ');
+	level.get_cell(this->_x, this->_y).set_value(' ');
 	this->_x = x;
 	this->_y = y;
-	level.get_cell(x, y).set_type(this->_icon);
+	level.get_cell(x, y).set_value(this->_icon);
 }
 
 void Hero::range_of_visibility(Map level ,char c)
 {
 	bool flag1 = false, flag2 = false, flag3 = false, flag4 = false;
-	//level.get_cell(this->_x + 5, this->_y + 5).set_type('1');
+	//level.get_cell(this->_x + 5, this->_y + 5).set_value('1');
 	for (int i = 0; i <= this->_range_of_visibility; i++)
 	{
 		for (int j = 1; j <= this->_range_of_visibility - i; j++) // Правый нижний
@@ -30,7 +30,7 @@ void Hero::range_of_visibility(Map level ,char c)
 				flag1 = true;
 			if (!flag1 && level.get_cell(this->_x + j, this->_y + i).is_limpid())
 			{
-				level.get_cell(this->_x + j, this->_y + i).set_type(c);
+				level.get_cell(this->_x + j, this->_y + i).set_value(c);
 			}
 			else
 				break;
@@ -42,7 +42,7 @@ void Hero::range_of_visibility(Map level ,char c)
 				flag2 = true;
 			if (!flag2 && level.get_cell(this->_x - i, this->_y + j).is_limpid())
 			{
-				level.get_cell(this->_x - i, this->_y + j).set_type(c);
+				level.get_cell(this->_x - i, this->_y + j).set_value(c);
 			}
 			else
 				break;
@@ -54,7 +54,7 @@ void Hero::range_of_visibility(Map level ,char c)
 				flag3 = true;
 			if (!flag3 && level.get_cell(this->_x - j, this->_y - i).is_limpid())
 			{
-				level.get_cell(this->_x - j, this->_y - i).set_type(c);
+				level.get_cell(this->_x - j, this->_y - i).set_value(c);
 			}
 			else
 				break;
@@ -66,7 +66,7 @@ void Hero::range_of_visibility(Map level ,char c)
 				flag4 = true;
 			if (!flag4 && level.get_cell(this->_x + i, this->_y - j).is_limpid())
 			{
-				level.get_cell(this->_x + i, this->_y - j).set_type(c);
+				level.get_cell(this->_x + i, this->_y - j).set_value(c);
 			}
 			else
 				break;
