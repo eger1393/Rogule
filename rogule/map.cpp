@@ -88,16 +88,16 @@ void Map::Create_room(const int left_angle_y, const int left_angle_x)
 
 	for (int i = left_angle_y; i < str_end; i++)
 	{
-		if (i == STROKI - 1)
+		if (i == this->_n - 1)
 			break;
 		for (int j = left_angle_x; j < stlb_end; j++)
 		{
-			if (j == STOLBI - 1)
+			if (j == this->_m - 1)
 				break;
 			_game_field_level[i][j].set_value(' ');
 		}
 	}
-	output();
+	print_map();
 	Create_corridor(left_angle_y, left_angle_x, str_end, stlb_end);
 }
 
@@ -110,16 +110,16 @@ void Map::Create_anroom(const int _y, const int _x)
 
 	for (int i = Y_left_angle; i < Y_left_angle + str_end; i++)
 	{
-		if ((i > STROKI - 1) || (i < 1))
+		if ((i > this->_n - 1) || (i < 1))
 			break;
 		for (int j = X_left_angle; j < X_left_angle + stlb_end; j++)
 		{
-			if ((j > STOLBI - 1) || (j < 1))
+			if ((j > this->_m - 1) || (j < 1))
 				break;
 			_game_field_level[i][j].set_value(' ');
 		}
 	}
-	output();
+	print_map();
 	Create_corridor(Y_left_angle, X_left_angle, Y_left_angle + str_end, X_left_angle + stlb_end);
 }
 
@@ -135,7 +135,7 @@ void Map::Create_corridor(const int left_angle_y, const int left_angle_x, const 
 		do
 		{
 			j = left_angle_x + 1 + rand() % 4;
-		} while (j >= STOLBI - 1);
+		} while (j >= this->_m - 1);
 
 		if ((left_angle_y - 8 < 1) || (_game_field_level[left_angle_y - 5][j].get_value() != '#') || (_game_field_level[left_angle_y - 5][j + 1].get_value() != '#') || (_game_field_level[left_angle_y - 5][j - 1].get_value() != '#'))
 		{
@@ -162,16 +162,16 @@ void Map::Create_corridor(const int left_angle_y, const int left_angle_x, const 
 		do
 		{
 			j = left_angle_x + 1 + rand() % 4;
-		} while (j >= STOLBI - 1);
+		} while (j >= this->_m - 1);
 
-		if ((str_end + 5 > STROKI) || (_game_field_level[str_end + 5][j].get_value() != '#') || (_game_field_level[str_end + 5][j + 1].get_value() != '#') || (_game_field_level[str_end + 5][j - 1].get_value() != '#'))
+		if ((str_end + 5 > this->_n) || (_game_field_level[str_end + 5][j].get_value() != '#') || (_game_field_level[str_end + 5][j + 1].get_value() != '#') || (_game_field_level[str_end + 5][j - 1].get_value() != '#'))
 		{
 			Create_corridor(left_angle_y, left_angle_x, str_end, stlb_end);
 		}
 
 		for (int i = str_end; i < lenght_corridor_y_down; i++)
 		{
-			if (i == STROKI - 1)
+			if (i == this->_n - 1)
 			{
 				break;
 			}
@@ -188,9 +188,9 @@ void Map::Create_corridor(const int left_angle_y, const int left_angle_x, const 
 		do
 		{
 			i = left_angle_y + 1 + rand() % 4;
-		} while (i >= STROKI - 1);
+		} while (i >= this->_n - 1);
 
-		if ((left_angle_x + 5 > STOLBI) || (_game_field_level[i][stlb_end + 5].get_value() != '#') || (_game_field_level[i + 1][stlb_end + 5].get_value() != '#') || (_game_field_level[i - 1][stlb_end + 5].get_value() != '#'))
+		if ((left_angle_x + 5 > this->_m) || (_game_field_level[i][stlb_end + 5].get_value() != '#') || (_game_field_level[i + 1][stlb_end + 5].get_value() != '#') || (_game_field_level[i - 1][stlb_end + 5].get_value() != '#'))
 		{
 			Create_corridor(left_angle_y, left_angle_x, str_end, stlb_end);
 		}
@@ -198,7 +198,7 @@ void Map::Create_corridor(const int left_angle_y, const int left_angle_x, const 
 
 		for (int j = stlb_end; j < lenght_corridor_y_right; j++)
 		{
-			if (j == STOLBI - 1)
+			if (j == this->_m - 1)
 			{
 				break;
 			}
@@ -215,7 +215,7 @@ void Map::Create_corridor(const int left_angle_y, const int left_angle_x, const 
 		do
 		{
 			i = left_angle_y + 1 + rand() % 4;
-		} while (i >= STROKI - 1);
+		} while (i >= this->_n - 1);
 
 
 		if ((_game_field_level[i][left_angle_x - 5].get_value() != '#') || (left_angle_x - 5 < 1) || (_game_field_level[i + 1][left_angle_x - 5].get_value() != '#') || (_game_field_level[i - 1][left_angle_x - 5].get_value() != '#'))
