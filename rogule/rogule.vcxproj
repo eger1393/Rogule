@@ -147,7 +147,6 @@
   <ItemGroup>
     <ClInclude Include="hero.h" />
     <ClInclude Include="map.h" />
-    <ClInclude Include="Room.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>

@@ -1,4 +1,3 @@
-#pragma once
 
 #include "stdafx.h"
 
@@ -17,7 +16,6 @@ public:
 	char get_value();
 	void set_value(char symbol);
     void set_x_y(short x, short y); //задает координаты х, у
-	friend Room;
 private:
     //char _type; //“ип клетки
     //short _x, _y; // оординаты клетки
@@ -26,15 +24,17 @@ private:
 	bool _active;
 };
 
+class Room;
+
 class Map
 {
 public:
     Map(short n, short m);
     void test_Map(short n, short m); // —оздание квадратной комнаты дл€ теста
 	void initialize_Level();
-	void Create_room(Room *_room);
-	void Create_anroom(const int _y, const int _x);
-	void Create_corridor(const int left_angle_y, const int left_angle_x, const int str_end, const int stlb_end);
+	void Create_room(Room *r);
+	void Create_anroom(Room *r,const int, const int);
+	void Create_corridor(Room *r);
 	//void output();
     //friend void Hero::range_of_visibility(Map level); //вычисл€ет видимые клетки геро€
     Cell& get_cell(short x, short y); //возвращает ссылку на €чейку расположенную по координатам х, у
@@ -49,3 +49,19 @@ private:
 	Cell **_game_field_level;
 };
 
+class Room
+{
+private:
+	int _left_angle_x = 0, _left_angle_y = 0, _nStr = 0, _nStlb = 0;
+	int ID_room = 0;
+	static int error;
+	Cell **_room;
+	Room *next;
+public:
+	friend Map;
+	Room();
+	Room(int, int);
+	int get_x();
+	int get_y();
+	~Room();
+};

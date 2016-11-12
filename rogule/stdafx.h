@@ -20,6 +20,6 @@
 #include <windows.h>
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы
+
 #include "map.h"
 #include "hero.h"
-#include "Room.h"
