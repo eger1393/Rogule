@@ -78,6 +78,14 @@ Map::Map(short n, short m)
 	}
 }
 
+void Map::reprint_cell(short x, short y)
+{
+	COORD position = { x, y }; //позиция x и y
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(hConsole, position);
+	cout << this->_game_field_level[y][x].get_value();
+}
+
 void Map::initialize_Level()
 {
 	Room *Head = new Room(1,1);
