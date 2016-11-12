@@ -22,4 +22,6 @@
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы
 
 #include "map.h"
+#include "unit.h"
+#include "mob.h"
 #include "hero.h"

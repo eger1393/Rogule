@@ -3,6 +3,7 @@
 
 using namespace std;
 
+
 class Cell
 {
 public:
@@ -36,7 +37,8 @@ public:
 	void Create_anroom(Room *r,const int, const int);
 	int Create_corridor(Room *r);
 	//void output();
-    //friend void Hero::range_of_visibility(Map level); //вычисл€ет видимые клетки геро€
+   // friend void Hero::key_press(Map level); //вычисл€ет видимые клетки геро€
+	void reprint_cell(short x, short y); // перересовка отдельной клетки
     Cell& get_cell(short x, short y); //возвращает ссылку на €чейку расположенную по координатам х, у
     void set_cell(Cell cell, short x, short y); //задает €чейку
     void set_cell(char c, short x, short y); //задает €чейку
