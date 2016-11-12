@@ -4,13 +4,13 @@
 
 int main()
 {
-	Map test(20, 20);
-	test.test_Map(20, 20);
+	srand(time(((time_t)0)));
 
-	Hero hero(10, 6, 10, 5, 10, 10);
-	test.print_map();
-	hero.key_press(test);
+	Map Level_1(30, 70);
+	Level_1.initialize_Level();
+	Level_1.print_map();
 	system("pause");
+	system("cls");
 	return 0;
 }
 
