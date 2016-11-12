@@ -10,6 +10,7 @@ int main()
 	test.test_Map(20, 20);
 
 	Hero hero(10, 6, 10, 5, 10, 10);
+	test.print_map();
 	hero.key_press(test);
 	system("pause");
     return 0;

@@ -95,7 +95,9 @@ void Unit::attak(Unit *unit2) // Атака текущего юнита вторым юнитом
 void Unit::set_unit(Map level, short x, short y) // Передвинуть юнит
 {
 	level.get_cell(this->_x, this->_y).set_value(' ');
+	level.reprint_cell(this->_x, this->_y);
 	this->_x = x;
 	this->_y = y;
 	level.get_cell(x, y).set_value(this->_icon);
+	level.reprint_cell(this->_x, this->_y);
 }

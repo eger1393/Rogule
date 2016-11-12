@@ -25,6 +25,7 @@ void Hero::viewing_range(Map level, char c) // Вычесление области видемости
 			if (!flag1 && level.get_cell(this->_x + j, this->_y + i).is_limpid())
 			{
 				level.get_cell(this->_x + j, this->_y + i).set_value(c);
+				level.reprint_cell(this->_x + j, this->_y + i);
 			}
 			else
 				break;
@@ -37,6 +38,7 @@ void Hero::viewing_range(Map level, char c) // Вычесление области видемости
 			if (!flag2 && level.get_cell(this->_x - i, this->_y + j).is_limpid())
 			{
 				level.get_cell(this->_x - i, this->_y + j).set_value(c);
+				level.reprint_cell(this->_x - i, this->_y + j);
 			}
 			else
 				break;
@@ -49,6 +51,7 @@ void Hero::viewing_range(Map level, char c) // Вычесление области видемости
 			if (!flag3 && level.get_cell(this->_x - j, this->_y - i).is_limpid())
 			{
 				level.get_cell(this->_x - j, this->_y - i).set_value(c);
+				level.reprint_cell(this->_x - j, this->_y - i);
 			}
 			else
 				break;
@@ -61,6 +64,7 @@ void Hero::viewing_range(Map level, char c) // Вычесление области видемости
 			if (!flag4 && level.get_cell(this->_x + i, this->_y - j).is_limpid())
 			{
 				level.get_cell(this->_x + i, this->_y - j).set_value(c);
+				level.reprint_cell(this->_x + i, this->_y - j);
 			}
 			else
 				break;
@@ -85,8 +89,9 @@ void Hero::key_press(Map level)
 				this->viewing_range(level, ' ');
 				this->set_unit(level, this->_x, this->_y + 1);
 				this->viewing_range(level, '1');
-				system("cls");		// Заменить этот блок на перересовку
-				level.print_map();  // Отдельной клетки
+				//system("cls");		// Заменить этот блок на перересовку
+				//level.print_map();  // Отдельной клетки
+
 			}
 			break;
 		case 72:	//Стрелка вверх
@@ -95,8 +100,8 @@ void Hero::key_press(Map level)
 				this->viewing_range(level, ' ');
 				this->set_unit(level, this->_x, this->_y - 1);
 				this->viewing_range(level, '1');
-				system("cls");		// Заменить этот блок на перересовку
-				level.print_map();  // Отдельной клетки
+				//system("cls");		// Заменить этот блок на перересовку
+				//level.print_map();  // Отдельной клетки
 			}
 			break;
 		case 77:	// Стрелка влево
@@ -105,8 +110,8 @@ void Hero::key_press(Map level)
 				this->viewing_range(level, ' ');
 				this->set_unit(level, this->_x + 1, this->_y);
 				this->viewing_range(level, '1');
-				system("cls");		// Заменить этот блок на перересовку
-				level.print_map();  // Отдельной клетки
+				//system("cls");		// Заменить этот блок на перересовку
+				//level.print_map();  // Отдельной клетки
 			}
 			break;
 		case 75:	// Стрелка вправо
@@ -115,8 +120,8 @@ void Hero::key_press(Map level)
 				this->viewing_range(level, ' ');
 				this->set_unit(level, this->_x - 1, this->_y);
 				this->viewing_range(level, '1');
-				system("cls");		// Заменить этот блок на перересовку
-				level.print_map();  // Отдельной клетки
+				//system("cls");		// Заменить этот блок на перересовку
+				//level.print_map();  // Отдельной клетки
 			}
 			break;
 		/*default:

@@ -42,6 +42,7 @@ public:
 	void Create_corridor(const int left_angle_y, const int left_angle_x, const int str_end, const int stlb_end);
 	//void output();
    // friend void Hero::key_press(Map level); //вычисл€ет видимые клетки геро€
+	void reprint_cell(short x, short y); // перересовка отдельной клетки
     Cell& get_cell(short x, short y); //возвращает ссылку на €чейку расположенную по координатам х, у
     void set_cell(Cell cell, short x, short y); //задает €чейку
     void set_cell(char c, short x, short y); //задает €чейку

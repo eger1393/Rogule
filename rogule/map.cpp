@@ -101,6 +101,14 @@ void Map::Create_room(const int left_angle_y, const int left_angle_x)
 	Create_corridor(left_angle_y, left_angle_x, str_end, stlb_end);
 }
 
+void Map::reprint_cell(short x, short y)
+{
+	COORD position = { x, y }; //позиция x и y
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(hConsole, position);
+	cout << this->_game_field_level[y][x].get_value();
+}
+
 void Map::Create_anroom(const int _y, const int _x)
 {
 	int str_end = 5 + rand() % 10,
