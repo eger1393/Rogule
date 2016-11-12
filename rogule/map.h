@@ -32,9 +32,9 @@ public:
     Map(short n, short m);
     void test_Map(short n, short m); // Создание квадратной комнаты для теста
 	void initialize_Level();
-	void Create_room(Room *r);
+	int Create_room(Room *r);
 	void Create_anroom(Room *r,const int, const int);
-	void Create_corridor(Room *r);
+	int Create_corridor(Room *r);
 	//void output();
     //friend void Hero::range_of_visibility(Map level); //вычисляет видимые клетки героя
     Cell& get_cell(short x, short y); //возвращает ссылку на ячейку расположенную по координатам х, у

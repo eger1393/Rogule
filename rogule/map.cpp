@@ -84,11 +84,11 @@ void Map::initialize_Level()
 	Create_room(Head);
 }
 
-void Map::Create_room(Room *room)
+int Map::Create_room(Room *room)
 {
-	if (room->ID_room > 9)
+	if ((room->ID_room > 9))
 	{
-		print_map();
+		return 1;
 	}
 	for (int i = room->_left_angle_y; i < room->_nStr; i++)
 	{
@@ -132,11 +132,11 @@ void Map::Create_anroom(Room *room, const int _y, const int _x)
 	Create_corridor(Buff);
 }
 
-void Map::Create_corridor(Room *room)
+int Map::Create_corridor(Room *room)
 {
-	if (error == 10)
+	if (error == 15)
 	{
-		print_map();
+		return false;
 	}
 	int type = 1 + rand() % 3;
 	switch (type)
