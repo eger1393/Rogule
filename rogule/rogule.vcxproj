@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="hero.h" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="Room.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -154,6 +155,7 @@
     <ClCompile Include="hero.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="rogule.cpp" />
+    <ClCompile Include="Room.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

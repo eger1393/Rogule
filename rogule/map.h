@@ -8,26 +8,22 @@ class Cell
 {
 public:
     Cell();
-    //Cell(char c); //с - тип клетки
 	Cell(char symbol, bool go_to, bool use);
     //Cell(char c, short x, short y); //с- тип клетки, х, у - координаты клетки  
     ~Cell();
     bool is_limpid(); //проверка на прозрачность
     bool is_permeable(); // Проерка на проходимость 
     bool can_used(); //  Можно исспользовать
-    //char get_type(); //возвращает тип клетки
 	char get_value();
-    //void set_type(char c); //задает тип клетки
 	void set_value(char symbol);
-    //short get_x(); //возвращает координату х
-    //short get_y(); //возвращает координату у
     void set_x_y(short x, short y); //задает координаты х, у
+	friend Room;
 private:
     //char _type; //Тип клетки
     //short _x, _y; //Координаты клетки
-	char value;
-	bool move;
-	bool active;
+	char _value;
+	bool _move;
+	bool _active;
 };
 
 class Map
@@ -36,7 +32,7 @@ public:
     Map(short n, short m);
     void test_Map(short n, short m); // Создание квадратной комнаты для теста
 	void initialize_Level();
-	void Create_room(const int left_angle_y, const int left_angle_x);
+	void Create_room(Room *_room);
 	void Create_anroom(const int _y, const int _x);
 	void Create_corridor(const int left_angle_y, const int left_angle_x, const int str_end, const int stlb_end);
 	//void output();

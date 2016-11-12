@@ -2,32 +2,32 @@
 
 Cell::Cell()
 {
-	value = ' ';
-	move = true;
-	active = false;
+	_value = ' ';
+	_move = true;
+	_active = false;
 }
 
 Cell::Cell(char symbol, bool go_to, bool use)
 {
-	value = symbol;
-	move = go_to;
-	active = use;
+	_value = symbol;
+	_move = go_to;
+	_active = use;
 }
 
 void Cell::set_value(char symbol)
 {
-	value = symbol;
+	_value = symbol;
 }
 
 char Cell::get_value()
 {
-	return value;
+	return _value;
 }
 
 bool Cell::is_limpid()
 {
     //if ((this->value <= 197 && this->value >= 191) || this->value == 217 || this->value == 218 || this->value == 179)
-	if (this->value == '#')
+	if (this->_value == '#')
     {
         return false;
     }
@@ -40,7 +40,7 @@ bool Cell::is_limpid()
 bool Cell::is_permeable()
 {
     //if ((this->value <= 197 && this->value >= 191) || this->value == 217 || this->value == 218 || this->value == 179)
-    if (this->value == 35)
+    if (this->_value == 35)
     {
         return false;
     }
@@ -77,20 +77,17 @@ Map::Map(short n, short m)
 
 void Map::initialize_Level()
 {
-	const int left_angle_y = 1, left_angle_x = 1;
-	Create_room(left_angle_y, left_angle_x);
+	Room *Head = new Room(1,1);
+	Create_room(Head);
 }
 
-void Map::Create_room(const int left_angle_y, const int left_angle_x)
+void Map::Create_room(Room *room)
 {
-	int str_end = left_angle_y + 5 + rand() % 10,
-		stlb_end = left_angle_x + 5 + rand() % 10;
-
-	for (int i = left_angle_y; i < str_end; i++)
+	for (int i = room->_left_angle_y; i < room->_nStr; i++)
 	{
 		if (i == this->_n - 1)
 			break;
-		for (int j = left_angle_x; j < stlb_end; j++)
+		for (int j = room->_left_angle_x; j < room->_nStlb; j++)
 		{
 			if (j == this->_m - 1)
 				break;
@@ -98,7 +95,7 @@ void Map::Create_room(const int left_angle_y, const int left_angle_x)
 		}
 	}
 	print_map();
-	Create_corridor(left_angle_y, left_angle_x, str_end, stlb_end);
+	Create_corridor(room->_left_angle_y, room->_left_angle_x, room->_nStr, room->_nStlb);
 }
 
 void Map::Create_anroom(const int _y, const int _x)
@@ -177,7 +174,8 @@ void Map::Create_corridor(const int left_angle_y, const int left_angle_x, const 
 			}
 			_game_field_level[i][j].set_value(' ');
 		}
-		Create_room(lenght_corridor_y_down, left_angle_x);
+		Room room(lenght_corridor_y_down, left_angle_x);
+		Create_room(room);
 		break;
 	}
 	case 3: //corridor right
@@ -204,7 +202,8 @@ void Map::Create_corridor(const int left_angle_y, const int left_angle_x, const 
 			}
 			_game_field_level[i][j].set_value(' ');
 		}
-		Create_room(left_angle_y, lenght_corridor_y_right);
+		Room room(left_angle_y, lenght_corridor_y_right);
+		Create_room(room);
 		break;
 	}
 	case 4: //corridor left

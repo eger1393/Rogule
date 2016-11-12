@@ -6,7 +6,13 @@
 
 int main()
 {
+	srand(time(((time_t)0)));
+
+	Map Level_1(30,70);
+	Level_1.initialize_Level();
+	Level_1.print_map();
 	system("pause");
-    return 0;
+	system("cls");
+	return 0;
 }
 
