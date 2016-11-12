@@ -11,6 +11,7 @@ int main()
 	test.print_map();
 	hero.key_press(test);
 	system("pause");
+	system("pause");
 	return 0;
 }
 
