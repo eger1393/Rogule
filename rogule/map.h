@@ -44,6 +44,7 @@ public:
     void set_cell(char c, short x, short y); //задает €чейку
     void print_map(); //рисует карту
 	void print_circular();
+
 private:
     //Cell **_cells; //массив €чеек
     short _n, _m; //размеры карты

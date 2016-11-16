@@ -43,13 +43,13 @@ bool Cell::is_limpid()
 bool Cell::is_permeable()
 {
     //if ((this->value <= 197 && this->value >= 191) || this->value == 217 || this->value == 218 || this->value == 179)
-    if (this->_value == 35)
+    if (this->_value == ' ' || this->_value == '1')
     {
-        return false;
+        return true;
     }
     else
     {
-        return true;
+        return false;
     }
 }
 
@@ -58,6 +58,21 @@ Cell::~Cell()
 	
 }
 
+//void Cell::set_x_y(short x, short y) //задает координаты х, у
+//{
+//	this->_x = x;
+//	this->_y = y;
+//}
+//
+//short Cell::get_x()
+//{
+//	return this->_x;
+//}
+//
+//short Cell::get_y()
+//{
+//	return this->_y;
+//}
 
 
 Map::Map(short n, short m)
