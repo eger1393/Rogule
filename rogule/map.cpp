@@ -1,33 +1,36 @@
+
 #include "stdafx.h"
+
+static int error;
 
 Cell::Cell()
 {
-	value = ' ';
-	move = true;
-	active = false;
+	_value = ' ';
+	_move = true;
+	_active = false;
 }
 
 Cell::Cell(char symbol, bool go_to, bool use)
 {
-	value = symbol;
-	move = go_to;
-	active = use;
+	_value = symbol;
+	_move = go_to;
+	_active = use;
 }
 
 void Cell::set_value(char symbol)
 {
-	value = symbol;
+	_value = symbol;
 }
 
 char Cell::get_value()
 {
-	return value;
+	return _value;
 }
 
 bool Cell::is_limpid()
 {
     //if ((this->value <= 197 && this->value >= 191) || this->value == 217 || this->value == 218 || this->value == 179)
-	if (this->value == '#')
+	if (this->_value == '#')
     {
         return false;
     }
@@ -40,13 +43,13 @@ bool Cell::is_limpid()
 bool Cell::is_permeable()
 {
     //if ((this->value <= 197 && this->value >= 191) || this->value == 217 || this->value == 218 || this->value == 179)
-    if (this->value == 35)
+    if (this->_value == ' ' || this->_value == '1')
     {
-        return false;
+        return true;
     }
     else
     {
-        return true;
+        return false;
     }
 }
 
@@ -55,6 +58,21 @@ Cell::~Cell()
 	
 }
 
+//void Cell::set_x_y(short x, short y) //задает координаты х, у
+//{
+//	this->_x = x;
+//	this->_y = y;
+//}
+//
+//short Cell::get_x()
+//{
+//	return this->_x;
+//}
+//
+//short Cell::get_y()
+//{
+//	return this->_y;
+//}
 
 
 Map::Map(short n, short m)
@@ -75,22 +93,31 @@ Map::Map(short n, short m)
 	}
 }
 
-void Map::initialize_Level()
+void Map::reprint_cell(short x, short y)
 {
-	const int left_angle_y = 1, left_angle_x = 1;
-	Create_room(left_angle_y, left_angle_x);
+	COORD position = { x, y }; //позиция x и y
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(hConsole, position);
+	cout << this->_game_field_level[y][x].get_value();
 }
 
-void Map::Create_room(const int left_angle_y, const int left_angle_x)
+void Map::initialize_Level()
 {
-	int str_end = left_angle_y + 5 + rand() % 10,
-		stlb_end = left_angle_x + 5 + rand() % 10;
+	Room *Head = new Room(1,1);
+	Create_room(Head);
+}
 
-	for (int i = left_angle_y; i < str_end; i++)
+int Map::Create_room(Room *room)
+{
+	if ((room->ID_room > 9))
+	{
+		return 1;
+	}
+	for (int i = room->_left_angle_y; i < room->_nStr; i++)
 	{
 		if (i == this->_n - 1)
 			break;
-		for (int j = left_angle_x; j < stlb_end; j++)
+		for (int j = room->_left_angle_x; j < room->_nStlb; j++)
 		{
 			if (j == this->_m - 1)
 				break;
@@ -98,10 +125,10 @@ void Map::Create_room(const int left_angle_y, const int left_angle_x)
 		}
 	}
 	print_map();
-	Create_corridor(left_angle_y, left_angle_x, str_end, stlb_end);
+	Create_corridor(room);
 }
 
-void Map::Create_anroom(const int _y, const int _x)
+void Map::Create_anroom(Room *room, const int _y, const int _x)
 {
 	int str_end = 5 + rand() % 10,
 		stlb_end = 5 + rand() % 10;
@@ -119,30 +146,40 @@ void Map::Create_anroom(const int _y, const int _x)
 			_game_field_level[i][j].set_value(' ');
 		}
 	}
+	Room *Buff = new Room(Y_left_angle, X_left_angle);
+	Buff->_nStr = Y_left_angle + str_end;
+	Buff->_nStlb = X_left_angle + stlb_end;
+	room->next = Buff;
+
 	print_map();
-	Create_corridor(Y_left_angle, X_left_angle, Y_left_angle + str_end, X_left_angle + stlb_end);
+	Create_corridor(Buff);
 }
 
-void Map::Create_corridor(const int left_angle_y, const int left_angle_x, const int str_end, const int stlb_end)
+int Map::Create_corridor(Room *room)
 {
+	if (error == 15)
+	{
+		return false;
+	}
 	int type = 1 + rand() % 3;
 	switch (type)
 	{
 	case 1: //corridor up
 	{
-		const int lenght_corridor_y_up = left_angle_y - 5 - rand() % 3;
+		const int lenght_corridor_y_up = room->_left_angle_y - 5 - rand() % 3;
 		int j;
 		do
 		{
-			j = left_angle_x + 1 + rand() % 4;
+			j = room->_left_angle_x + 1 + rand() % 4;
 		} while (j >= this->_m - 1);
 
-		if ((left_angle_y - 8 < 1) || (_game_field_level[left_angle_y - 5][j].get_value() != '#') || (_game_field_level[left_angle_y - 5][j + 1].get_value() != '#') || (_game_field_level[left_angle_y - 5][j - 1].get_value() != '#'))
+		if ((room->_left_angle_y - 8 < 1) || (_game_field_level[room->_left_angle_y - 5][j].get_value() != '#') || (_game_field_level[room->_left_angle_y - 5][j + 1].get_value() != '#') || (_game_field_level[room->_left_angle_y - 5][j - 1].get_value() != '#'))
 		{
-			Create_corridor(left_angle_y, left_angle_x, str_end, stlb_end);
+			error++;
+			Create_corridor(room);
 		}
 
-		for (int i = left_angle_y; i > lenght_corridor_y_up; i--)
+		for (int i = room->_left_angle_y; i > lenght_corridor_y_up; i--)
 		{
 			if (i == 1)
 			{
@@ -151,25 +188,27 @@ void Map::Create_corridor(const int left_angle_y, const int left_angle_x, const 
 
 			_game_field_level[i][j].set_value(' ');
 		}
-		Create_anroom(lenght_corridor_y_up + 1, j);
+
+		Create_anroom(room,lenght_corridor_y_up + 1, j);
 		break;
 	}
 	case 2: //corridor down
 	{
 
-		const int lenght_corridor_y_down = str_end + 3 + rand() % 3;
+		const int lenght_corridor_y_down = room->_nStr + 3 + rand() % 3;
 		int j;
 		do
 		{
-			j = left_angle_x + 1 + rand() % 4;
+			j = room->_left_angle_x + 1 + rand() % 4;
 		} while (j >= this->_m - 1);
 
-		if ((str_end + 5 > this->_n) || (_game_field_level[str_end + 5][j].get_value() != '#') || (_game_field_level[str_end + 5][j + 1].get_value() != '#') || (_game_field_level[str_end + 5][j - 1].get_value() != '#'))
+		if ((room->_nStr + 5 > this->_n) || (_game_field_level[room->_nStr + 5][j].get_value() != '#') || (_game_field_level[room->_nStr + 5][j + 1].get_value() != '#') || (_game_field_level[room->_nStr + 5][j - 1].get_value() != '#'))
 		{
-			Create_corridor(left_angle_y, left_angle_x, str_end, stlb_end);
+			error++;
+			Create_corridor(room);
 		}
 
-		for (int i = str_end; i < lenght_corridor_y_down; i++)
+		for (int i = room->_nStr; i < lenght_corridor_y_down; i++)
 		{
 			if (i == this->_n - 1)
 			{
@@ -177,26 +216,30 @@ void Map::Create_corridor(const int left_angle_y, const int left_angle_x, const 
 			}
 			_game_field_level[i][j].set_value(' ');
 		}
-		Create_room(lenght_corridor_y_down, left_angle_x);
+
+		Room *Buff = new Room(lenght_corridor_y_down, room->_left_angle_x);
+		room->next = Buff;
+		Create_room(Buff);
+
 		break;
 	}
 	case 3: //corridor right
 	{
 
-		const int lenght_corridor_y_right = stlb_end + 5 + rand() % 3;
+		const int lenght_corridor_y_right = room->_nStlb + 5 + rand() % 3;
 		int i;
 		do
 		{
-			i = left_angle_y + 1 + rand() % 4;
+			i = room->_left_angle_y + 1 + rand() % 4;
 		} while (i >= this->_n - 1);
 
-		if ((left_angle_x + 5 > this->_m) || (_game_field_level[i][stlb_end + 5].get_value() != '#') || (_game_field_level[i + 1][stlb_end + 5].get_value() != '#') || (_game_field_level[i - 1][stlb_end + 5].get_value() != '#'))
+		if ((room->_left_angle_x + 5 > this->_m) || (_game_field_level[i][room->_nStlb + 5].get_value() != '#') || (_game_field_level[i + 1][room->_nStlb + 5].get_value() != '#') || (_game_field_level[i - 1][room->_nStlb + 5].get_value() != '#'))
 		{
-			Create_corridor(left_angle_y, left_angle_x, str_end, stlb_end);
+			error++;
+			Create_corridor(room);
 		}
 
-
-		for (int j = stlb_end; j < lenght_corridor_y_right; j++)
+		for (int j = room->_nStlb; j < lenght_corridor_y_right; j++)
 		{
 			if (j == this->_m - 1)
 			{
@@ -204,12 +247,14 @@ void Map::Create_corridor(const int left_angle_y, const int left_angle_x, const 
 			}
 			_game_field_level[i][j].set_value(' ');
 		}
-		Create_room(left_angle_y, lenght_corridor_y_right);
+
+		Room *Buff = new Room(room->_left_angle_y, lenght_corridor_y_right);
+		Create_room(Buff);
 		break;
 	}
-	case 4: //corridor left
-	{
 
+	/*case 4: //corridor left
+	{
 		const int lenght_corridor_y_left = left_angle_x - 5 - rand() % 3;
 		int i;
 		do
@@ -233,7 +278,8 @@ void Map::Create_corridor(const int left_angle_y, const int left_angle_x, const 
 			_game_field_level[i][j].set_value(' ');
 		}
 		break;
-	}
+	}*/
+
 	default:
 		break;
 	}

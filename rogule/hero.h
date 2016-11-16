@@ -1,16 +1,19 @@
-#pragma once
+
 #include "stdafx.h"
 
-class Hero
+
+class Hero : public Unit
 {
 public:
-    Hero();
-    Hero(short x, short y); 
+    //Hero();
+    Hero(int hit_point, // Здоровье
+		int viewing_range, // Радиус обзора
+		int damage, // Урон
+		int armor, // Броня
+		short x, short y // Координаты существа
+	); 
 	void key_press(Map level); // Перехват клавиш
-    void range_of_visibility(Map level, char c); // Вычесление области видемости
-    void set_hero(Map level, short x, short y); // Передвинуть героя
+	void viewing_range(Map level, char c); // Вычесление области видимости
 private:
-    const short _range_of_visibility = 4; // Радиус видимости
-    const char _icon = '@'; //иконка героя
-    short _x, _y; // Координаты героя
+    
 };
