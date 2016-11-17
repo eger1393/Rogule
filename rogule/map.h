@@ -32,7 +32,7 @@ class Map
 public:
     Map(short n, short m);
     void test_Map(short n, short m); // —оздание квадратной комнаты дл€ теста
-	void initialize_Level();
+	int initialize_Level();
 	int Create_room(Room *r);
 	void Create_anroom(Room *r,const int, const int);
 	int Create_corridor(Room *r);
@@ -44,7 +44,7 @@ public:
     void set_cell(char c, short x, short y); //задает €чейку
     void print_map(); //рисует карту
 	void print_circular();
-
+	friend Room;
 private:
     //Cell **_cells; //массив €чеек
     short _n, _m; //размеры карты
@@ -63,7 +63,7 @@ private:
 public:
 	friend Map;
 	Room();
-	Room(int, int);
+	Room(int, int, Map*);
 	int get_x();
 	int get_y();
 	~Room();

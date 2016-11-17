@@ -2,6 +2,7 @@
 #include "stdafx.h"
 
 static int error;
+bool flag = true, flag_0 = true;
 
 Cell::Cell()
 {
@@ -101,18 +102,23 @@ void Map::reprint_cell(short x, short y)
 	cout << this->_game_field_level[y][x].get_value();
 }
 
-void Map::initialize_Level()
+
+
+int Map::initialize_Level()
 {
-	Room *Head = new Room(1,1);
-	Create_room(Head);
+	Room *Head = new Room(1, 1, this);
+	if (flag)
+	{
+		Create_room(Head);
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 int Map::Create_room(Room *room)
 {
-	if ((room->ID_room > 9))
-	{
-		return 1;
-	}
 	for (int i = room->_left_angle_y; i < room->_nStr; i++)
 	{
 		if (i == this->_n - 1)
@@ -125,163 +131,111 @@ int Map::Create_room(Room *room)
 		}
 	}
 	print_map();
-	Create_corridor(room);
-}
-
-void Map::Create_anroom(Room *room, const int _y, const int _x)
-{
-	int str_end = 5 + rand() % 10,
-		stlb_end = 5 + rand() % 10;
-	int Y_left_angle = _y - str_end,
-		X_left_angle = _x - stlb_end / 2;
-
-	for (int i = Y_left_angle; i < Y_left_angle + str_end; i++)
+	if (flag)
 	{
-		if ((i > this->_n - 1) || (i < 1))
-			break;
-		for (int j = X_left_angle; j < X_left_angle + stlb_end; j++)
-		{
-			if ((j > this->_m - 1) || (j < 1))
-				break;
-			_game_field_level[i][j].set_value(' ');
-		}
+		Create_corridor(room);
 	}
-	Room *Buff = new Room(Y_left_angle, X_left_angle);
-	Buff->_nStr = Y_left_angle + str_end;
-	Buff->_nStlb = X_left_angle + stlb_end;
-	room->next = Buff;
-
-	print_map();
-	Create_corridor(Buff);
+	else
+	{
+		return flag_0 = false;
+	}
 }
 
 int Map::Create_corridor(Room *room)
 {
-	if (error == 15)
+	bool flag_2, flag_3;
+	Room *Buff_1 = NULL , *Buff_2 = NULL;
+
+	if ((error == 10) || (flag_0 == false)||(flag == false))
 	{
-		return false;
+		return flag = false;
 	}
-	int type = 1 + rand() % 3;
-	switch (type)
+	 //corridor down
 	{
-	case 1: //corridor up
-	{
-		const int lenght_corridor_y_up = room->_left_angle_y - 5 - rand() % 3;
+
+		const int lenght_corridor_y_down = room->_nStr + 2 + rand() % 5;
 		int j;
 		do
 		{
-			j = room->_left_angle_x + 1 + rand() % 4;
-		} while (j >= this->_m - 1);
+			j = room->_left_angle_x + rand() % 5;
+		} while ((j >= this->_m - 1) || (j > room->_nStlb));
 
-		if ((room->_left_angle_y - 8 < 1) || (_game_field_level[room->_left_angle_y - 5][j].get_value() != '#') || (_game_field_level[room->_left_angle_y - 5][j + 1].get_value() != '#') || (_game_field_level[room->_left_angle_y - 5][j - 1].get_value() != '#'))
+		if ((lenght_corridor_y_down> this->_n-8) || (_game_field_level[lenght_corridor_y_down + 7][j].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 7][j + 1].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 7][j - 1].get_value() != '#'))
 		{
-			error++;
-			Create_corridor(room);
+			flag_2 = false;
+			//Create_corridor(room);
 		}
-
-		for (int i = room->_left_angle_y; i > lenght_corridor_y_up; i--)
-		{
-			if (i == 1)
-			{
-				break;
-			}
-
-			_game_field_level[i][j].set_value(' ');
+		else {
+				flag_2 = true;
+				for (int i = room->_nStr; i < lenght_corridor_y_down; i++)
+				{
+					if (i == this->_n - 1)
+					{
+						break;
+					}
+						_game_field_level[i][j].set_value(' ');
+				}
+					Buff_1 = new Room(lenght_corridor_y_down, room->_left_angle_x, this);
+					room->next = Buff_1;
+				
 		}
-
-		Create_anroom(room,lenght_corridor_y_up + 1, j);
-		break;
 	}
-	case 2: //corridor down
+	//corridor right
 	{
 
-		const int lenght_corridor_y_down = room->_nStr + 3 + rand() % 3;
-		int j;
-		do
-		{
-			j = room->_left_angle_x + 1 + rand() % 4;
-		} while (j >= this->_m - 1);
-
-		if ((room->_nStr + 5 > this->_n) || (_game_field_level[room->_nStr + 5][j].get_value() != '#') || (_game_field_level[room->_nStr + 5][j + 1].get_value() != '#') || (_game_field_level[room->_nStr + 5][j - 1].get_value() != '#'))
-		{
-			error++;
-			Create_corridor(room);
-		}
-
-		for (int i = room->_nStr; i < lenght_corridor_y_down; i++)
-		{
-			if (i == this->_n - 1)
-			{
-				break;
-			}
-			_game_field_level[i][j].set_value(' ');
-		}
-
-		Room *Buff = new Room(lenght_corridor_y_down, room->_left_angle_x);
-		room->next = Buff;
-		Create_room(Buff);
-
-		break;
-	}
-	case 3: //corridor right
-	{
-
-		const int lenght_corridor_y_right = room->_nStlb + 5 + rand() % 3;
+		const int lenght_corridor_x_right = room->_nStlb + 2 +  rand() % 5;
 		int i;
+
 		do
 		{
-			i = room->_left_angle_y + 1 + rand() % 4;
-		} while (i >= this->_n - 1);
+			i = room->_left_angle_y + 1 + rand() % 5;
+		} while ((i >= this->_n - 1) || (i > room->_nStr));
 
-		if ((room->_left_angle_x + 5 > this->_m) || (_game_field_level[i][room->_nStlb + 5].get_value() != '#') || (_game_field_level[i + 1][room->_nStlb + 5].get_value() != '#') || (_game_field_level[i - 1][room->_nStlb + 5].get_value() != '#'))
+		if (((lenght_corridor_x_right) > this->_m-8) || (_game_field_level[i][lenght_corridor_x_right + 7].get_value() != '#') || (_game_field_level[i + 1][lenght_corridor_x_right + 7].get_value() != '#') || (_game_field_level[i - 1][lenght_corridor_x_right + 7].get_value() != '#'))
+		{
+			flag_3 = false;
+			//Create_corridor(room);
+		}
+		else {
+			flag_3 = true;
+			for (int j = room->_nStlb; j < lenght_corridor_x_right; j++)
+			{
+				if (j == this->_m - 1)
+				{
+					break;
+				}
+				_game_field_level[i][j].set_value(' ');
+			}
+
+				Buff_2 = new Room(room->_left_angle_y, lenght_corridor_x_right, this);
+				room->next = Buff_2;
+			
+			
+			
+		}
+
+		if ((flag_2 == false)&&(flag_3 == false))
 		{
 			error++;
 			Create_corridor(room);
 		}
-
-		for (int j = room->_nStlb; j < lenght_corridor_y_right; j++)
+		else if ((flag_2 == true) && (flag_3 == false))
 		{
-			if (j == this->_m - 1)
-			{
-				break;
-			}
-			_game_field_level[i][j].set_value(' ');
+			Create_room(Buff_1);
 		}
-
-		Room *Buff = new Room(room->_left_angle_y, lenght_corridor_y_right);
-		Create_room(Buff);
-		break;
-	}
-
-	/*case 4: //corridor left
-	{
-		const int lenght_corridor_y_left = left_angle_x - 5 - rand() % 3;
-		int i;
-		do
+		else if ((flag_3 == true)&&(flag_2 == false))
 		{
-			i = left_angle_y + 1 + rand() % 4;
-		} while (i >= this->_n - 1);
-
-
-		if ((_game_field_level[i][left_angle_x - 5].get_value() != '#') || (left_angle_x - 5 < 1) || (_game_field_level[i + 1][left_angle_x - 5].get_value() != '#') || (_game_field_level[i - 1][left_angle_x - 5].get_value() != '#'))
-		{
-			Create_corridor(left_angle_y, left_angle_x, str_end, stlb_end);
+			Create_room(Buff_2);
 		}
-
-		for (int j = left_angle_x; j > lenght_corridor_y_left; j--)
+		else if ((flag_3 == true) && (flag_2 == true))
 		{
-			if (j == 1)
-			{
-				break;
-			}
+			Create_room(Buff_1);
+			flag = true;
+			error = 0;
+			Create_room(Buff_2);
 
-			_game_field_level[i][j].set_value(' ');
 		}
-		break;
-	}*/
-
-	default:
-		break;
+		
 	}
 }
 
