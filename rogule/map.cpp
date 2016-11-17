@@ -3,6 +3,7 @@
 
 static int error;
 bool flag = true, flag_0 = true;
+Room *Head;
 
 Cell::Cell()
 {
@@ -104,16 +105,16 @@ void Map::reprint_cell(short x, short y)
 
 
 
-int Map::initialize_Level()
+Room* Map::initialize_Level()
 {
-	Room *Head = new Room(1, 1, this);
+	Head = new Room(1, 1, this);
 	if (flag)
 	{
 		Create_room(Head);
 	}
 	else
 	{
-		return 0;
+		return Head;
 	}
 }
 
@@ -130,7 +131,6 @@ int Map::Create_room(Room *room)
 			_game_field_level[i][j].set_value(' ');
 		}
 	}
-	print_map();
 	if (flag)
 	{
 		Create_corridor(room);
@@ -160,7 +160,7 @@ int Map::Create_corridor(Room *room)
 			j = room->_left_angle_x + rand() % 5;
 		} while ((j >= this->_m - 1) || (j > room->_nStlb));
 
-		if ((lenght_corridor_y_down> this->_n-8) || (_game_field_level[lenght_corridor_y_down + 7][j].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 7][j + 1].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 7][j - 1].get_value() != '#'))
+		if ((lenght_corridor_y_down> this->_n-10) || (_game_field_level[lenght_corridor_y_down + 9][j].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 9][j + 1].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 9][j - 1].get_value() != '#'))
 		{
 			flag_2 = false;
 			//Create_corridor(room);
@@ -176,7 +176,7 @@ int Map::Create_corridor(Room *room)
 						_game_field_level[i][j].set_value(' ');
 				}
 					Buff_1 = new Room(lenght_corridor_y_down, room->_left_angle_x, this);
-					room->next = Buff_1;
+					room->next_1 = Buff_1;
 				
 		}
 	}
@@ -191,7 +191,7 @@ int Map::Create_corridor(Room *room)
 			i = room->_left_angle_y + 1 + rand() % 5;
 		} while ((i >= this->_n - 1) || (i > room->_nStr));
 
-		if (((lenght_corridor_x_right) > this->_m-8) || (_game_field_level[i][lenght_corridor_x_right + 7].get_value() != '#') || (_game_field_level[i + 1][lenght_corridor_x_right + 7].get_value() != '#') || (_game_field_level[i - 1][lenght_corridor_x_right + 7].get_value() != '#'))
+		if (((lenght_corridor_x_right) > this->_m-10) || (_game_field_level[i][lenght_corridor_x_right + 9].get_value() != '#') || (_game_field_level[i + 1][lenght_corridor_x_right + 9].get_value() != '#') || (_game_field_level[i - 1][lenght_corridor_x_right + 9].get_value() != '#'))
 		{
 			flag_3 = false;
 			//Create_corridor(room);
@@ -208,7 +208,9 @@ int Map::Create_corridor(Room *room)
 			}
 
 				Buff_2 = new Room(room->_left_angle_y, lenght_corridor_x_right, this);
-				room->next = Buff_2;
+				Head;
+				room->next_2 = Buff_2;
+
 			
 			
 			
