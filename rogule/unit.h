@@ -14,7 +14,7 @@ public:
 		char icon, // Иконка cущества
 	short x, short y // Координаты существа
 	); // Конструктор
-
+	
 	//void viewing_range(Map level, char c); // Вычесление области видимости
 	void attak(Unit *unit2); // Атака текущего юнита вторым юнитом
 	void set_unit(Map level, short x, short y); // Передвинуть юнит

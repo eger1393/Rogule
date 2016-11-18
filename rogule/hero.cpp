@@ -76,6 +76,8 @@ void Hero::viewing_range(Map level, char c) // Вычесление области видемости
 
 void Hero::key_press(Map level)
 {
+	Mob a(1, 1, 1, 1, 'A', 5, 5, "ww");
+	a.set_unit(level, 5, 5);
 	char c; // Клавиша считаная с клавиатуры
 	while (true)
 	{
@@ -128,6 +130,7 @@ void Hero::key_press(Map level)
 		/*default:
 			break;*/
 		}
+		a.find_way(level, this->_x, this->_y);
 
 	}
 
