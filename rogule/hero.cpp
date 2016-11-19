@@ -87,6 +87,10 @@ void Hero::key_press(Map level)
 		switch (c)
 		{
 		case 80:	// Стрелка вниз
+			if (level.get_cell(this->_x, this->_y + 1).is_unit())
+			{
+				this->attak(&a);
+			}
 			if (level.get_cell(this->_x, this->_y + 1).is_permeable()) // Проверка на прохидимость
 			{
 				this->viewing_range(level, ' ');
@@ -98,6 +102,10 @@ void Hero::key_press(Map level)
 			}
 			break;
 		case 72:	//Стрелка вверх
+			if (level.get_cell(this->_x, this->_y - 1).is_unit())
+			{
+				this->attak(&a);
+			}
 			if (level.get_cell(this->_x, this->_y - 1).is_permeable()) // Проверка на прохидимость
 			{
 				this->viewing_range(level, ' ');
@@ -108,6 +116,10 @@ void Hero::key_press(Map level)
 			}
 			break;
 		case 77:	// Стрелка влево
+			if (level.get_cell(this->_x + 1, this->_y).is_unit())
+			{
+				this->attak(&a);
+			}
 			if (level.get_cell(this->_x + 1, this->_y).is_permeable()) // Проверка на прохидимость
 			{
 				this->viewing_range(level, ' ');
@@ -118,6 +130,10 @@ void Hero::key_press(Map level)
 			}
 			break;
 		case 75:	// Стрелка вправо
+			if (level.get_cell(this->_x - 1, this->_y).is_unit())
+			{
+				this->attak(&a);
+			}
 			if (level.get_cell(this->_x - 1, this->_y).is_permeable()) // Проверка на прохидимость
 			{
 				this->viewing_range(level, ' ');
@@ -130,7 +146,8 @@ void Hero::key_press(Map level)
 		/*default:
 			break;*/
 		}
-		a.find_way(level, this->_x, this->_y);
+		if (a.find_way(level, this->_x, this->_y) == 1)
+			a.attak(this);
 
 	}
 

@@ -74,18 +74,18 @@ Unit::Unit(int hit_point, // Здоровье
 //	}
 //}
 
-void Unit::attak(Unit *unit2) // Атака текущего юнита вторым юнитом
+void Unit::attak(Unit *unit2) // Текущий юнит атакует второго юнита
 {
-	if (unit2->_damage <= this->_armor) //если броня больше дамага
+	if (unit2->_armor >= this->_damage) //если броня больше дамага
 	{
-		this->_hit_point -= 1;
+		unit2->_hit_point -= 1;
 	}
 	else
 	{
-		this->_hit_point -= unit2->_damage - this->_armor;
+		unit2->_hit_point -= this->_damage - unit2->_armor;
 		
 	}
-	if (this->_hit_point <= 0) // Смерть юнита
+	if (unit2->_hit_point <= 0) // Смерть юнита
 	{ 
 		// Обработать смерть
 	}

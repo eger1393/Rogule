@@ -1,9 +1,5 @@
 #include "stdafx.h"
 
-const std::string name_mobs[] = {
-	"z","Z","x","X"
-};
-
 Mob::Mob(int hit_point, // Çäîğîâüå
 	int viewing_range, // Ğàäèóñ îáçîğà
 	int damage, // Óğîí
@@ -87,13 +83,17 @@ int Mob::find_way(Map level, short x, short y)
 		this->_y--;
 	if (this->_y < y && level.get_cell(this->_x - 1, this->_y - 1).is_permeable())
 		this->_y++;
+
 	if (this->_x != x || this->_y != y)
 	{
 		this->set_unit(level, this->_x, this->_y);
 		return 0;
 	}
 	else
+	{
+
 		return 1;
+	}
 
 }
 

@@ -2,6 +2,9 @@
 
 #include "stdafx.h"
 
+const char name_units[] = {
+	'@','z','Z','x','X', 'A'
+};
 
 class Unit
 {

@@ -40,6 +40,16 @@ bool Cell::is_limpid()
     }
 }
 
+bool Cell::is_unit()
+{
+	for (int i = 0; i < sizeof(name_units) / sizeof(name_units[0]); i++)
+	{
+		if (this->_value == name_units[i])
+			return true;
+	}
+	return false;
+}
+
 bool Cell::is_permeable()
 {
     //if ((this->value <= 197 && this->value >= 191) || this->value == 217 || this->value == 218 || this->value == 179)

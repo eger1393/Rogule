@@ -13,6 +13,7 @@ public:
     ~Cell();
     bool is_limpid(); //проверка на прозрачность
     bool is_permeable(); // ѕроерка на проходимость 
+	bool is_unit();
     bool can_used(); //  ћожно исспользовать
 	char get_value();
 	void set_value(char symbol);
