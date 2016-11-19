@@ -44,11 +44,11 @@ public:
     void print_map(); //рисует карту
 	void print_circular();
 	friend Room;
+	Cell **_game_field_level;
 private:
     //Cell **_cells; //массив ячеек
     short _n, _m; //размеры карты
     //              //std::string name;
-	Cell **_game_field_level;
 };
 
 class Room

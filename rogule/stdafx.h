@@ -20,6 +20,9 @@
 #include <windows.h>
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы
+#include <SFML/Graphics.hpp>
+
+using namespace sf;
 
 #include "map.h"
 #include "unit.h"
