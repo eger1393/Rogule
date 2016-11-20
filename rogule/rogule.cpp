@@ -8,7 +8,7 @@ int main()
 {
 	srand(time(0));
 
-	sf::RenderWindow window(sf::VideoMode(800, 800), "Rogule!"); //окно
+	sf::RenderWindow window(sf::VideoMode(800, 800), "Rogule!",sf::Style::Fullscreen); //окно
 	RectangleShape rectangle(Vector2f(16, 16)); //эт кусок игрового поля
 	Map level_1(50, 70); // сам уровень
 	Room *head; //эт голова дерева комнат

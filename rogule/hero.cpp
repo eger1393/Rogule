@@ -9,13 +9,12 @@ Hero::Hero(int hit_point, // Здоровье
 	short x, short y // Координаты существа
 ) : Unit(hit_point, viewing_range, damage, armor, '@', x, y)
 {
-	herotexture.loadFromFile("images/hero.png"); //картинка
-
-	herosprite.setTexture(herotexture);//передаём в него объект Texture (текстуры)
-
-	herosprite.setPosition(x, y);//задаем начальные координаты появления спрайта
+	_unit_texture.loadFromFile("texture.jpg"); //картинка
+	_unit_sprite.setTexture(_unit_texture);//передаём в него объект Texture (текстуры)
+	_unit_sprite.setTextureRect(IntRect(384, 320, 32, 32));
+	_unit_sprite.setPosition(x, y);//задаем начальные координаты появления спрайта
 	
-	rect = FloatRect(x, y, 16, 16);//координаты + ширина-высота поля
+	_rect = FloatRect(x, y, 16, 16);//координаты + ширина-высота поля
 }
 
 void Hero::viewing_range(Map level, char c) // Вычесление области видемости

@@ -29,4 +29,7 @@ protected:
 		_armor; // Броня
 	char _icon; // Иконка cущества
 	short _x, _y; // Координаты существа
+	Texture _unit_texture; // Текстура юнита
+	Sprite _unit_sprite; // Спрайт Юнита
+	FloatRect _rect; //
 };
