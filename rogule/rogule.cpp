@@ -8,14 +8,14 @@ int main()
 {
 	srand(time(0));
 
-	sf::RenderWindow window(sf::VideoMode(1000, 1000), "Rogule!"); //окно
+	sf::RenderWindow window(sf::VideoMode(800, 800), "Rogule!"); //окно
 	RectangleShape rectangle(Vector2f(16, 16)); //эт кусок игрового поля
 	Map level_1(50, 70); // сам уровень
 	Room *head; //эт голова дерева комнат
 	head = level_1.initialize_Level(); // ну тут понятно
 	Hero hero(10,10,10,10,16,16); // герой
 
-	level_1.print_map(); // эт в консоли карта
+	//level_1.print_map(); // эт в консоли карта
 
 	while (window.isOpen()) // пока открыто окно
 
