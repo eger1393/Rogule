@@ -3,20 +3,19 @@
 
 static int error;
 bool flag = true, flag_0 = true;
-Room *Head;
 
 Cell::Cell()
 {
 	_value = ' ';
 	_move = true;
-	_active = false;
+	_view = false;
 }
 
 Cell::Cell(char symbol, bool go_to, bool use)
 {
 	_value = symbol;
 	_move = go_to;
-	_active = use;
+	_view = use;
 }
 
 void Cell::set_value(char symbol)
@@ -31,7 +30,6 @@ char Cell::get_value()
 
 bool Cell::is_limpid()
 {
-    //if ((this->value <= 197 && this->value >= 191) || this->value == 217 || this->value == 218 || this->value == 179)
 	if (this->_value == '#')
     {
         return false;
@@ -44,14 +42,13 @@ bool Cell::is_limpid()
 
 bool Cell::is_permeable()
 {
-    //if ((this->value <= 197 && this->value >= 191) || this->value == 217 || this->value == 218 || this->value == 179)
-    if (this->_value == ' ' || this->_value == '1')
+	if (this->_value == '#')
     {
-        return true;
+        return false;
     }
     else
     {
-        return false;
+        return true;
     }
 }
 
@@ -91,8 +88,17 @@ Map::Map(short n, short m)
 		for (int j = 0; j < this->_m; j++)
 		{
 			_game_field_level[i][j].set_value('#');
+			_game_field_level[i][j].set_view(false);
 		}
 	}
+
+	floor.loadFromFile("images/floor.png");
+	
+	wall.loadFromFile("images/wall.png");
+
+	chest.loadFromFile("images/chest.png");
+
+	empty.loadFromFile("images/empty.png");
 }
 
 void Map::reprint_cell(short x, short y)
@@ -103,10 +109,14 @@ void Map::reprint_cell(short x, short y)
 	cout << this->_game_field_level[y][x].get_value();
 }
 
-
+void Room::fill_room()
+{
+	_room[this->_left_angle_y + rand() % 5][this->_left_angle_x + rand() % 5].set_value('$');
+}
 
 Room* Map::initialize_Level()
 {
+	Room *Head;
 	Head = new Room(1, 1, this);
 	if (flag)
 	{
@@ -120,6 +130,7 @@ Room* Map::initialize_Level()
 
 int Map::Create_room(Room *room)
 {
+	
 	for (int i = room->_left_angle_y; i < room->_nStr; i++)
 	{
 		if (i == this->_n - 1)
@@ -131,6 +142,9 @@ int Map::Create_room(Room *room)
 			_game_field_level[i][j].set_value(' ');
 		}
 	}
+
+	_game_field_level[room->_left_angle_y + rand() % 5][room->_left_angle_x + rand() % 5].set_value('$');
+
 	if (flag)
 	{
 		Create_corridor(room);
@@ -208,7 +222,6 @@ int Map::Create_corridor(Room *room)
 			}
 
 				Buff_2 = new Room(room->_left_angle_y, lenght_corridor_x_right, this);
-				Head;
 				room->next_2 = Buff_2;
 
 			
@@ -241,36 +254,36 @@ int Map::Create_corridor(Room *room)
 	}
 }
 
-void Map::test_Map(short n, short m)
-{
-    this->_n = n;
-    this->_m = m;
-    this->_game_field_level = new Cell*[this->_n];
-    for (short i = 0; i < this->_n; i++)
-    {
-        this->_game_field_level[i] = new Cell[this->_m];
-    }  
-	 
-    for (short i = 0; i < this->_n - 1; i++)
-    {
-        this->_game_field_level[0][i].set_value(35);
-        this->_game_field_level[this->_n - 1][i].set_value(35);
-        this->_game_field_level[i][0].set_value(35);
-        this->_game_field_level[i][this->_n - 1].set_value(35);
-
-        for (short j = 1; j < this->_m - 1; j++)
-        {
-            this->_game_field_level[i][j].set_value(' ');
-        }
-    }
-
-    /*this->_game_field_level[0][0].set_value(218);
-    this->_game_field_level[this->_n - 1][0].set_value(192);
-    this->_game_field_level[0][this->_m - 1].set_value(191);
-    this->_game_field_level[this->_n - 1][this->_m - 1].set_value(217);*/
-
-
-}
+//void Map::test_Map(short n, short m)
+//{
+//    this->_n = n;
+//    this->_m = m;
+//    this->_game_field_level = new Cell*[this->_n];
+//    for (short i = 0; i < this->_n; i++)
+//    {
+//        this->_game_field_level[i] = new Cell[this->_m];
+//    }  
+//	 
+//    for (short i = 0; i < this->_n - 1; i++)
+//    {
+//        this->_game_field_level[0][i].set_value(35);
+//        this->_game_field_level[this->_n - 1][i].set_value(35);
+//        this->_game_field_level[i][0].set_value(35);
+//        this->_game_field_level[i][this->_n - 1].set_value(35);
+//
+//        for (short j = 1; j < this->_m - 1; j++)
+//        {
+//            this->_game_field_level[i][j].set_value(' ');
+//        }
+//    }
+//
+//    /*this->_game_field_level[0][0].set_value(218);
+//    this->_game_field_level[this->_n - 1][0].set_value(192);
+//    this->_game_field_level[0][this->_m - 1].set_value(191);
+//    this->_game_field_level[this->_n - 1][this->_m - 1].set_value(217);*/
+//
+//
+//}
 
 Cell& Map::get_cell(short x, short y)
 {
@@ -293,50 +306,65 @@ void Map::set_cell(char c, short x, short y)
     this->_game_field_level[y][x].set_value(c);
 }
 
-void Map::print_map()
+void Map::print_level(RenderWindow &window)
 {
-	system("cls");
-    for (int i = 0; i < this->_n; i++)
-    {
-        for (int j = 0; j < this->_m; j++)
-        {
-            std::cout << this->_game_field_level[i][j].get_value();
-        }
-        std::cout << std::endl;
-    }
+	RectangleShape rectangle(Vector2f(32, 32));
+
+	for (int i = 0; i<this->_n; i++) //проход по всему лвл и замена символов на текстурки rectangle разных цветов
+		for (int j = 0; j<this->_m; j++)
+		{
+			if ((this->_game_field_level[i][j].get_value() == '#'))//&&(this->_game_field_level[i][j].get_view()))
+			{
+				rectangle.setTexture(&wall);
+			}
+			if ((this->_game_field_level[i][j].get_value() == ' '))//&& (this->_game_field_level[i][j].get_view()))
+			{
+				rectangle.setTexture(&floor);
+			}
+			if ((this->_game_field_level[i][j].get_value() == '1'))// && (this->_game_field_level[i][j].get_view()))
+			{
+				rectangle.setTexture(&empty);
+			}
+			if ((this->_game_field_level[i][j].get_value() == '$'))//&& (this->_game_field_level[i][j].get_view()))
+			{
+				rectangle.setTexture(&chest);
+			}
+			rectangle.setPosition(j * 32, i * 32);  //позиция
+			window.draw(rectangle); // отрисовка
+		}
 }
 
-void Map::print_circular()
-{
-	const int m = 15, n = 15;
-	int radius = 6;
-	for (int i = 0; i < radius / 2 + 1; i++)
-	{
-		this->_game_field_level[n + radius][m + i].set_value('#');
-		this->_game_field_level[n + radius][m - i].set_value('#');
-	}
-
-	int j = radius / 2, i = radius;
-	while (j != radius)
-	{
-		i--;
-		j++;
-		this->_game_field_level[n + i][m + j].set_value('#');
-	}
-	///////////////////
-	for (int i = 0; i < radius / 2 + 1; i++)
-	{
-		this->_game_field_level[n - i][m + radius].set_value('#');
-		this->_game_field_level[n + i][m + radius].set_value('#');
-	}
-
-	 j = radius, i = - radius / 2;
-	while (i != - radius)
-	{
-		i--;
-		j--;
-		this->_game_field_level[n + i][m + j].set_value('#');
-	}
-}
+//void Map::print_circular()
+//{
+//	const int m = 15, n = 15;
+//	int radius = 6;
+//	for (int i = 0; i < radius / 2 + 1; i++)
+//	{
+//		this->_game_field_level[n + radius][m + i].set_value('#');
+//		this->_game_field_level[n + radius][m - i].set_value('#');
+//	}
+//
+//	int j = radius / 2, i = radius;
+//	while (j != radius)
+//	{
+//		i--;
+//		j++;
+//		this->_game_field_level[n + i][m + j].set_value('#');
+//	}
+//	///////////////////
+//	for (int i = 0; i < radius / 2 + 1; i++)
+//	{
+//		this->_game_field_level[n - i][m + radius].set_value('#');
+//		this->_game_field_level[n + i][m + radius].set_value('#');
+//	}
+//
+//	 j = radius, i = - radius / 2;
+//	while (i != - radius)
+//	{
+//		i--;
+//		j--;
+//		this->_game_field_level[n + i][m + j].set_value('#');
+//	}
+//}
 
 

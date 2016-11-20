@@ -1,24 +1,37 @@
 
 #include "stdafx.h"
 
-
 Hero::Hero(int hit_point, // Здоровье
 	int viewing_range, // Радиус обзора
 	int damage, // Урон
 	int armor, // Броня
 	short x, short y // Координаты существа
-) : Unit(hit_point, viewing_range, damage, armor, '@', x, y)
+	) : Unit(hit_point, viewing_range, damage, armor, y, x)
 {
-	herotexture.loadFromFile("images/hero.png"); //картинка
+	texture.loadFromFile("images/hero.png"); //картинка
 
-	herosprite.setTexture(herotexture);//передаём в него объект Texture (текстуры)
+	sprite.setTexture(texture);//передаём в него объект Texture (текстуры)
 
-	herosprite.setPosition(x, y);//задаем начальные координаты появления спрайта
+	sprite.setPosition(y*32, x*32);//задаем начальные координаты появления спрайта
 	
-	rect = FloatRect(x, y, 16, 16);//координаты + ширина-высота поля
 }
 
-void Hero::viewing_range(Map level, char c) // Вычесление области видемости
+void Hero::active(char Symbol, Map &level, short x, short y)
+{
+	switch (Symbol)
+	{
+	case '$':
+	{
+		level.get_cell(x, y).set_value('1');
+		break;
+	}
+
+	default:
+		break;
+	}
+}
+
+void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области видемости
 {
 	bool flag1 = false, flag2 = false, flag3 = false, flag4 = false;
 	//level.get_cell(this->_x + 5, this->_y + 5).set_value('1');
@@ -31,6 +44,7 @@ void Hero::viewing_range(Map level, char c) // Вычесление области видемости
 			if (!flag1 && level.get_cell(this->_x + j, this->_y + i).is_limpid())
 			{
 				level.get_cell(this->_x + j, this->_y + i).set_value(c);
+				level.get_cell(this->_x + j, this->_y + i).set_view(flag);
 				level.reprint_cell(this->_x + j, this->_y + i);
 			}
 			else
@@ -44,6 +58,7 @@ void Hero::viewing_range(Map level, char c) // Вычесление области видемости
 			if (!flag2 && level.get_cell(this->_x - i, this->_y + j).is_limpid())
 			{
 				level.get_cell(this->_x - i, this->_y + j).set_value(c);
+				level.get_cell(this->_x - i, this->_y + j).set_view(flag);
 				level.reprint_cell(this->_x - i, this->_y + j);
 			}
 			else
@@ -57,6 +72,7 @@ void Hero::viewing_range(Map level, char c) // Вычесление области видемости
 			if (!flag3 && level.get_cell(this->_x - j, this->_y - i).is_limpid())
 			{
 				level.get_cell(this->_x - j, this->_y - i).set_value(c);
+				level.get_cell(this->_x - j, this->_y - i).set_view(flag);
 				level.reprint_cell(this->_x - j, this->_y - i);
 			}
 			else
@@ -70,6 +86,7 @@ void Hero::viewing_range(Map level, char c) // Вычесление области видемости
 			if (!flag4 && level.get_cell(this->_x + i, this->_y - j).is_limpid())
 			{
 				level.get_cell(this->_x + i, this->_y - j).set_value(c);
+				level.get_cell(this->_x + j, this->_y - j).set_view(flag);
 				level.reprint_cell(this->_x + i, this->_y - j);
 			}
 			else
@@ -79,65 +96,75 @@ void Hero::viewing_range(Map level, char c) // Вычесление области видемости
 	}
 }
 
-void Hero::key_press(Map level)
+void Hero::key_press(Map &level, View &viewer)
 {
-	Mob a(1, 1, 1, 1, 'A', 5, 5, "ww");
-	a.set_unit(level, 5, 5);
-	char c; // Клавиша считаная с клавиатуры
-	while (true)
+	//Mob a(1, 1, 1, 1, 'A', 5, 5, "ww");
+	//a.set_unit(level, 5, 5);
+	
+
+	if ((Keyboard::isKeyPressed(Keyboard::Left)) && ((level.get_cell(this->get_x() - 1, this->get_y()).is_limpid()))) // если нажата стрелка влево и т.д
 	{
-		c = _getch();
-		/*if (c == -32)
-			c = _getch();*/
-		switch (c)
-		{
-		case 80:	// Стрелка вниз
-			if (level.get_cell(this->_x, this->_y + 1).is_permeable()) // Проверка на прохидимость
-			{
-				this->viewing_range(level, ' ');
-				this->set_unit(level, this->_x, this->_y + 1);
-				this->viewing_range(level, '1');
-				//system("cls");		// Заменить этот блок на перересовку
-				//level.print_map();  // Отдельной клетки
+		this->viewing_range(level, false, ' ');
 
-			}
-			break;
-		case 72:	//Стрелка вверх
-			if (level.get_cell(this->_x, this->_y - 1).is_permeable()) // Проверка на прохидимость
-			{
-				this->viewing_range(level, ' ');
-				this->set_unit(level, this->_x, this->_y - 1);
-				this->viewing_range(level, '1');
-				//system("cls");		// Заменить этот блок на перересовку
-				//level.print_map();  // Отдельной клетки
-			}
-			break;
-		case 77:	// Стрелка влево
-			if (level.get_cell(this->_x + 1, this->_y).is_permeable()) // Проверка на прохидимость
-			{
-				this->viewing_range(level, ' ');
-				this->set_unit(level, this->_x + 1, this->_y);
-				this->viewing_range(level, '1');
-				//system("cls");		// Заменить этот блок на перересовку
-				//level.print_map();  // Отдельной клетки
-			}
-			break;
-		case 75:	// Стрелка вправо
-			if (level.get_cell(this->_x - 1, this->_y).is_permeable()) // Проверка на прохидимость
-			{
-				this->viewing_range(level, ' ');
-				this->set_unit(level, this->_x - 1, this->_y);
-				this->viewing_range(level, '1');
-				//system("cls");		// Заменить этот блок на перересовку
-				//level.print_map();  // Отдельной клетки
-			}
-			break;
-		/*default:
-			break;*/
-		}
-		a.find_way(level, this->_x, this->_y);
+		active(level.get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y());
 
+		this->sprite.move(-32, 0);
+
+		this->move(-1, 0);
+
+		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+
+		this->viewing_range(level, true, '1');
+	}
+	if ((Keyboard::isKeyPressed(Keyboard::Right)) && ((level.get_cell(this->get_x() + 1, this->get_y()).is_limpid())))
+	{
+		this->viewing_range(level, false, ' ');
+
+		active(level.get_cell(this->get_x() + 1, this->get_y()).get_value(), level, this->get_x()+1, this->get_y());
+
+		this->sprite.move(32, 0);
+
+		this->move(1, 0);
+
+		this->viewing_range(level,true, '1');
+
+		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+
+		
+	}
+	if (((Keyboard::isKeyPressed(Keyboard::Up))) && ((level.get_cell(this->get_x(), this->get_y() - 1).is_limpid())))
+	{
+		this->viewing_range(level,false, ' ');
+
+		active(level.get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1);
+
+		this->sprite.move(0, -32);
+
+		this->move(0, -1);
+
+		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+
+		this->viewing_range(level, true,'1');
+	}
+	if ((Keyboard::isKeyPressed(Keyboard::Down)) && (level .get_cell(this->get_x(), this->get_y() + 1).is_limpid()))
+	{
+		this->viewing_range(level, false,' ');
+
+		active(level.get_cell(this->get_x(), this->get_y()+1).get_value(), level, this->get_x(), this->get_y() + 1);
+
+		this->sprite.move(0, 32);
+
+		this->move(0, 1);
+
+		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+
+		this->viewing_range(level, true, '1' );
 	}
 
+}
 
+void Hero::move(short x, short y)
+{
+	_x += x;
+	_y += y;
 }
