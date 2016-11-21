@@ -40,11 +40,16 @@ void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области виде
 		for (int j = 1; j <= this->_viewing_range - i; j++) // Правый нижний
 		{
 			if (!flag1 && j == 1 && !level.get_cell(this->_x + j, this->_y + i).is_limpid())
+			{
 				flag1 = true;
+				level.get_cell(this->_x + j, this->_y + i).set_view(flag);
+				level.get_cell(this->_x + j, this->_y + i).set_prospected(true);
+			}
 			if (!flag1 && level.get_cell(this->_x + j, this->_y + i).is_limpid())
 			{
-				level.get_cell(this->_x + j, this->_y + i).set_value(c);
+				//level.get_cell(this->_x + j, this->_y + i).set_value(c);
 				level.get_cell(this->_x + j, this->_y + i).set_view(flag);
+				level.get_cell(this->_x + j, this->_y + i).set_prospected(true);
 				level.reprint_cell(this->_x + j, this->_y + i);
 			}
 			else
@@ -54,11 +59,16 @@ void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области виде
 		for (int j = 1; j <= this->_viewing_range - i; j++) // Левый нижний
 		{
 			if (!flag2 && j == 1 && !level.get_cell(this->_x - i, this->_y + j).is_limpid())
+			{
 				flag2 = true;
+				level.get_cell(this->_x - i, this->_y + j).set_view(flag);
+				level.get_cell(this->_x - i, this->_y + j).set_prospected(true);
+			}
 			if (!flag2 && level.get_cell(this->_x - i, this->_y + j).is_limpid())
 			{
-				level.get_cell(this->_x - i, this->_y + j).set_value(c);
+				//level.get_cell(this->_x - i, this->_y + j).set_value(c);
 				level.get_cell(this->_x - i, this->_y + j).set_view(flag);
+				level.get_cell(this->_x - i, this->_y + j).set_prospected(true);
 				level.reprint_cell(this->_x - i, this->_y + j);
 			}
 			else
@@ -68,11 +78,16 @@ void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области виде
 		for (int j = 1; j <= this->_viewing_range - i; j++) //Левый верхний
 		{
 			if (!flag3 && j == 1 && !level.get_cell(this->_x - j, this->_y - i).is_limpid())
+			{
 				flag3 = true;
+				level.get_cell(this->_x - j, this->_y - i).set_view(flag);
+				level.get_cell(this->_x - j, this->_y - i).set_prospected(true);
+			}
 			if (!flag3 && level.get_cell(this->_x - j, this->_y - i).is_limpid())
 			{
-				level.get_cell(this->_x - j, this->_y - i).set_value(c);
+				//level.get_cell(this->_x - j, this->_y - i).set_value(c);
 				level.get_cell(this->_x - j, this->_y - i).set_view(flag);
+				level.get_cell(this->_x - j, this->_y - i).set_prospected(true);
 				level.reprint_cell(this->_x - j, this->_y - i);
 			}
 			else
@@ -82,11 +97,16 @@ void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области виде
 		for (int j = 1; j <= this->_viewing_range - i; j++) // Правый верхний
 		{
 			if (!flag4 && j == 1 && !level.get_cell(this->_x + i, this->_y - j).is_limpid())
+			{
 				flag4 = true;
+				level.get_cell(this->_x + i, this->_y - j).set_view(flag);
+				level.get_cell(this->_x + i, this->_y - j).set_prospected(true);
+			}
 			if (!flag4 && level.get_cell(this->_x + i, this->_y - j).is_limpid())
 			{
-				level.get_cell(this->_x + i, this->_y - j).set_value(c);
-				level.get_cell(this->_x + j, this->_y - j).set_view(flag);
+				//level.get_cell(this->_x + i, this->_y - j).set_value(c);
+				level.get_cell(this->_x + i, this->_y - j).set_view(flag);
+				level.get_cell(this->_x + i, this->_y - j).set_prospected(true);
 				level.reprint_cell(this->_x + i, this->_y - j);
 			}
 			else

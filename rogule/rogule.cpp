@@ -52,7 +52,7 @@ int main()
 
 		window.clear(Color::Black); //белый фон
 	
-		level_1.print_level(window);
+		level_1.print_level(window); // Отрисовка карты
 
 		window.draw(hero.sprite); //отрисовка героя
 

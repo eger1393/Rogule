@@ -7,15 +7,15 @@ bool flag = true, flag_0 = true;
 Cell::Cell()
 {
 	_value = ' ';
-	_move = true;
+	_prospected = false;
 	_view = false;
 }
 
-Cell::Cell(char symbol, bool go_to, bool use)
+Cell::Cell(char symbol, bool prospected, bool view)
 {
 	_value = symbol;
-	_move = go_to;
-	_view = use;
+	_prospected = prospected;
+	_view = view;
 }
 
 void Cell::set_value(char symbol)
@@ -31,30 +31,30 @@ char Cell::get_value()
 bool Cell::is_limpid()
 {
 	if (this->_value == '#')
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 bool Cell::is_permeable()
 {
 	if (this->_value == '#')
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 Cell::~Cell()
 {
-	
+
 }
 
 //void Cell::set_x_y(short x, short y) //задает координаты х, у
@@ -93,12 +93,13 @@ Map::Map(short n, short m)
 	}
 
 	floor.loadFromFile("images/floor.png");
-	
+
 	wall.loadFromFile("images/wall.png");
 
 	chest.loadFromFile("images/chest.png");
 
 	empty.loadFromFile("images/empty.png");
+	black.loadFromFile("images/black.png");
 }
 
 void Map::reprint_cell(short x, short y)
@@ -130,7 +131,7 @@ Room* Map::initialize_Level()
 
 int Map::Create_room(Room *room)
 {
-	
+
 	for (int i = room->_left_angle_y; i < room->_nStr; i++)
 	{
 		if (i == this->_n - 1)
@@ -158,13 +159,13 @@ int Map::Create_room(Room *room)
 int Map::Create_corridor(Room *room)
 {
 	bool flag_2, flag_3;
-	Room *Buff_1 = NULL , *Buff_2 = NULL;
+	Room *Buff_1 = NULL, *Buff_2 = NULL;
 
-	if ((error == 10) || (flag_0 == false)||(flag == false))
+	if ((error == 10) || (flag_0 == false) || (flag == false))
 	{
 		return flag = false;
 	}
-	 //corridor down
+	//corridor down
 	{
 
 		const int lenght_corridor_y_down = room->_nStr + 2 + rand() % 5;
@@ -174,30 +175,30 @@ int Map::Create_corridor(Room *room)
 			j = room->_left_angle_x + rand() % 5;
 		} while ((j >= this->_m - 1) || (j > room->_nStlb));
 
-		if ((lenght_corridor_y_down> this->_n-10) || (_game_field_level[lenght_corridor_y_down + 9][j].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 9][j + 1].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 9][j - 1].get_value() != '#'))
+		if ((lenght_corridor_y_down > this->_n - 10) || (_game_field_level[lenght_corridor_y_down + 9][j].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 9][j + 1].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 9][j - 1].get_value() != '#'))
 		{
 			flag_2 = false;
 			//Create_corridor(room);
 		}
 		else {
-				flag_2 = true;
-				for (int i = room->_nStr; i < lenght_corridor_y_down; i++)
+			flag_2 = true;
+			for (int i = room->_nStr; i < lenght_corridor_y_down; i++)
+			{
+				if (i == this->_n - 1)
 				{
-					if (i == this->_n - 1)
-					{
-						break;
-					}
-						_game_field_level[i][j].set_value(' ');
+					break;
 				}
-					Buff_1 = new Room(lenght_corridor_y_down, room->_left_angle_x, this);
-					room->next_1 = Buff_1;
-				
+				_game_field_level[i][j].set_value(' ');
+			}
+			Buff_1 = new Room(lenght_corridor_y_down, room->_left_angle_x, this);
+			room->next_1 = Buff_1;
+
 		}
 	}
 	//corridor right
 	{
 
-		const int lenght_corridor_x_right = room->_nStlb + 2 +  rand() % 5;
+		const int lenght_corridor_x_right = room->_nStlb + 2 + rand() % 5;
 		int i;
 
 		do
@@ -205,7 +206,7 @@ int Map::Create_corridor(Room *room)
 			i = room->_left_angle_y + 1 + rand() % 5;
 		} while ((i >= this->_n - 1) || (i > room->_nStr));
 
-		if (((lenght_corridor_x_right) > this->_m-10) || (_game_field_level[i][lenght_corridor_x_right + 9].get_value() != '#') || (_game_field_level[i + 1][lenght_corridor_x_right + 9].get_value() != '#') || (_game_field_level[i - 1][lenght_corridor_x_right + 9].get_value() != '#'))
+		if (((lenght_corridor_x_right) > this->_m - 10) || (_game_field_level[i][lenght_corridor_x_right + 9].get_value() != '#') || (_game_field_level[i + 1][lenght_corridor_x_right + 9].get_value() != '#') || (_game_field_level[i - 1][lenght_corridor_x_right + 9].get_value() != '#'))
 		{
 			flag_3 = false;
 			//Create_corridor(room);
@@ -221,15 +222,15 @@ int Map::Create_corridor(Room *room)
 				_game_field_level[i][j].set_value(' ');
 			}
 
-				Buff_2 = new Room(room->_left_angle_y, lenght_corridor_x_right, this);
-				room->next_2 = Buff_2;
+			Buff_2 = new Room(room->_left_angle_y, lenght_corridor_x_right, this);
+			room->next_2 = Buff_2;
 
-			
-			
-			
+
+
+
 		}
 
-		if ((flag_2 == false)&&(flag_3 == false))
+		if ((flag_2 == false) && (flag_3 == false))
 		{
 			error++;
 			Create_corridor(room);
@@ -238,7 +239,7 @@ int Map::Create_corridor(Room *room)
 		{
 			Create_room(Buff_1);
 		}
-		else if ((flag_3 == true)&&(flag_2 == false))
+		else if ((flag_3 == true) && (flag_2 == false))
 		{
 			Create_room(Buff_2);
 		}
@@ -250,7 +251,7 @@ int Map::Create_corridor(Room *room)
 			Create_room(Buff_2);
 
 		}
-		
+
 	}
 }
 
@@ -289,45 +290,64 @@ Cell& Map::get_cell(short x, short y)
 {
 	if (x >= this->_m || y >= this->_n)
 		_game_field_level[0][0]; // Костыль
-    return this->_game_field_level[y][x];
+	return this->_game_field_level[y][x];
 }
 
 void Map::set_cell(Cell cell, short x, short y)
 {
-    if (x >= this->_m || y >= this->_n)
-        exit(2);
-    this->_game_field_level[y][x] = cell;
+	if (x >= this->_m || y >= this->_n)
+		exit(2);
+	this->_game_field_level[y][x] = cell;
 }
 
 void Map::set_cell(char c, short x, short y)
 {
-    if (x >= this->_m || y >= this->_n)
-        exit(3);
-    this->_game_field_level[y][x].set_value(c);
+	if (x >= this->_m || y >= this->_n)
+		exit(3);
+	this->_game_field_level[y][x].set_value(c);
 }
 
 void Map::print_level(RenderWindow &window)
 {
 	RectangleShape rectangle(Vector2f(32, 32));
+	//Sprite ss;
+//	ss.setTexture(wall);
 
-	for (int i = 0; i<this->_n; i++) //проход по всему лвл и замена символов на текстурки rectangle разных цветов
-		for (int j = 0; j<this->_m; j++)
+
+	for (int i = 0; i < this->_n; i++) //проход по всему лвл и замена символов на текстурки rectangle разных цветов
+		for (int j = 0; j < this->_m; j++)
 		{
-			if ((this->_game_field_level[i][j].get_value() == '#'))//&&(this->_game_field_level[i][j].get_view()))
+			if (this->_game_field_level[i][j].get_prospected()) //Если клетка разведанна
 			{
-				rectangle.setTexture(&wall);
+				if (this->_game_field_level[i][j].get_view()) // Если клетка СЕЙЧАС видна герою
+				{
+					rectangle.setFillColor(sf::Color(255, 255, 255, 255)); // Полная яркось
+				}
+				else
+				{
+					rectangle.setFillColor(sf::Color(255, 255, 255, 63)); // иначе четверть яркости
+				}
+				switch (this->_game_field_level[i][j].get_value())
+				{
+				case '#': // Стена
+					rectangle.setTexture(&wall);
+					break;
+
+				case ' ': // Пол
+					rectangle.setTexture(&floor);
+					break;
+
+				case '$': // Сундук
+					rectangle.setTexture(&chest);
+					break;
+
+				default:
+					break;
+				}
 			}
-			if ((this->_game_field_level[i][j].get_value() == ' '))//&& (this->_game_field_level[i][j].get_view()))
+			else
 			{
-				rectangle.setTexture(&floor);
-			}
-			if ((this->_game_field_level[i][j].get_value() == '1'))// && (this->_game_field_level[i][j].get_view()))
-			{
-				rectangle.setTexture(&empty);
-			}
-			if ((this->_game_field_level[i][j].get_value() == '$'))//&& (this->_game_field_level[i][j].get_view()))
-			{
-				rectangle.setTexture(&chest);
+				rectangle.setTexture(&black); // Неразведанная область
 			}
 			rectangle.setPosition(j * 32, i * 32);  //позиция
 			window.draw(rectangle); // отрисовка
