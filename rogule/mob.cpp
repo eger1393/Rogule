@@ -7,7 +7,7 @@ Mob::Mob(int hit_point, // Здоровье
 	char icon, // Иконка cущества
 	short x, short y, // Координаты существа
 	std::string description // Описание монстра
-	) : Unit(hit_point, viewing_range, damage, armor,icon,x,y)
+	) : Unit(hit_point, viewing_range, damage, armor,x,y)
 {
 	this->_description = description;
 	this->_is_attack = false;

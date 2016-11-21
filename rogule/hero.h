@@ -1,19 +1,28 @@
 
 #include "stdafx.h"
 
-
 class Hero : public Unit
 {
 public:
+
     //Hero();
+
     Hero(int hit_point, // Здоровье
 		int viewing_range, // Радиус обзора
 		int damage, // Урон
 		int armor, // Броня
 		short x, short y // Координаты существа
-	); 
-	void key_press(Map level); // Перехват клавиш
-	void viewing_range(Map level, char c); // Вычесление области видимости
+		); 
+
+	void key_press(Map &level, View&); // Перехват клавиш
+
+	void viewing_range(Map level, bool flag_view, char c); // Вычесление области видимости
+
+	void move(short x, short y);
+	
+	void active(char Symbol, Map &level, short,short);
+
+
 private:
     
 };

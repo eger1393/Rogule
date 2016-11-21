@@ -4,7 +4,6 @@ Unit::Unit(int hit_point, // Здоровье
 	int viewing_range, // Радиус обзора
 	int damage, // Урон
 	int armor, // Броня
-	char icon, // Иконка cущества
 	short x, short y // Координаты существа
 	) // Конструктор
 {
@@ -12,7 +11,6 @@ Unit::Unit(int hit_point, // Здоровье
 	this->_viewing_range = viewing_range;
 	this->_damage = damage;
 	this->_armor = armor;
-	this->_icon = icon;
 	this->_x = x;
 	this->_y = y;
 }
@@ -74,18 +72,28 @@ Unit::Unit(int hit_point, // Здоровье
 //	}
 //}
 
-void Unit::attak(Unit *unit2) // Текущий юнит атакует второго юнита
+
+int Unit::get_x()
 {
-	if (unit2->_armor >= this->_damage) //если броня больше дамага
+	return _x;
+}
+
+int Unit::get_y()
+{
+	return _y;
+}
+void Unit::attak(Unit *unit2) // Атака текущего юнита вторым юнитом
+{
+	if (unit2->_damage <= this->_armor) //если броня больше дамага
 	{
-		unit2->_hit_point -= 1;
+		this->_hit_point -= 1;
 	}
 	else
 	{
-		unit2->_hit_point -= this->_damage - unit2->_armor;
+		this->_hit_point -= unit2->_damage - this->_armor;
 		
 	}
-	if (unit2->_hit_point <= 0) // Смерть юнита
+	if (this->_hit_point <= 0) // Смерть юнита
 	{ 
 		// Обработать смерть
 	}
