@@ -107,10 +107,11 @@ void Hero::key_press(Map &level, View &viewer)
 		this->viewing_range(level, false, ' ');
 
 		active(level.get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y());
+		this->set_unit(level, this->_x - 1, this->_y);
 
-		this->sprite.move(-32, 0);
+		/*this->sprite.move(-32, 0);
 
-		this->move(-1, 0);
+		this->move(-1, 0);*/
 
 		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
 
@@ -121,10 +122,11 @@ void Hero::key_press(Map &level, View &viewer)
 		this->viewing_range(level, false, ' ');
 
 		active(level.get_cell(this->get_x() + 1, this->get_y()).get_value(), level, this->get_x()+1, this->get_y());
+		this->set_unit(level, this->_x + 1, this->_y);
 
-		this->sprite.move(32, 0);
+		/*this->sprite.move(32, 0);
 
-		this->move(1, 0);
+		this->move(1, 0);*/
 
 		this->viewing_range(level,true, '1');
 
@@ -137,10 +139,11 @@ void Hero::key_press(Map &level, View &viewer)
 		this->viewing_range(level,false, ' ');
 
 		active(level.get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1);
+		this->set_unit(level, this->_x, this->_y - 1);
 
-		this->sprite.move(0, -32);
+		/*this->sprite.move(0, -32);
 
-		this->move(0, -1);
+		this->move(0, -1);*/
 
 		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
 
@@ -151,10 +154,10 @@ void Hero::key_press(Map &level, View &viewer)
 		this->viewing_range(level, false,' ');
 
 		active(level.get_cell(this->get_x(), this->get_y()+1).get_value(), level, this->get_x(), this->get_y() + 1);
+		this->set_unit(level, this->_x, this->_y + 1);
+		//this->sprite.move(0, 32);
 
-		this->sprite.move(0, 32);
-
-		this->move(0, 1);
+		//this->move(0, 1);
 
 		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
 

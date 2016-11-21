@@ -9,6 +9,12 @@ Mob::Mob(int hit_point, // Здоровье
 	std::string description // Описание монстра
 	) : Unit(hit_point, viewing_range, damage, armor,x,y)
 {
+	texture.loadFromFile("images/mob.png"); //картинка
+
+	sprite.setTexture(texture);//передаём в него объект Texture (текстуры)
+
+	sprite.setPosition(y * 32, x * 32);//задаем начальные координаты появления спрайта
+
 	this->_description = description;
 	this->_is_attack = false;
 	this->_is_retreat = false;

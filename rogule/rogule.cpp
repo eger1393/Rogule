@@ -6,9 +6,9 @@ int main()
 {
 	srand(time(0));
 
-	sf::RenderWindow window(sf::VideoMode(1920,1080), "Rogule!"); //sf::Style::Fullscreen); //окно
+	sf::RenderWindow window(sf::VideoMode(800,600), "Rogule!"); //sf::Style::Fullscreen); //окно
 
-	view.reset(sf::FloatRect(0, 0, 1920, 1080)); //камера 
+	view.reset(sf::FloatRect(0, 0, 800, 600)); //камера 
 
 	Map level_1(50, 50); // сам уровень
 
@@ -19,6 +19,8 @@ int main()
 	Hero hero(10,10,10,10,1,1); // герой
 
 	Clock clock;
+
+	/*level_1.print_level(window);*/
 
 	while (window.isOpen()) // пока открыто окно
 
@@ -50,7 +52,7 @@ int main()
 
 		window.clear(Color::Black); //белый фон
 	
-			level_1.print_level(window);
+		level_1.print_level(window);
 
 		window.draw(hero.sprite); //отрисовка героя
 
