@@ -4,6 +4,7 @@
 using namespace std;
 
 
+
 class Cell
 {
 public:
@@ -18,6 +19,8 @@ public:
 	char get_value();
 	void set_value(char symbol);
     void set_x_y(short x, short y); //задает координаты х, у
+	Texture _cell_texture;
+	Sprite _cell_sprite; // —прайт клетки
 private:
     //char _type; //“ип клетки
     //short _x, _y; // оординаты клетки
@@ -32,7 +35,7 @@ class Map
 {
 public:
     Map(short n, short m);
-    void test_Map(short n, short m); // —оздание квадратной комнаты дл€ теста
+    void test_Map(sf::RenderWindow &window, short n, short m); // —оздание квадратной комнаты дл€ теста
 	Room* initialize_Level();
 	int Create_room(Room *r);
 	int Create_corridor(Room *r);
@@ -42,7 +45,7 @@ public:
     Cell& get_cell(short x, short y); //возвращает ссылку на €чейку расположенную по координатам х, у
     void set_cell(Cell cell, short x, short y); //задает €чейку
     void set_cell(char c, short x, short y); //задает €чейку
-    void print_map(); //рисует карту
+    void print_map(sf::RenderWindow &window); //рисует карту
 	void print_circular();
 	friend Room;
 	Cell **_game_field_level;

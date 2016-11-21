@@ -21,6 +21,10 @@ public:
 	//void viewing_range(Map level, char c); // Вычесление области видимости
 	void attak(Unit *unit2); // Атака текущего юнита вторым юнитом
 	void set_unit(Map level, short x, short y); // Передвинуть юнит
+	Texture _unit_texture; // Текстура юнита
+	Sprite _unit_sprite; // Спрайт Юнита
+	FloatRect _rect; //
+	short _x, _y; // Координаты существа
 
 protected:
 	int _hit_point, // Здоровье
@@ -28,8 +32,4 @@ protected:
 		_damage, // Урон
 		_armor; // Броня
 	char _icon; // Иконка cущества
-	short _x, _y; // Координаты существа
-	Texture _unit_texture; // Текстура юнита
-	Sprite _unit_sprite; // Спрайт Юнита
-	FloatRect _rect; //
 };

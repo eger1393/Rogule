@@ -5,6 +5,8 @@ static int error;
 bool flag = true, flag_0 = true;
 Room *Head;
 
+Texture texture_all;
+
 Cell::Cell()
 {
 	_value = ' ';
@@ -17,11 +19,44 @@ Cell::Cell(char symbol, bool go_to, bool use)
 	_value = symbol;
 	_move = go_to;
 	_active = use;
+	_cell_texture.loadFromFile("texture.jpg"); //картинка
+	_cell_sprite.setTexture(_cell_texture);//передаём в него объект Texture (текстуры)
+	switch (symbol)
+	{
+	case '#':
+		_cell_sprite.setTextureRect(IntRect(670, 768, 32, 32));
+		break;
+
+	case ' ':
+		_cell_sprite.setTextureRect(IntRect(192, 800, 32, 32));
+		break;
+	default:
+		break;
+	}
+	//_cell_sprite.setTextureRect(IntRect(384, 320, 32, 32));
+	//_cell_sprite.setPosition(x, y);//задаем начальные координаты появления спрайта
 }
 
 void Cell::set_value(char symbol)
 {
 	_value = symbol;
+	if (this->_cell_sprite.getTexture() == NULL)
+	{
+		//_cell_texture.loadFromFile("texture.jpg"); //картинка
+		_cell_sprite.setTexture(_cell_texture);//передаём в него объект Texture (текстуры)
+	}
+	switch (symbol)
+	{
+	case '#':
+		_cell_sprite.setTextureRect(IntRect(670, 768, 32, 32));
+		break;
+
+	case ' ':
+		_cell_sprite.setTextureRect(IntRect(192, 800, 32, 32));
+		break;
+	default:
+		break;
+	}
 }
 
 char Cell::get_value()
@@ -251,7 +286,7 @@ int Map::Create_corridor(Room *room)
 	}
 }
 
-void Map::test_Map(short n, short m)
+void Map::test_Map(sf::RenderWindow &window, short n, short m)
 {
     this->_n = n;
     this->_m = m;
@@ -274,6 +309,17 @@ void Map::test_Map(short n, short m)
         }
     }
 
+	for (int i = 0; i < this->_n; i++)
+	{
+		for (int j = 0; j < this->_m; j++)
+		{
+			// координаты клетки задаются костыльно, переделать!!!
+			this->get_cell(i, j)._cell_sprite.setPosition(i * 32, j * 32);
+			window.draw(this->get_cell(i, j)._cell_sprite);
+			//std::cout << this->_game_field_level[i][j].get_value();
+		}
+		//std::cout << std::endl;
+	}
     /*this->_game_field_level[0][0].set_value(218);
     this->_game_field_level[this->_n - 1][0].set_value(192);
     this->_game_field_level[0][this->_m - 1].set_value(191);
@@ -303,16 +349,19 @@ void Map::set_cell(char c, short x, short y)
     this->_game_field_level[y][x].set_value(c);
 }
 
-void Map::print_map()
+void Map::print_map(sf::RenderWindow &window)
 {
-	system("cls");
+	//system("cls");
     for (int i = 0; i < this->_n; i++)
     {
         for (int j = 0; j < this->_m; j++)
         {
-            std::cout << this->_game_field_level[i][j].get_value();
+			// координаты клетки задаются костыльно, переделать!!!
+			this->get_cell(i, j)._cell_sprite.setPosition(i * 32, j * 32);
+			window.draw(this->get_cell(i, j)._cell_sprite);
+            //std::cout << this->_game_field_level[i][j].get_value();
         }
-        std::cout << std::endl;
+        //std::cout << std::endl;
     }
 }
 

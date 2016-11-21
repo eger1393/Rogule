@@ -12,7 +12,7 @@ Hero::Hero(int hit_point, // Здоровье
 	_unit_texture.loadFromFile("texture.jpg"); //картинка
 	_unit_sprite.setTexture(_unit_texture);//передаём в него объект Texture (текстуры)
 	_unit_sprite.setTextureRect(IntRect(384, 320, 32, 32));
-	_unit_sprite.setPosition(x, y);//задаем начальные координаты появления спрайта
+	_unit_sprite.setPosition(x*32, y*32);//задаем начальные координаты появления спрайта
 	
 	_rect = FloatRect(x, y, 16, 16);//координаты + ширина-высота поля
 }
