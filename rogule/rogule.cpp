@@ -10,7 +10,7 @@ int main()
 
 	view.reset(sf::FloatRect(0, 0, 1920, 1080)); //камера 
 
-	Map level_1(100, 150); // сам уровень
+	Map level_1(50, 50); // сам уровень
 
 	Room *head; //эт голова дерева комнат
 
