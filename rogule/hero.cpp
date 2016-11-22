@@ -24,10 +24,6 @@ void Hero::set_hit_point(int hit)
 	}
 	*/
 }
-int Hero::get_hit_point()
-{
-	return this->_hit_point;
-}
 void Hero::active(char Symbol, Map &level, short x, short y, RenderWindow &window, View &view)
 {
 
@@ -42,7 +38,6 @@ void Hero::active(char Symbol, Map &level, short x, short y, RenderWindow &windo
 	case '!':
 	{
 		this->set_hit_point((this->get_hit_point())*-1);
-
 
 		break;
 	}
