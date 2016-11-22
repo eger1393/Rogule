@@ -2,6 +2,9 @@
 //
 #include "stdafx.h"
 #include "view.h"
+
+//Text setting_text(Hero*,int,string, int);
+
 int main()
 {
 	srand(time(0));
@@ -19,8 +22,10 @@ int main()
 	Hero hero(100, 10, 10, 10, 1, 1); // герой
 
 	vector <Mob*> arr_mob;
-	arr_mob.push_back(new Mob(2, 5, 2, 2, 'A', 5, 5, "test mob", level_1));
-	arr_mob.push_back(new Mob(2, 5, 2, 2, 'B', 5, 11, "test mob", level_1));
+	arr_mob.push_back(new Mob(2, 5, 2, 2, 'A', 5, 5, "test mob"));
+	arr_mob.push_back(new Mob(2, 5, 2, 2, 'B', 11, 11, "test mob"));
+
+	//Text text = setting_text(&hero);
 
 	Clock clock;
 
@@ -48,8 +53,7 @@ int main()
 			if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Right)
 				|| Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Down)) {
 				for (int i = 0; i < arr_mob.size(); i++)
-					if(arr_mob[i]->get_is_attack()) // если установлен флаг атаки
-						arr_mob[i]->find_way(level_1, hero); // моб бежит к герою
+					arr_mob[i]->find_way(level_1, hero);
 			}
 		}
 
@@ -63,9 +67,11 @@ int main()
 	
 		level_1.print_level(window); // Отрисовка карты
 
+		//window.draw(text);
+
 		window.draw(hero.sprite); //отрисовка героя
 
-		work_to_mobs(arr_mob, window, level_1); // Отрисовка мобов
+		work_to_mobs(arr_mob, window, level_1);
 
 		window.display(); //вывод
 
@@ -74,3 +80,33 @@ int main()
 	return 0;
 }
 
+//Text setting_text(Hero *hero, int value = 0, string str = "Error" , int flag = 0)
+//{
+//	Font font;//шрифт 
+//	font.loadFromFile("HelveticaNeue-Bold.ttf");//передаем нашему шрифту файл шрифта
+//	Text text("", font, 50);
+//
+//	std::ostringstream playerData[4];
+//
+//	if (flag != 0)
+//	{
+//		playerData[0] << hero->get_hit_point();
+//		text.setString(str + playerData[0].str()); //задаем строку тексту и вызываем сформированную выше строку методом .str() 
+//
+//
+//		playerData[1] << hero->attak;
+//		text.setString(str + playerData[1].str()); //задаем строку тексту и вызываем сформированную выше строку методом .str() 
+//
+//
+//		playerData[2] << hero->get_viewing_range();
+//		text.setString(str + playerData[2].str()); //задаем строку тексту и вызываем сформированную выше строку методом .str() 
+//	}
+//	else
+//	{
+//		playerData[4] << value;
+//		text.setString(str + playerData[4].str()); //задаем строку тексту и вызываем сформированную выше строку методом .str() 
+//	}
+//
+//
+//	text.setPosition(0, 0);//задаем позицию текста
+//}

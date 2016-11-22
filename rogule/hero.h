@@ -17,13 +17,11 @@ public:
 		); 
 
 	// Перехват клавиш
-	void key_press(Map &level, View&,vector <Mob*> &arr_mob, RenderWindow&); 
+	int key_press(Map &level, View&,vector <Mob*> &arr_mob, RenderWindow&); 
 	// Вычесление области видимости
-	void viewing_range(Map level, bool flag_view, vector <Mob*> &arr_mob);
-	//Антон
+	void viewing_range(Map level, bool flag_view, char c); 
+	//Взаимодействие с активными клетками ( огонь-сундук и т.д)
 	void active(char Symbol, Map &level, short,short, RenderWindow &window, View &view); 
-	//Антон  если эта ф-ия тебе не нужна то удали ее
-	void move(int x, int y);
 	//установка жизней героя
 	void set_hit_point(int);
 

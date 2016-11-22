@@ -12,7 +12,7 @@
 
 #include <iostream>
 #include <conio.h>
-
+#include <sstream>
 #include <ctime>
 #include <cmath>
 #include <string>

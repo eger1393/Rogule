@@ -159,7 +159,7 @@ void Hero::viewing_range(Map level,bool flag, vector <Mob*> &arr_mob) // Вычесле
 	}
 }
 
-void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWindow &window)
+int Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWindow &window)
 {
 	//Mob a(1, 1, 1, 1, 'A', 5, 5, "ww");
 	//a.set_unit(level, 5, 5);
@@ -291,11 +291,6 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 		window.draw(text);
 		window.display();
 		Sleep(500);
+		return false;
 	}
-}
-
-void Hero::move(int x, int y)
-{
-	this->_x += x;
-	this->_y += y;
 }
