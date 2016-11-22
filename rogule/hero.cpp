@@ -46,7 +46,7 @@ void Hero::active(char Symbol, Map &level, short x, short y, RenderWindow &windo
 	}
 }
 
-void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области видемости
+void Hero::viewing_range(Map level,bool flag, vector <Mob*> &arr_mob) // Вычесление области видемости
 {
 	bool flag1 = false, flag2 = false, flag3 = false, flag4 = false;
 	//level.get_cell(this->_x + 5, this->_y + 5).set_value('1');
@@ -57,15 +57,22 @@ void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области виде
 			if (!flag1 && j == 1 && !level.get_cell(this->_x + j, this->_y + i).is_limpid())
 			{
 				flag1 = true;
-				level.get_cell(this->_x + j, this->_y + i).set_view(flag);
+				level.get_cell(this->_x + j, this->_y + i).set_view(flag); // сдесь видимость стены
 				level.get_cell(this->_x + j, this->_y + i).set_prospected(true);
 			}
-			if (!flag1 && level.get_cell(this->_x + j, this->_y + i).is_limpid())
+			if (!flag1 && level.get_cell(this->_x + j, this->_y + i).is_limpid()) // это если не стена
 			{
 				//level.get_cell(this->_x + j, this->_y + i).set_value(c);
-				level.get_cell(this->_x + j, this->_y + i).set_view(flag);
-				level.get_cell(this->_x + j, this->_y + i).set_prospected(true);
-				level.reprint_cell(this->_x + j, this->_y + i);
+				level.get_cell(this->_x + j, this->_y + i).set_view(flag); // устанавливает флаг видимости
+				level.get_cell(this->_x + j, this->_y + i).set_prospected(true); // делает клетку разведанной
+				level.reprint_cell(this->_x + j, this->_y + i); // перерисовывает ее в консоли
+
+				if (level.get_cell(this->_x + j, this->_y + i).is_mob()) // Если в клетке стоит моб
+				{
+					for (int k = 0; k < arr_mob.size(); k++) // Ищем моба который стоит в этой клетке
+						if (arr_mob[k]->get_x() == (this->_x + j) && arr_mob[k]->get_y() == (this->_y + i))
+							arr_mob[k]->set_is_attack(true); // Ставим флаг атаки = true
+				}
 			}
 			else
 				break;
@@ -85,6 +92,13 @@ void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области виде
 				level.get_cell(this->_x - i, this->_y + j).set_view(flag);
 				level.get_cell(this->_x - i, this->_y + j).set_prospected(true);
 				level.reprint_cell(this->_x - i, this->_y + j);
+
+				if (level.get_cell(this->_x - i, this->_y + j).is_mob()) // Если в клетке стоит моб
+				{
+					for (int k = 0; k < arr_mob.size(); k++) // Ищем моба который стоит в этой клетке
+						if (arr_mob[k]->get_x() == (this->_x - i) && arr_mob[k]->get_y() == (this->_y + j))
+							arr_mob[k]->set_is_attack(true); // Ставим флаг атаки = true
+				}
 			}
 			else
 				break;
@@ -104,6 +118,13 @@ void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области виде
 				level.get_cell(this->_x - j, this->_y - i).set_view(flag);
 				level.get_cell(this->_x - j, this->_y - i).set_prospected(true);
 				level.reprint_cell(this->_x - j, this->_y - i);
+
+				if (level.get_cell(this->_x - j, this->_y - i).is_mob()) // Если в клетке стоит моб
+				{
+					for (int k = 0; k < arr_mob.size(); k++) // Ищем моба который стоит в этой клетке
+						if (arr_mob[k]->get_x() == (this->_x - j) && arr_mob[k]->get_y() == (this->_y - i))
+							arr_mob[k]->set_is_attack(true); // Ставим флаг атаки = true
+				}
 			}
 			else
 				break;
@@ -123,6 +144,13 @@ void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области виде
 				level.get_cell(this->_x + i, this->_y - j).set_view(flag);
 				level.get_cell(this->_x + i, this->_y - j).set_prospected(true);
 				level.reprint_cell(this->_x + i, this->_y - j);
+
+				if (level.get_cell(this->_x + i, this->_y - j).is_mob()) // Если в клетке стоит моб
+				{
+					for (int k = 0; k < arr_mob.size(); k++) // Ищем моба который стоит в этой клетке
+						if (arr_mob[k]->get_x() == (this->_x + i) && arr_mob[k]->get_y() == (this->_y - j))
+							arr_mob[k]->set_is_attack(true); // Ставим флаг атаки = true
+				}
 			}
 			else
 				break;
@@ -142,7 +170,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 		{
 			if (level.get_cell(this->get_x() - 1, this->get_y()).is_permeable())
 			{
-				this->viewing_range(level, false, ' ');
+				this->viewing_range(level, false, arr_mob);
 
 				active(level.get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y(), window, viewer);
 				this->set_unit(level, this->_x - 1, this->_y);
@@ -153,7 +181,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 
 				viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
 
-				this->viewing_range(level, true, '1');
+				this->viewing_range(level, true, arr_mob);
 				//mob.find_way(level_1, hero.get_x(), hero.get_y());
 			}
 			if (level.get_cell(this->get_x() - 1, this->get_y()).is_mob())
@@ -171,7 +199,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 		{
 			if (level.get_cell(this->get_x() + 1, this->get_y()).is_permeable())
 			{
-				this->viewing_range(level, false, ' ');
+				this->viewing_range(level, false, arr_mob);
 
 				active(level.get_cell(this->get_x() + 1, this->get_y()).get_value(), level, this->get_x() + 1, this->get_y(), window, viewer);
 				this->set_unit(level, this->_x + 1, this->_y);
@@ -180,7 +208,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 
 				this->move(1, 0);*/
 
-				this->viewing_range(level, true, '1');
+				this->viewing_range(level, true, arr_mob);
 
 				viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
 			}
@@ -199,7 +227,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 		{
 			if (level.get_cell(this->get_x(), this->get_y() - 1).is_permeable())
 			{
-				this->viewing_range(level, false, ' ');
+				this->viewing_range(level, false, arr_mob);
 
 				active(level.get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1, window, viewer);
 				this->set_unit(level, this->_x, this->_y - 1);
@@ -210,7 +238,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 
 				viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
 
-				this->viewing_range(level, true, '1');
+				this->viewing_range(level, true, arr_mob);
 			}
 			if (level.get_cell(this->get_x(), this->get_y() - 1).is_mob())
 			{
@@ -227,7 +255,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 		{
 			if (level.get_cell(this->get_x(), this->get_y() + 1).is_permeable())
 			{
-				this->viewing_range(level, false, ' ');
+				this->viewing_range(level, false, arr_mob);
 
 				active(level.get_cell(this->get_x(), this->get_y() + 1).get_value(), level, this->get_x(), this->get_y() + 1, window, viewer);
 				this->set_unit(level, this->_x, this->_y + 1);
@@ -237,7 +265,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 
 				viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
 
-				this->viewing_range(level, true, '1');
+				this->viewing_range(level, true, arr_mob);
 			}
 			if (level.get_cell(this->get_x(), this->get_y() + 1).is_mob())
 			{

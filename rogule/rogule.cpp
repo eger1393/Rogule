@@ -19,12 +19,8 @@ int main()
 	Hero hero(100, 10, 10, 10, 1, 1); // герой
 
 	vector <Mob*> arr_mob;
-	arr_mob.push_back(new Mob(2, 5, 2, 2, 'A', 5, 5, "test mob"));
-	arr_mob.push_back(new Mob(2, 5, 2, 2, 'B', 11, 11, "test mob"));
-
-	//Mob *arr_mob[2] = {new Mob(5, 5, 2, 2, 'A', 5, 5, "test mob"), new Mob(5, 5, 2, 2, 'B', 6, 6, "test mob") };
-	//Mob mob(5, 5, 2, 2, 'A', 5, 5, "test mob");
-	//Mob mob2(5, 5, 2, 2, 'B', 6, 6, "test mob");
+	arr_mob.push_back(new Mob(2, 5, 2, 2, 'A', 5, 5, "test mob", level_1));
+	arr_mob.push_back(new Mob(2, 5, 2, 2, 'B', 5, 11, "test mob", level_1));
 
 	Clock clock;
 
@@ -52,7 +48,8 @@ int main()
 			if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Right)
 				|| Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Down)) {
 				for (int i = 0; i < arr_mob.size(); i++)
-					arr_mob[i]->find_way(level_1, hero);
+					if(arr_mob[i]->get_is_attack()) // если установлен флаг атаки
+						arr_mob[i]->find_way(level_1, hero); // моб бежит к герою
 			}
 		}
 
@@ -68,7 +65,7 @@ int main()
 
 		window.draw(hero.sprite); //отрисовка героя
 
-		work_to_mobs(arr_mob, window, level_1);
+		work_to_mobs(arr_mob, window, level_1); // Отрисовка мобов
 
 		window.display(); //вывод
 
