@@ -20,7 +20,7 @@ public:
 	int key_press(Map &level, View&,vector <Mob*> &arr_mob, RenderWindow&); 
 	// ¬ычесление области видимости
 	void viewing_range(Map level, bool flag_view, char c); 
-	//јнтон
+	//¬заимодействие с активными клетками ( огонь-сундук и т.д)
 	void active(char Symbol, Map &level, short,short, RenderWindow &window, View &view); 
 	//установка жизней геро€
 	void set_hit_point(int);
