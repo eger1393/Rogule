@@ -2,6 +2,9 @@
 //
 #include "stdafx.h"
 #include "view.h"
+
+Text setting_text(Hero*,int ,string, int);
+
 int main()
 {
 	srand(time(0));
@@ -22,9 +25,7 @@ int main()
 	arr_mob.push_back(new Mob(2, 5, 2, 2, 'A', 5, 5, "test mob"));
 	arr_mob.push_back(new Mob(2, 5, 2, 2, 'B', 6, 6, "test mob"));
 
-	//Mob *arr_mob[2] = {new Mob(5, 5, 2, 2, 'A', 5, 5, "test mob"), new Mob(5, 5, 2, 2, 'B', 6, 6, "test mob") };
-	//Mob mob(5, 5, 2, 2, 'A', 5, 5, "test mob");
-	//Mob mob2(5, 5, 2, 2, 'B', 6, 6, "test mob");
+	Text text = setting_text(&hero);
 
 	Clock clock;
 
@@ -66,6 +67,8 @@ int main()
 	
 		level_1.print_level(window); // Отрисовка карты
 
+		//window.draw(text);
+
 		window.draw(hero.sprite); //отрисовка героя
 
 		work_to_mobs(arr_mob, window, level_1);
@@ -77,3 +80,33 @@ int main()
 	return 0;
 }
 
+Text setting_text(Hero *hero, int value = 0, string str = "Error" , int flag = 0)
+{
+	Font font;//шрифт 
+	font.loadFromFile("HelveticaNeue-Bold.ttf");//передаем нашему шрифту файл шрифта
+	Text text("", font, 50);
+
+	std::ostringstream playerData[4];
+
+	if (flag != 0)
+	{
+		playerData[0] << hero->get_hit_point();
+		text.setString(str + playerData[0].str()); //задаем строку тексту и вызываем сформированную выше строку методом .str() 
+
+
+		playerData[1] << hero->attak;
+		text.setString(str + playerData[1].str()); //задаем строку тексту и вызываем сформированную выше строку методом .str() 
+
+
+		playerData[2] << hero->get_viewing_range();
+		text.setString(str + playerData[2].str()); //задаем строку тексту и вызываем сформированную выше строку методом .str() 
+	}
+	else
+	{
+		playerData[4] << value;
+		text.setString(str + playerData[4].str()); //задаем строку тексту и вызываем сформированную выше строку методом .str() 
+	}
+
+
+	text.setPosition(0, 0);//задаем позицию текста
+}

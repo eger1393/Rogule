@@ -131,7 +131,12 @@ void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области виде
 	}
 }
 
-void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWindow &window)
+int Hero::get_viewing_range()
+{
+	return this->viewing_range;
+}
+
+int Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWindow &window)
 {
 	//Mob a(1, 1, 1, 1, 'A', 5, 5, "ww");
 	//a.set_unit(level, 5, 5);
@@ -263,6 +268,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 		window.draw(text);
 		window.display();
 		Sleep(500);
+		return false;
 	}
 }
 
