@@ -125,7 +125,7 @@ bool Mob::get_is_retreat()
 	return this->_is_retreat;
 }
 
-void work_to_mobs(vector <Mob*> arr_mob, RenderWindow &window, Map level)
+void work_to_mobs(vector <Mob*> arr_mob, RenderWindow &window, Map &level)
 {
 	for (int i = 0; i < arr_mob.size(); i++)
 	{

@@ -149,7 +149,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 			{
 				this->viewing_range(level, false, ' ');
 
-				active(level.get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y());
+				active(level.get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y(), window, viewer);
 				this->set_unit(level, this->_x - 1, this->_y);
 
 				/*this->sprite.move(-32, 0);
@@ -178,7 +178,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 			{
 				this->viewing_range(level, false, ' ');
 
-				active(level.get_cell(this->get_x() + 1, this->get_y()).get_value(), level, this->get_x() + 1, this->get_y());
+				active(level.get_cell(this->get_x() + 1, this->get_y()).get_value(), level, this->get_x() + 1, this->get_y(), window, viewer);
 				this->set_unit(level, this->_x + 1, this->_y);
 
 				/*this->sprite.move(32, 0);
@@ -206,7 +206,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 			{
 				this->viewing_range(level, false, ' ');
 
-				active(level.get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1);
+				active(level.get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1, window, viewer);
 				this->set_unit(level, this->_x, this->_y - 1);
 
 				/*this->sprite.move(0, -32);
@@ -234,7 +234,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 			{
 				this->viewing_range(level, false, ' ');
 
-				active(level.get_cell(this->get_x(), this->get_y() + 1).get_value(), level, this->get_x(), this->get_y() + 1);
+				active(level.get_cell(this->get_x(), this->get_y() + 1).get_value(), level, this->get_x(), this->get_y() + 1, window, viewer);
 				this->set_unit(level, this->_x, this->_y + 1);
 				//this->sprite.move(0, 32);
 
@@ -267,7 +267,7 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWin
 
 		window.draw(text);
 		window.display();
-		Sleep(1000);
+		Sleep(500);
 	}
 }
 

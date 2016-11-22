@@ -16,7 +16,7 @@ int main()
 
 	head = level_1.initialize_Level(); // ну тут понятно
 
-	Hero hero(10, 10, 10, 10, 1, 1); // герой
+	Hero hero(100, 10, 10, 10, 1, 1); // герой
 
 	vector <Mob*> arr_mob;
 	arr_mob.push_back(new Mob(2, 5, 2, 2, 'A', 5, 5, "test mob"));
@@ -48,7 +48,7 @@ int main()
 			{
 				window.close(); 
 			}
-			hero.key_press(level_1, view,arr_mob);
+			hero.key_press(level_1, view,arr_mob,window);
 			if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Right)
 				|| Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Down)) {
 				for (int i = 0; i < arr_mob.size(); i++)
