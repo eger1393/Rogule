@@ -13,7 +13,7 @@ Mob::Mob(int hit_point, // Здоровье
 
 	sprite.setTexture(texture);//передаём в него объект Texture (текстуры)
 
-	sprite.setPosition(y * 32, x * 32);//задаем начальные координаты появления спрайта
+	sprite.setPosition((float)y * 32, (float)x * 32);//задаем начальные координаты появления спрайта
 
 	this->_description = description;
 	this->_is_attack = false;

@@ -384,7 +384,7 @@ void Map::print_level(RenderWindow &window)
 			{
 				rectangle.setTextureRect(IntRect(96, 0, 32, 32));;; // Ќеразведанна€ область
 			}
-			rectangle.setPosition(j * 32, i * 32);  //позици€
+			rectangle.setPosition((float)j * 32, (float)i * 32);  //позици€
 			window.draw(rectangle); // отрисовка
 		}
 }

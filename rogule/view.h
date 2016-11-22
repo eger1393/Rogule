@@ -15,18 +15,18 @@ void viewmap(float time) { //функция для перемещения камеры по карте. принимает 
 
 
 	if (Keyboard::isKeyPressed(Keyboard::D)) {
-		view.move(0.5*time, 0);//скроллим карту вправо (см урок, когда мы двигали героя - всё тоже самое)
+		view.move((float)0.5*time, 0);//скроллим карту вправо (см урок, когда мы двигали героя - всё тоже самое)
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::S)) {
-		view.move(0, 0.5*time);//скроллим карту вниз (см урок, когда мы двигали героя - всё тоже самое)
+		view.move(0, (float)0.5*time);//скроллим карту вниз (см урок, когда мы двигали героя - всё тоже самое)
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::A)) {
-		view.move(-0.5*time, 0);//скроллим карту влево (см урок, когда мы двигали героя - всё тоже самое)
+		view.move((float)-0.5*time, 0);//скроллим карту влево (см урок, когда мы двигали героя - всё тоже самое)
 	}
 	if (Keyboard::isKeyPressed(Keyboard::W)) {
-		view.move(0, -0.5*time);//скроллим карту вправо (см урок, когда мы двигали героя - всё тоже самое)
+		view.move(0, (float)-0.5*time);//скроллим карту вправо (см урок, когда мы двигали героя - всё тоже самое)
 	}
 
 }
@@ -50,7 +50,7 @@ void changeview(Hero hero) {
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::P)) {
-		view.setCenter(hero.get_x()*32, hero.get_y()*32);//например другой размер
+		view.setCenter((float)hero.get_x()*32, (float)hero.get_y()*32);//например другой размер
 	}
 
 

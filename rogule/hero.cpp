@@ -12,7 +12,7 @@ Hero::Hero(int hit_point, // Здоровье
 
 	sprite.setTexture(texture);//передаём в него объект Texture (текстуры)
 
-	sprite.setPosition(y*32, x*32);//задаем начальные координаты появления спрайта
+	sprite.setPosition((float)y*32, (float)x*32);//задаем начальные координаты появления спрайта
 	
 }
 void Hero::set_hit_point(int hit)
@@ -24,6 +24,17 @@ void Hero::set_hit_point(int hit)
 	}
 	*/
 }
+
+int Hero::get_damage()
+{
+	return this->_damage;
+}
+
+int Hero::get_armor()
+{
+	return this->_armor;
+}
+
 void Hero::active(char Symbol, Map &level, short x, short y, RenderWindow &window, View &view)
 {
 
@@ -46,6 +57,10 @@ void Hero::active(char Symbol, Map &level, short x, short y, RenderWindow &windo
 	}
 }
 
+int Hero::get_viewing_range()
+{
+	return this->_viewing_range;
+}
 void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области видемости
 {
 	bool flag1 = false, flag2 = false, flag3 = false, flag4 = false;
@@ -151,7 +166,7 @@ int Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWind
 
 				this->move(-1, 0);*/
 
-				viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+				viewer.setCenter((float)this->get_x() * 32, (float)this->get_y() * 32);
 
 				this->viewing_range(level, true, '1');
 				//mob.find_way(level_1, hero.get_x(), hero.get_y());
@@ -182,7 +197,7 @@ int Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWind
 
 				this->viewing_range(level, true, '1');
 
-				viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+				viewer.setCenter((float)this->get_x() * 32, (float)this->get_y() * 32);
 			}
 			if (level.get_cell(this->get_x() + 1, this->get_y()).is_mob())
 			{
@@ -208,7 +223,7 @@ int Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWind
 
 				this->move(0, -1);*/
 
-				viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+				viewer.setCenter((float)this->get_x() * 32, (float) this->get_y() * 32);
 
 				this->viewing_range(level, true, '1');
 			}
@@ -235,7 +250,7 @@ int Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWind
 
 				//this->move(0, 1);
 
-				viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+				viewer.setCenter((float)this->get_x() * 32, (float) this->get_y() * 32);
 
 				this->viewing_range(level, true, '1');
 			}

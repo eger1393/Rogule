@@ -24,6 +24,12 @@ public:
 	void active(char Symbol, Map &level, short,short, RenderWindow &window, View &view); 
 	//установка жизней героя
 	void set_hit_point(int);
+	//вернуть радиус обзора
+	int get_viewing_range();
+	//вернуть урон
+	int get_damage();
+	//вернуть броню
+	int get_armor();
 
 private:
     
