@@ -124,3 +124,17 @@ bool Mob::get_is_retreat()
 {
 	return this->_is_retreat;
 }
+
+void work_to_mobs(vector <Mob*> arr_mob, RenderWindow &window, Map level)
+{
+	for (int i = 0; i < arr_mob.size(); i++)
+	{
+		if (arr_mob[i]->get_hit_point() < 0) // если моб умер
+		{
+			level.get_cell(arr_mob[i]->get_x(), arr_mob[i]->get_y()).set_value(' '); //ставлю вместо моба пол
+			arr_mob.erase(arr_mob.begin() + i); // удалаю моба из массива мобов
+		}
+		else // если моб жив
+			window.draw(arr_mob[i]->sprite); //отрисовка моба
+	}
+}

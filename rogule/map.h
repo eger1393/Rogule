@@ -29,7 +29,6 @@ public:
 	void set_prospected(bool value);
 
 	bool get_prospected();
-
     //void set_x_y(short x, short y); //задает координаты х, у
 private:
     //short _x, _y; // оординаты клетки

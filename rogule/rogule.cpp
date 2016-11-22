@@ -17,12 +17,15 @@ int main()
 	head = level_1.initialize_Level(); // ну тут понятно
 
 	Hero hero(10, 10, 10, 10, 1, 1); // герой
+
 	vector <Mob*> arr_mob;
 	arr_mob.push_back(new Mob(2, 5, 2, 2, 'A', 5, 5, "test mob"));
 	arr_mob.push_back(new Mob(2, 5, 2, 2, 'B', 6, 6, "test mob"));
+
 	//Mob *arr_mob[2] = {new Mob(5, 5, 2, 2, 'A', 5, 5, "test mob"), new Mob(5, 5, 2, 2, 'B', 6, 6, "test mob") };
 	//Mob mob(5, 5, 2, 2, 'A', 5, 5, "test mob");
 	//Mob mob2(5, 5, 2, 2, 'B', 6, 6, "test mob");
+
 	Clock clock;
 
 	/*level_1.print_level(window);*/
@@ -64,16 +67,8 @@ int main()
 		level_1.print_level(window); // Отрисовка карты
 
 		window.draw(hero.sprite); //отрисовка героя
-		for (int i = 0; i < arr_mob.size(); i++)
-		{
-			if (arr_mob[i]->get_hit_point() < 0) // если моб умер
-			{
-				level_1.get_cell(arr_mob[i]->get_x(), arr_mob[i]->get_y()).set_value(' '); //ставлю вместо моба пол
-				arr_mob.erase(arr_mob.begin() + i); // удалаю моба из массива мобов
-			}
-			else // если моб жив
-				window.draw(arr_mob[i]->sprite); //отрисовка моба
-		}
+
+		work_to_mobs(arr_mob, window, level_1);
 
 		window.display(); //вывод
 

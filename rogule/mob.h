@@ -21,7 +21,7 @@ public:
 	bool get_is_attack(); // Вовзвращает значение флага атаки
 	void set_is_retreat(bool value); // Устанавливает значение флага отслупления
 	bool get_is_retreat(); // Возвращает значение флага отступления
-
+	friend void work_to_mobs(vector <Mob*>, RenderWindow &window, Map level); //работа с мобами
 
 private:
 	std::string _description; // Описание монстра

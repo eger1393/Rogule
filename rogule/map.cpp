@@ -369,6 +369,7 @@ void Map::print_level(RenderWindow &window)
 		}
 }
 
+
 //void Map::print_circular()
 //{
 //	const int m = 15, n = 15;
