@@ -14,14 +14,20 @@ public:
 		std::string description // Описание монстра
 		);// Конструктор
 	Mob();
-	void social_agro(Map level); // Социальное агро(добовляет флаг _is_attack всем мобам в радиусе видимисти)
+	// Социальное агро(добовляет флаг _is_attack всем мобам в радиусе видимисти)
+	void social_agro(Map level); 
+	// Моб преследует героя
 	int find_way(Map level, Hero &hero); //level - уровень, х,у координаты героя возвращает 1 если мод атакует героя
-
-	void set_is_attack(bool value); // Устанавливает значение флага атаки
-	bool get_is_attack(); // Вовзвращает значение флага атаки
-	void set_is_retreat(bool value); // Устанавливает значение флага отслупления
-	bool get_is_retreat(); // Возвращает значение флага отступления
-	friend void work_to_mobs(vector <Mob*>&, RenderWindow &window, Map &level); //работа с мобами
+	// Устанавливает значение флага атаки
+	void set_is_attack(bool value); 
+	// Вовзвращает значение флага атаки
+	bool get_is_attack(); 
+	// Устанавливает значение флага отслупления
+	void set_is_retreat(bool value); 
+	// Возвращает значение флага отступления
+	bool get_is_retreat();
+	//работа с мобами
+	friend void work_to_mobs(vector <Mob*>&, RenderWindow &window, Map &level); 
 
 private:
 	std::string _description; // Описание монстра
