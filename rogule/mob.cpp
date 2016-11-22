@@ -6,18 +6,20 @@ Mob::Mob(int hit_point, // Здоровье
 	int armor, // Броня
 	char icon, // Иконка cущества
 	short x, short y, // Координаты существа
-	std::string description // Описание монстра
-	) : Unit(hit_point, viewing_range, damage, armor, icon, x,y)
+	std::string description, // Описание монстра
+	Map level // где сгенерирован моб (нужно для его размещения)
+	) : Unit(hit_point, viewing_range, damage, armor, icon, x, y)
 {
 	texture.loadFromFile("images/mob.png"); //картинка
 
 	sprite.setTexture(texture);//передаём в него объект Texture (текстуры)
 
-	sprite.setPosition((float)y * 32, (float)x * 32);//задаем начальные координаты появления спрайта
+	sprite.setPosition((float)x * 32, (float)y * 32);//задаем начальные координаты появления спрайта
 
 	this->_description = description;
 	this->_is_attack = false;
 	this->_is_retreat = false;
+	this->set_unit(level, this->_x, this->_y);
 }
 
 //void Mob::social_agro(Map level) // социальное агро(добовляет флаг _is_attack всем мобам в радиусе видимисти)

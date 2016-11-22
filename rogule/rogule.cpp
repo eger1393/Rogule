@@ -36,6 +36,7 @@ void setting_text(Text *text,Hero *hero, int flag, View &view, int value = 0, st
 	}
 	text->setPosition(view.getCenter().x - 950, (view.getCenter().y - 540) + 25*flag);//задаем позицию текста
 }
+
 int main()
 {
 	srand((unsigned int)time(0));
@@ -53,8 +54,8 @@ int main()
 	Hero hero(100, 10, 1, 1, 1, 1); // герой
 
 	vector <Mob*> arr_mob;
-	arr_mob.push_back(new Mob(5, 5, 15, 2, 'A', 5, 5, "test mob"));
-	arr_mob.push_back(new Mob(5, 5, 15, 2, 'B', 11, 11, "test mob"));
+	arr_mob.push_back(new Mob(5, 5, 15, 2, 'A', 5, 5, "test mob", level_1));
+	arr_mob.push_back(new Mob(5, 5, 15, 2, 'B', 11, 11, "test mob", level_1));
 
 	Font font;//шрифт 
 	font.loadFromFile("HelveticaNeue-Bold.ttf");//передаем нашему шрифту файл шрифта
@@ -88,7 +89,8 @@ int main()
 			if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Right)
 				|| Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Down)) {
 				for (int i = 0; i < arr_mob.size(); i++)
-					arr_mob[i]->find_way(level_1, hero);
+					if (arr_mob[i]->get_is_attack()) // если установлен флаг атаки
+						arr_mob[i]->find_way(level_1, hero); // моб бежит к герою
 			}
 		}
 
