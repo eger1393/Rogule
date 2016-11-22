@@ -82,14 +82,14 @@ int Mob::find_way(Map level, Hero &hero) // ИИ моба движется к герою
 {
 	int temp_x = this->_x, temp_y = this->_y; //Временные переменные нужны для корректной работы ф-ии set_unit
 	//Движение по оси Х
-	if (this->_x > hero.get_x() && level.get_cell(this->_x - 1, this->_y).get_value() == ' ') //если герой правее моба и правая клетка свободна
+	if (this->_x > hero.get_x() && level.get_cell(this->_x - 1, this->_y).is_permeable()) //если герой правее моба и правая клетка свободна
 		temp_x--; // То моб движется вправо
-	if (this->_x < hero.get_x() && level.get_cell(this->_x + 1, this->_y).get_value() == ' ')
+	if (this->_x < hero.get_x() && level.get_cell(this->_x + 1, this->_y).is_permeable())
 		temp_x++;
 	// Движение по оси У
-	if (this->_y > hero.get_y() && level.get_cell(this->_x, this->_y - 1).get_value() == ' ')
+	if (this->_y > hero.get_y() && level.get_cell(this->_x, this->_y - 1).is_permeable())
 		temp_y--;
-	if (this->_y < hero.get_y() && level.get_cell(this->_x, this->_y + 1).get_value() == ' ')
+	if (this->_y < hero.get_y() && level.get_cell(this->_x, this->_y + 1).is_permeable())
 		temp_y++;
 
 	if (temp_x != hero.get_x() || temp_y != hero.get_y()) // если моб не дошел до героя
