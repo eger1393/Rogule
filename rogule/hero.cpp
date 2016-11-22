@@ -28,7 +28,7 @@ int Hero::get_hit_point()
 {
 	return this->_hit_point;
 }
-void Hero::active(char Symbol, Map &level, short x, short y, View &view, RenderWindow &window)
+void Hero::active(char Symbol, Map &level, short x, short y, RenderWindow &window, View &view)
 {
 
 
@@ -141,120 +141,125 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob)
 	//Mob a(1, 1, 1, 1, 'A', 5, 5, "ww");
 	//a.set_unit(level, 5, 5);
 	
-
-	if (Keyboard::isKeyPressed(Keyboard::Left)) // если нажата стрелка влево и т.д
+	if (this->get_hit_point() > 0)
 	{
-		if (level.get_cell(this->get_x() - 1, this->get_y()).is_permeable())
+		if (Keyboard::isKeyPressed(Keyboard::Left)) // если нажата стрелка влево и т.д
 		{
-			this->viewing_range(level, false, ' ');
-
-			active(level.get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y());
-			this->set_unit(level, this->_x - 1, this->_y);
-
-			/*this->sprite.move(-32, 0);
-
-			this->move(-1, 0);*/
-
-			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
-
-			this->viewing_range(level, true, '1');
-			//mob.find_way(level_1, hero.get_x(), hero.get_y());
-		}
-		if (level.get_cell(this->get_x() - 1, this->get_y()).is_mob())
-		{
-			for (int i = 0; i < arr_mob.size(); i++)
+			if (level.get_cell(this->get_x() - 1, this->get_y()).is_permeable())
 			{
-				if (this->get_x() - 1 == arr_mob[i]->get_x() && this->get_y() == arr_mob[i]->get_y())
+				this->viewing_range(level, false, ' ');
+
+				active(level.get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y());
+				this->set_unit(level, this->_x - 1, this->_y);
+
+				/*this->sprite.move(-32, 0);
+
+				this->move(-1, 0);*/
+
+				viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+
+				this->viewing_range(level, true, '1');
+				//mob.find_way(level_1, hero.get_x(), hero.get_y());
+			}
+			if (level.get_cell(this->get_x() - 1, this->get_y()).is_mob())
+			{
+				for (int i = 0; i < arr_mob.size(); i++)
 				{
-					this->attak(*arr_mob[i]);
+					if (this->get_x() - 1 == arr_mob[i]->get_x() && this->get_y() == arr_mob[i]->get_y())
+					{
+						this->attak(*arr_mob[i]);
+					}
+				}
+			}
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Right))
+		{
+			if (level.get_cell(this->get_x() + 1, this->get_y()).is_permeable())
+			{
+				this->viewing_range(level, false, ' ');
+
+				active(level.get_cell(this->get_x() + 1, this->get_y()).get_value(), level, this->get_x() + 1, this->get_y());
+				this->set_unit(level, this->_x + 1, this->_y);
+
+				/*this->sprite.move(32, 0);
+
+				this->move(1, 0);*/
+
+				this->viewing_range(level, true, '1');
+
+				viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+			}
+			if (level.get_cell(this->get_x() + 1, this->get_y()).is_mob())
+			{
+				for (int i = 0; i < arr_mob.size(); i++)
+				{
+					if (this->get_x() + 1 == arr_mob[i]->get_x() && this->get_y() == arr_mob[i]->get_y())
+					{
+						this->attak(*arr_mob[i]);
+					}
+				}
+			}
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Up))
+		{
+			if (level.get_cell(this->get_x(), this->get_y() - 1).is_permeable())
+			{
+				this->viewing_range(level, false, ' ');
+
+				active(level.get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1);
+				this->set_unit(level, this->_x, this->_y - 1);
+
+				/*this->sprite.move(0, -32);
+
+				this->move(0, -1);*/
+
+				viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+
+				this->viewing_range(level, true, '1');
+			}
+			if (level.get_cell(this->get_x(), this->get_y() - 1).is_mob())
+			{
+				for (int i = 0; i < arr_mob.size(); i++)
+				{
+					if (this->get_x() == arr_mob[i]->get_x() && this->get_y() - 1 == arr_mob[i]->get_y())
+					{
+						this->attak(*arr_mob[i]);
+					}
+				}
+			}
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Down))
+		{
+			if (level.get_cell(this->get_x(), this->get_y() + 1).is_permeable())
+			{
+				this->viewing_range(level, false, ' ');
+
+				active(level.get_cell(this->get_x(), this->get_y() + 1).get_value(), level, this->get_x(), this->get_y() + 1);
+				this->set_unit(level, this->_x, this->_y + 1);
+				//this->sprite.move(0, 32);
+
+				//this->move(0, 1);
+
+				viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+
+				this->viewing_range(level, true, '1');
+			}
+			if (level.get_cell(this->get_x(), this->get_y() + 1).is_mob())
+			{
+				for (int i = 0; i < arr_mob.size(); i++)
+				{
+					if (this->get_x() == arr_mob[i]->get_x() && this->get_y() + 1 == arr_mob[i]->get_y())
+					{
+						this->attak(*arr_mob[i]);
+					}
 				}
 			}
 		}
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Right))
+	else
 	{
-		if (level.get_cell(this->get_x() + 1, this->get_y()).is_permeable())
-		{
-			this->viewing_range(level, false, ' ');
 
-			active(level.get_cell(this->get_x() + 1, this->get_y()).get_value(), level, this->get_x() + 1, this->get_y());
-			this->set_unit(level, this->_x + 1, this->_y);
-
-			/*this->sprite.move(32, 0);
-
-			this->move(1, 0);*/
-
-			this->viewing_range(level, true, '1');
-
-			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
-		}
-		if (level.get_cell(this->get_x() + 1, this->get_y()).is_mob())
-		{
-			for (int i = 0; i < arr_mob.size(); i++)
-			{
-				if (this->get_x() + 1 == arr_mob[i]->get_x() && this->get_y() == arr_mob[i]->get_y())
-				{
-					this->attak(*arr_mob[i]);
-				}
-			}
-		}
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Up))
-	{
-		if (level.get_cell(this->get_x(), this->get_y() - 1).is_permeable())
-		{
-			this->viewing_range(level, false, ' ');
-
-			active(level.get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1);
-			this->set_unit(level, this->_x, this->_y - 1);
-
-			/*this->sprite.move(0, -32);
-
-			this->move(0, -1);*/
-
-			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
-
-			this->viewing_range(level, true, '1');
-		}
-		if (level.get_cell(this->get_x(), this->get_y() - 1).is_mob())
-		{
-			for (int i = 0; i < arr_mob.size(); i++)
-			{
-				if (this->get_x() == arr_mob[i]->get_x() && this->get_y() - 1 == arr_mob[i]->get_y())
-				{
-					this->attak(*arr_mob[i]);
-				}
-			}
-		}
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Down))
-	{
-		if (level.get_cell(this->get_x(), this->get_y() + 1).is_permeable())
-		{
-			this->viewing_range(level, false, ' ');
-
-			active(level.get_cell(this->get_x(), this->get_y() + 1).get_value(), level, this->get_x(), this->get_y() + 1);
-			this->set_unit(level, this->_x, this->_y + 1);
-			//this->sprite.move(0, 32);
-
-			//this->move(0, 1);
-
-			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
-
-			this->viewing_range(level, true, '1');
-		}
-		if (level.get_cell(this->get_x(), this->get_y() + 1).is_mob())
-		{
-			for (int i = 0; i < arr_mob.size(); i++)
-			{
-				if (this->get_x() == arr_mob[i]->get_x() && this->get_y() + 1 == arr_mob[i]->get_y())
-				{
-					this->attak(*arr_mob[i]);
-				}
-			}
-		}
-	}
-
 }
 
 void Hero::move(int x, int y)
