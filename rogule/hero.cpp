@@ -136,7 +136,7 @@ void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области виде
 	}
 }
 
-void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob)
+void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob, RenderWindow &window)
 {
 	//Mob a(1, 1, 1, 1, 'A', 5, 5, "ww");
 	//a.set_unit(level, 5, 5);
@@ -258,7 +258,16 @@ void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob)
 	}
 	else
 	{
+		Font font;//шрифт 
+		font.loadFromFile("HelveticaNeue-Bold.ttf");//передаем нашему шрифту файл шрифта
+		Text text("", font, 50);//создаем объект текст. закидываем в объект текст строку, шрифт, размер шрифта(в пикселях);//сам объект текст (не строка)
+		text.setFillColor(Color::Red);//покрасили текст в красный. если убрать эту строку, то по умолчанию он белый
+		text.setString("You died!");//задает строку тексту
+		text.setPosition(viewer.getCenter().x - 64, viewer.getCenter().y);//задаем позицию текста, центр камеры
 
+		window.draw(text);
+		window.display();
+		Sleep(1000);
 	}
 }
 
