@@ -15,17 +15,37 @@ Hero::Hero(int hit_point, // «доровье
 	sprite.setPosition(y*32, x*32);//задаем начальные координаты по€влени€ спрайта
 	
 }
-
-void Hero::active(char Symbol, Map &level, short x, short y) // „тото с сундучками
+void Hero::set_hit_point(int hit)
 {
+	_hit_point += hit;
+	/*if (_hit_point <= 0)
+	{
+	life = false;
+	}
+	*/
+}
+int Hero::get_hit_point()
+{
+	return this->_hit_point;
+}
+void Hero::active(char Symbol, Map &level, short x, short y, View &view, RenderWindow &window)
+{
+
+
 	switch (Symbol)
 	{
 	case '$':
 	{
-		level.get_cell(x, y).set_value('1');
+		level.get_cell(x, y).set_value(' ');
 		break;
 	}
+	case '!':
+	{
+		this->set_hit_point((this->get_hit_point())*-1);
 
+
+		break;
+	}
 	default:
 		break;
 	}
