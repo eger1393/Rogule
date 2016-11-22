@@ -26,7 +26,6 @@ public:
 	//установка жизней героя
 	void set_hit_point(int);
 	//вернуть кол-во жизней 
-	int get_hit_point();
 private:
     
 };
