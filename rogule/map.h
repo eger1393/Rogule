@@ -12,22 +12,25 @@ public:
 	Cell(char symbol, bool prospected, bool view);
 
     ~Cell();
-    bool is_limpid(); //проверка на прозрачность
-    bool is_permeable();// Проерка на проходимость 
-	bool can_used(); //  Можно исспользовать
+	//проверка на прозрачность
+    bool is_limpid(); 
+	// Проерка на проходимость 
+    bool is_permeable();
+	//  Можно исспользовать
+	bool can_used(); 
 	// Проверка, стоит ли на клетке моб
 	bool is_mob();
-
+	// Возвращает символ клетки
 	char get_value();
-
+	// Устанавливает символ клетки
 	void set_value(char symbol);
-
+	// Видит ли герой клетку
 	bool get_view();
-	
+	// Устанавливает видимость клетки героем
 	void set_view(bool bl);
-	
+	// Устанавливает разведку клетки
 	void set_prospected(bool value);
-
+	// озвращает разведку клетки
 	bool get_prospected();
     //void set_x_y(short x, short y); //задает координаты х, у
 private:
@@ -46,24 +49,22 @@ public:
     Map(short n, short m);
 
     //void test_Map(short n, short m); // Создание квадратной комнаты для теста
-
+	//Антон
 	Room* initialize_Level();
-
+	//Антон
 	int Create_room(Room *r);
-
+	//Антон
 	int Create_corridor(Room *r);
-	
-   //friend void Hero::key_press(Map level); //вычисляет видимые клетки героя
-
-	void reprint_cell(short x, short y); // перересовка отдельной клетки
-
-    Cell& get_cell(short x, short y); //возвращает ссылку на ячейку расположенную по координатам х, у
-
+	// Перерисовывает клетку в консоли
+	void reprint_cell(short x, short y); 
+	// Возвращает ссылку на клетку по координатам х,у
+    Cell& get_cell(short x, short y); 
+	//задает клетку
     void set_cell(Cell cell, short x, short y); //задает ячейку
-
+	//задает символ клетки
     void set_cell(char c, short x, short y); //задает ячейку
-
-    void print_level(RenderWindow&); //рисует карту
+	//рисует карту
+    void print_level(RenderWindow&);
 
 	//void print_circular();
 

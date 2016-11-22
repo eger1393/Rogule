@@ -135,6 +135,9 @@ void work_to_mobs(vector <Mob*> &arr_mob, RenderWindow &window, Map &level)
 			arr_mob.erase(arr_mob.begin() + i); // удалаю моба из массива мобов
 		}
 		else // если моб жив
-			window.draw(arr_mob[i]->sprite); //отрисовка моба
+		{
+			if(level.get_cell(arr_mob[i]->get_x(), arr_mob[i]->get_y()).get_view()) // Если герой видит моба
+				window.draw(arr_mob[i]->sprite); //отрисовка моба
+		}
 	}
 }

@@ -20,7 +20,7 @@ int main()
 
 	vector <Mob*> arr_mob;
 	arr_mob.push_back(new Mob(2, 5, 2, 2, 'A', 5, 5, "test mob"));
-	arr_mob.push_back(new Mob(2, 5, 2, 2, 'B', 6, 6, "test mob"));
+	arr_mob.push_back(new Mob(2, 5, 2, 2, 'B', 11, 11, "test mob"));
 
 	//Mob *arr_mob[2] = {new Mob(5, 5, 2, 2, 'A', 5, 5, "test mob"), new Mob(5, 5, 2, 2, 'B', 6, 6, "test mob") };
 	//Mob mob(5, 5, 2, 2, 'A', 5, 5, "test mob");
