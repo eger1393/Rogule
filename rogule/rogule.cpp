@@ -6,9 +6,9 @@ int main()
 {
 	srand(time(0));
 
-	sf::RenderWindow window(sf::VideoMode(800,600), "Rogule!"); //sf::Style::Fullscreen); //окно
+	sf::RenderWindow window(sf::VideoMode(1920,1080), "Rogule!"); //sf::Style::Fullscreen); //окно
 
-	view.reset(sf::FloatRect(0, 0, 800, 600)); //камера 
+	view.reset(sf::FloatRect(0, 0, 1920, 1080)); //камера 
 
 	Map level_1(50, 50); // сам уровень
 
@@ -20,6 +20,7 @@ int main()
 
 	Clock clock;
 
+	
 	/*level_1.print_level(window);*/
 
 	while (window.isOpen()) // пока открыто окно
@@ -41,7 +42,8 @@ int main()
 				window.close(); 
 			}
 
-			hero.key_press(level_1, view);
+			hero.key_press(level_1, view, window);
+			
 		}
 
 		viewmap(time);//функция скроллинга карты, передаем ей время sfml

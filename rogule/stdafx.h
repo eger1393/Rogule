@@ -24,7 +24,6 @@
 
 using namespace sf;
 
-
 #include "map.h"
 #include "unit.h"
 #include "mob.h"

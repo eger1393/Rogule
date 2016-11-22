@@ -4,6 +4,23 @@
 static int error;
 bool flag = true, flag_0 = true;
 
+bool Cell::get_view()
+{
+	return this->_view;
+}
+void Cell::set_view(bool bl)
+{
+	_view = bl;
+}
+void Cell::set_prospected(bool value)
+{
+	this->_prospected = value;
+}
+bool Cell::get_prospected()
+{
+	return this->_prospected;
+}
+
 Cell::Cell()
 {
 	_value = ' ';
@@ -92,14 +109,7 @@ Map::Map(short n, short m)
 		}
 	}
 
-	floor.loadFromFile("images/floor.png");
-
-	wall.loadFromFile("images/wall.png");
-
-	chest.loadFromFile("images/chest.png");
-
-	empty.loadFromFile("images/empty.png");
-	black.loadFromFile("images/black.png");
+	map.loadFromFile("images/map.png");
 }
 
 void Map::reprint_cell(short x, short y)
@@ -145,7 +155,7 @@ int Map::Create_room(Room *room)
 	}
 
 	_game_field_level[room->_left_angle_y + rand() % 5][room->_left_angle_x + rand() % 5].set_value('$');
-
+	_game_field_level[room->_left_angle_y + rand() % 3][room->_left_angle_x + rand() % 3].set_value('!');
 	if (flag)
 	{
 		Create_corridor(room);
@@ -310,6 +320,7 @@ void Map::set_cell(char c, short x, short y)
 void Map::print_level(RenderWindow &window)
 {
 	RectangleShape rectangle(Vector2f(32, 32));
+	rectangle.setTexture(&map);
 	//Sprite ss;
 //	ss.setTexture(wall);
 
@@ -330,15 +341,19 @@ void Map::print_level(RenderWindow &window)
 				switch (this->_game_field_level[i][j].get_value())
 				{
 				case '#': // Стена
-					rectangle.setTexture(&wall);
+					rectangle.setTextureRect(IntRect(32, 0, 32, 32));
 					break;
 
 				case ' ': // Пол
-					rectangle.setTexture(&floor);
+					rectangle.setTextureRect(IntRect(0, 0, 32, 32));;
 					break;
 
 				case '$': // Сундук
-					rectangle.setTexture(&chest);
+					rectangle.setTextureRect(IntRect(64, 0, 32, 32));;
+					break;
+
+				case '!': // Опасность
+					rectangle.setTextureRect(IntRect(160, 0, 32, 32));;
 					break;
 
 				default:
@@ -347,7 +362,7 @@ void Map::print_level(RenderWindow &window)
 			}
 			else
 			{
-				rectangle.setTexture(&black); // Неразведанная область
+				rectangle.setTextureRect(IntRect(96, 0, 32, 32));;; // Неразведанная область
 			}
 			rectangle.setPosition(j * 32, i * 32);  //позиция
 			window.draw(rectangle); // отрисовка

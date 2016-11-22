@@ -14,14 +14,17 @@ public:
 		short x, short y // Координаты существа
 		); 
 
-	void key_press(Map &level, View&); // Перехват клавиш
+	int key_press(Map &level, View&, RenderWindow&); // Перехват клавиш
 
 	void viewing_range(Map level, bool flag_view, char c); // Вычесление области видимости
 
 	void move(short x, short y);
 	
-	void active(char Symbol, Map &level, short,short);
-
+	void active(char Symbol, Map &level, short,short, View &view, RenderWindow &window);
+	//установка жизней героя
+	void set_hit_point(int);
+	//вернуть кол-во жизней 
+	int get_hit_point();
 
 private:
     

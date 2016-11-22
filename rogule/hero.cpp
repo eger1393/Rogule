@@ -16,16 +16,37 @@ Hero::Hero(int hit_point, // Здоровье
 	
 }
 
-void Hero::active(char Symbol, Map &level, short x, short y)
+void Hero::set_hit_point(int hit)
 {
+	_hit_point += hit;
+	/*if (_hit_point <= 0)
+	{
+		life = false;
+	}
+*/
+}
+int Hero::get_hit_point()
+{
+	return this->_hit_point;
+}
+void Hero::active(char Symbol, Map &level, short x, short y, View &view, RenderWindow &window)
+{
+	
+
 	switch (Symbol)
 	{
 	case '$':
 	{
-		level.get_cell(x, y).set_value('1');
+		level.get_cell(x, y).set_value(' ');
 		break;
 	}
+	case '!':
+	{
+		this->set_hit_point((this->get_hit_point())*-1);
 
+		
+		break;
+	}
 	default:
 		break;
 	}
@@ -116,74 +137,92 @@ void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области виде
 	}
 }
 
-void Hero::key_press(Map &level, View &viewer)
+int Hero::key_press(Map &level, View &viewer, RenderWindow &window)
 {
 	//Mob a(1, 1, 1, 1, 'A', 5, 5, "ww");
 	//a.set_unit(level, 5, 5);
 	
-
-	if ((Keyboard::isKeyPressed(Keyboard::Left)) && ((level.get_cell(this->get_x() - 1, this->get_y()).is_limpid()))) // если нажата стрелка влево и т.д
+	if (this->get_hit_point() > 0)
 	{
-		this->viewing_range(level, false, ' ');
+		if ((Keyboard::isKeyPressed(Keyboard::Left)) && ((level.get_cell(this->get_x() - 1, this->get_y()).is_limpid()))) // если нажата стрелка влево и т.д
+		{
+			this->viewing_range(level, false, ' ');
 
-		active(level.get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y());
-		this->set_unit(level, this->_x - 1, this->_y);
+			active(level.get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y(), viewer, window);
 
-		/*this->sprite.move(-32, 0);
+			this->set_unit(level, this->_x - 1, this->_y);
 
-		this->move(-1, 0);*/
+			/*this->sprite.move(-32, 0);
 
-		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+			this->move(-1, 0);*/
 
-		this->viewing_range(level, true, '1');
+			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+
+			this->viewing_range(level, true, '1');
+		}
+		if ((Keyboard::isKeyPressed(Keyboard::Right)) && ((level.get_cell(this->get_x() + 1, this->get_y()).is_limpid())))
+		{
+			this->viewing_range(level, false, ' ');
+
+			active(level.get_cell(this->get_x() + 1, this->get_y()).get_value(), level, this->get_x() + 1, this->get_y(), viewer, window);
+			this->set_unit(level, this->_x + 1, this->_y);
+
+			/*this->sprite.move(32, 0);
+
+			this->move(1, 0);*/
+
+			this->viewing_range(level, true, '1');
+
+			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+
+
+		}
+		if (((Keyboard::isKeyPressed(Keyboard::Up))) && ((level.get_cell(this->get_x(), this->get_y() - 1).is_limpid())))
+		{
+			this->viewing_range(level, false, ' ');
+
+			active(level.get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1, viewer, window);
+			this->set_unit(level, this->_x, this->_y - 1);
+
+			/*this->sprite.move(0, -32);
+
+			this->move(0, -1);*/
+
+			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+
+			this->viewing_range(level, true, '1');
+		}
+		if ((Keyboard::isKeyPressed(Keyboard::Down)) && (level.get_cell(this->get_x(), this->get_y() + 1).is_limpid()))
+		{
+			this->viewing_range(level, false, ' ');
+
+			active(level.get_cell(this->get_x(), this->get_y() + 1).get_value(), level, this->get_x(), this->get_y() + 1, viewer, window);
+
+			this->set_unit(level, this->_x, this->_y + 1);
+			//this->sprite.move(0, 32);
+
+			//this->move(0, 1);
+
+			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+
+			this->viewing_range(level, true, '1');
+		}
 	}
-	if ((Keyboard::isKeyPressed(Keyboard::Right)) && ((level.get_cell(this->get_x() + 1, this->get_y()).is_limpid())))
+	else
 	{
-		this->viewing_range(level, false, ' ');
+		Font font;//шрифт 
+		font.loadFromFile("HelveticaNeue-Bold.ttf");//передаем нашему шрифту файл шрифта
+		Text text("", font, 50);//создаем объект текст. закидываем в объект текст строку, шрифт, размер шрифта(в пикселях);//сам объект текст (не строка)
+		text.setFillColor(Color::Red);//покрасили текст в красный. если убрать эту строку, то по умолчанию он белый
+		text.setString("You died!");//задает строку тексту
+		text.setPosition(viewer.getCenter().x-64, viewer.getCenter().y);//задаем позицию текста, центр камеры
 
-		active(level.get_cell(this->get_x() + 1, this->get_y()).get_value(), level, this->get_x()+1, this->get_y());
-		this->set_unit(level, this->_x + 1, this->_y);
-
-		/*this->sprite.move(32, 0);
-
-		this->move(1, 0);*/
-
-		this->viewing_range(level,true, '1');
-
-		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
-
-		
+		window.draw(text);
+		window.display();
+		Sleep(1000);
+		return false;
+			
 	}
-	if (((Keyboard::isKeyPressed(Keyboard::Up))) && ((level.get_cell(this->get_x(), this->get_y() - 1).is_limpid())))
-	{
-		this->viewing_range(level,false, ' ');
-
-		active(level.get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1);
-		this->set_unit(level, this->_x, this->_y - 1);
-
-		/*this->sprite.move(0, -32);
-
-		this->move(0, -1);*/
-
-		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
-
-		this->viewing_range(level, true,'1');
-	}
-	if ((Keyboard::isKeyPressed(Keyboard::Down)) && (level .get_cell(this->get_x(), this->get_y() + 1).is_limpid()))
-	{
-		this->viewing_range(level, false,' ');
-
-		active(level.get_cell(this->get_x(), this->get_y()+1).get_value(), level, this->get_x(), this->get_y() + 1);
-		this->set_unit(level, this->_x, this->_y + 1);
-		//this->sprite.move(0, 32);
-
-		//this->move(0, 1);
-
-		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
-
-		this->viewing_range(level, true, '1' );
-	}
-
 }
 
 void Hero::move(short x, short y)

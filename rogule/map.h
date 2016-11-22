@@ -22,22 +22,14 @@ public:
 
 	void set_value(char symbol);
 
-	bool get_view()
-	{
-		return _view;
-	}
-	void set_view(bool bl)
-	{
-		_view = bl;
-	}
-	void set_prospected(bool value)
-	{
-		this->_prospected = value;
-	}
-	bool get_prospected()
-	{
-		return this->_prospected;
-	}
+	bool get_view();
+	
+	void set_view(bool bl);
+	
+	void set_prospected(bool value);
+
+	bool get_prospected();
+
     //void set_x_y(short x, short y); //задает координаты х, у
 private:
     //short _x, _y; //Координаты клетки
@@ -82,7 +74,7 @@ public:
 
 private:
 
-	Texture floor, wall, chest, empty, black;
+	Texture map;
 
     short _n, _m; //размеры карты
    
