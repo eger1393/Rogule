@@ -6,7 +6,7 @@ Hero::Hero(int hit_point, // Здоровье
 	int damage, // Урон
 	int armor, // Броня
 	short x, short y // Координаты существа
-	) : Unit(hit_point, viewing_range, damage, armor, y, x)
+	) : Unit(hit_point, viewing_range, damage, armor, '@', y, x)
 {
 	texture.loadFromFile("images/hero.png"); //картинка
 
@@ -16,7 +16,7 @@ Hero::Hero(int hit_point, // Здоровье
 	
 }
 
-void Hero::active(char Symbol, Map &level, short x, short y)
+void Hero::active(char Symbol, Map &level, short x, short y) // Чтото с сундучками
 {
 	switch (Symbol)
 	{
@@ -116,78 +116,129 @@ void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области виде
 	}
 }
 
-void Hero::key_press(Map &level, View &viewer)
+void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob)
 {
 	//Mob a(1, 1, 1, 1, 'A', 5, 5, "ww");
 	//a.set_unit(level, 5, 5);
 	
 
-	if ((Keyboard::isKeyPressed(Keyboard::Left)) && ((level.get_cell(this->get_x() - 1, this->get_y()).is_limpid()))) // если нажата стрелка влево и т.д
+	if (Keyboard::isKeyPressed(Keyboard::Left)) // если нажата стрелка влево и т.д
 	{
-		this->viewing_range(level, false, ' ');
+		if (level.get_cell(this->get_x() - 1, this->get_y()).is_permeable())
+		{
+			this->viewing_range(level, false, ' ');
 
-		active(level.get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y());
-		this->set_unit(level, this->_x - 1, this->_y);
+			active(level.get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y());
+			this->set_unit(level, this->_x - 1, this->_y);
 
-		/*this->sprite.move(-32, 0);
+			/*this->sprite.move(-32, 0);
 
-		this->move(-1, 0);*/
+			this->move(-1, 0);*/
 
-		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
 
-		this->viewing_range(level, true, '1');
+			this->viewing_range(level, true, '1');
+			//mob.find_way(level_1, hero.get_x(), hero.get_y());
+		}
+		if (level.get_cell(this->get_x() - 1, this->get_y()).is_mob())
+		{
+			for (int i = 0; i < arr_mob.size(); i++)
+			{
+				if (this->get_x() - 1 == arr_mob[i]->get_x() && this->get_y() == arr_mob[i]->get_y())
+				{
+					this->attak(*arr_mob[i]);
+				}
+			}
+		}
 	}
-	if ((Keyboard::isKeyPressed(Keyboard::Right)) && ((level.get_cell(this->get_x() + 1, this->get_y()).is_limpid())))
+	if (Keyboard::isKeyPressed(Keyboard::Right))
 	{
-		this->viewing_range(level, false, ' ');
+		if (level.get_cell(this->get_x() + 1, this->get_y()).is_permeable())
+		{
+			this->viewing_range(level, false, ' ');
 
-		active(level.get_cell(this->get_x() + 1, this->get_y()).get_value(), level, this->get_x()+1, this->get_y());
-		this->set_unit(level, this->_x + 1, this->_y);
+			active(level.get_cell(this->get_x() + 1, this->get_y()).get_value(), level, this->get_x() + 1, this->get_y());
+			this->set_unit(level, this->_x + 1, this->_y);
 
-		/*this->sprite.move(32, 0);
+			/*this->sprite.move(32, 0);
 
-		this->move(1, 0);*/
+			this->move(1, 0);*/
 
-		this->viewing_range(level,true, '1');
+			this->viewing_range(level, true, '1');
 
-		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
-
-		
+			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+		}
+		if (level.get_cell(this->get_x() + 1, this->get_y()).is_mob())
+		{
+			for (int i = 0; i < arr_mob.size(); i++)
+			{
+				if (this->get_x() + 1 == arr_mob[i]->get_x() && this->get_y() == arr_mob[i]->get_y())
+				{
+					this->attak(*arr_mob[i]);
+				}
+			}
+		}
 	}
-	if (((Keyboard::isKeyPressed(Keyboard::Up))) && ((level.get_cell(this->get_x(), this->get_y() - 1).is_limpid())))
+	if (Keyboard::isKeyPressed(Keyboard::Up))
 	{
-		this->viewing_range(level,false, ' ');
+		if (level.get_cell(this->get_x(), this->get_y() - 1).is_permeable())
+		{
+			this->viewing_range(level, false, ' ');
 
-		active(level.get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1);
-		this->set_unit(level, this->_x, this->_y - 1);
+			active(level.get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1);
+			this->set_unit(level, this->_x, this->_y - 1);
 
-		/*this->sprite.move(0, -32);
+			/*this->sprite.move(0, -32);
 
-		this->move(0, -1);*/
+			this->move(0, -1);*/
 
-		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
 
-		this->viewing_range(level, true,'1');
+			this->viewing_range(level, true, '1');
+		}
+		if (level.get_cell(this->get_x(), this->get_y() - 1).is_mob())
+		{
+			for (int i = 0; i < arr_mob.size(); i++)
+			{
+				if (this->get_x() == arr_mob[i]->get_x() && this->get_y() - 1 == arr_mob[i]->get_y())
+				{
+					this->attak(*arr_mob[i]);
+				}
+			}
+		}
 	}
-	if ((Keyboard::isKeyPressed(Keyboard::Down)) && (level .get_cell(this->get_x(), this->get_y() + 1).is_limpid()))
+	if (Keyboard::isKeyPressed(Keyboard::Down))
 	{
-		this->viewing_range(level, false,' ');
+		if (level.get_cell(this->get_x(), this->get_y() + 1).is_permeable())
+		{
+			this->viewing_range(level, false, ' ');
 
-		active(level.get_cell(this->get_x(), this->get_y()+1).get_value(), level, this->get_x(), this->get_y() + 1);
-		this->set_unit(level, this->_x, this->_y + 1);
-		//this->sprite.move(0, 32);
+			active(level.get_cell(this->get_x(), this->get_y() + 1).get_value(), level, this->get_x(), this->get_y() + 1);
+			this->set_unit(level, this->_x, this->_y + 1);
+			//this->sprite.move(0, 32);
 
-		//this->move(0, 1);
+			//this->move(0, 1);
 
-		viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
+			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
 
-		this->viewing_range(level, true, '1' );
+			this->viewing_range(level, true, '1');
+		}
+		if (level.get_cell(this->get_x(), this->get_y() + 1).is_mob())
+		{
+			for (int i = 0; i < arr_mob.size(); i++)
+			{
+				if (this->get_x() == arr_mob[i]->get_x() && this->get_y() + 1 == arr_mob[i]->get_y())
+				{
+					this->attak(*arr_mob[i]);
+				}
+			}
+		}
 	}
 
 }
 
-void Hero::move(short x, short y)
+void Hero::move(int x, int y)
 {
-	_x += x;
-	_y += y;
+	this->_x += x;
+	this->_y += y;
 }

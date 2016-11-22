@@ -7,7 +7,7 @@ Mob::Mob(int hit_point, // Здоровье
 	char icon, // Иконка cущества
 	short x, short y, // Координаты существа
 	std::string description // Описание монстра
-	) : Unit(hit_point, viewing_range, damage, armor,x,y)
+	) : Unit(hit_point, viewing_range, damage, armor, icon, x,y)
 {
 	texture.loadFromFile("images/mob.png"); //картинка
 
@@ -78,26 +78,28 @@ Mob::Mob(int hit_point, // Здоровье
 //}
 
 
-int Mob::find_way(Map level, short x, short y)
+int Mob::find_way(Map level, Hero &hero) // ИИ моба движется к герою
 {
-	if (this->_x > x && level.get_cell(this->_x-1, this->_y).is_permeable())
-		this->_x--;
-	if (this->_x < x && level.get_cell(this->_x + 1, this->_y).is_permeable())
-		this->_x++;
+	int temp_x = this->_x, temp_y = this->_y; //Временные переменные нужны для корректной работы ф-ии set_unit
+	//Движение по оси Х
+	if (this->_x > hero.get_x() && level.get_cell(this->_x - 1, this->_y).is_permeable()) //если герой правее моба и правая клетка свободна
+		temp_x--; // То моб движется вправо
+	if (this->_x < hero.get_x() && level.get_cell(this->_x + 1, this->_y).is_permeable())
+		temp_x++;
+	// Движение по оси У
+	if (this->_y > hero.get_y() && level.get_cell(this->_x, this->_y - 1).is_permeable())
+		temp_y--;
+	if (this->_y < hero.get_y() && level.get_cell(this->_x, this->_y + 1).is_permeable())
+		temp_y++;
 
-	if (this->_y > y && level.get_cell(this->_x, this->_y - 1).is_permeable())
-		this->_y--;
-	if (this->_y < y && level.get_cell(this->_x - 1, this->_y - 1).is_permeable())
-		this->_y++;
-
-	if (this->_x != x || this->_y != y)
+	if (temp_x != hero.get_x() || temp_y != hero.get_y()) // если моб не дошел до героя
 	{
-		this->set_unit(level, this->_x, this->_y);
+		this->set_unit(level, temp_x, temp_y); // Он смещается
 		return 0;
 	}
 	else
 	{
-
+		this->attak(hero);
 		return 1;
 	}
 

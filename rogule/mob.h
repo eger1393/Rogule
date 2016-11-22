@@ -15,7 +15,7 @@ public:
 		);// Конструктор
 	Mob();
 	void social_agro(Map level); // Социальное агро(добовляет флаг _is_attack всем мобам в радиусе видимисти)
-	int find_way(Map level, short x, short y); //level - уровень, х,у координаты героя возвращает 1 если мод атакует героя
+	int find_way(Map level, Hero &hero); //level - уровень, х,у координаты героя возвращает 1 если мод атакует героя
 
 	void set_is_attack(bool value); // Устанавливает значение флага атаки
 	bool get_is_attack(); // Вовзвращает значение флага атаки

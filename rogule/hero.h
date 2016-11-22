@@ -1,6 +1,8 @@
 
 #include "stdafx.h"
 
+class Mob;
+
 class Hero : public Unit
 {
 public:
@@ -14,14 +16,11 @@ public:
 		short x, short y // Координаты существа
 		); 
 
-	void key_press(Map &level, View&); // Перехват клавиш
+	void key_press(Map &level, View&,vector <Mob*> &arr_mob); // Перехват клавиш
 
 	void viewing_range(Map level, bool flag_view, char c); // Вычесление области видимости
-
-	void move(short x, short y);
-	
-	void active(char Symbol, Map &level, short,short);
-
+	void active(char Symbol, Map &level, short,short); // чтото с сундучками
+	void move(int x, int y);
 
 private:
     

@@ -19,6 +19,8 @@
 #include <iomanip>
 #include <windows.h>
 
+#include <vector>
+#include <iterator>
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы
 #include <SFML/Graphics.hpp>
 
@@ -27,8 +29,8 @@ using namespace sf;
 
 #include "map.h"
 #include "unit.h"
-#include "mob.h"
 #include "hero.h"
+#include "mob.h"
 
 
 
