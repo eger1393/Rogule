@@ -13,10 +13,10 @@ public:
 
     ~Cell();
     bool is_limpid(); //проверка на прозрачность
-
-    bool is_permeable(); // Проерка на проходимость 
-
-    bool can_used(); //  Можно исспользовать
+    bool is_permeable();// Проерка на проходимость 
+	bool can_used(); //  Можно исспользовать
+	// Проверка, стоит ли на клетке моб
+	bool is_mob();
 
 	char get_value();
 

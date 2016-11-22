@@ -45,7 +45,7 @@ char Cell::get_value()
 	return _value;
 }
 
-bool Cell::is_limpid()
+bool Cell::is_limpid() // Прозрачность
 {
 	if (this->_value == '#')
 	{
@@ -57,9 +57,9 @@ bool Cell::is_limpid()
 	}
 }
 
-bool Cell::is_permeable()
+bool Cell::is_permeable() // Проходимость
 {
-	if (this->_value == '#')
+	if (this->_value == '#' || (this->_value >= 'A' && this->_value <= 'Z'))
 	{
 		return false;
 	}
@@ -403,3 +403,14 @@ void Map::print_level(RenderWindow &window)
 //}
 
 
+bool Cell::is_mob()
+{
+	if (this->_value >= 'A' && this->_value <= 'Z')
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

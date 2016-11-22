@@ -6,7 +6,7 @@ Hero::Hero(int hit_point, // Здоровье
 	int damage, // Урон
 	int armor, // Броня
 	short x, short y // Координаты существа
-	) : Unit(hit_point, viewing_range, damage, armor, y, x)
+	) : Unit(hit_point, viewing_range, damage, armor, '@', y, x)
 {
 	texture.loadFromFile("images/hero.png"); //картинка
 
@@ -16,37 +16,16 @@ Hero::Hero(int hit_point, // Здоровье
 	
 }
 
-void Hero::set_hit_point(int hit)
+void Hero::active(char Symbol, Map &level, short x, short y) // Чтото с сундучками
 {
-	_hit_point += hit;
-	/*if (_hit_point <= 0)
-	{
-		life = false;
-	}
-*/
-}
-int Hero::get_hit_point()
-{
-	return this->_hit_point;
-}
-void Hero::active(char Symbol, Map &level, short x, short y, View &view, RenderWindow &window)
-{
-	
-
 	switch (Symbol)
 	{
 	case '$':
 	{
-		level.get_cell(x, y).set_value(' ');
+		level.get_cell(x, y).set_value('1');
 		break;
 	}
-	case '!':
-	{
-		this->set_hit_point((this->get_hit_point())*-1);
 
-		
-		break;
-	}
 	default:
 		break;
 	}
@@ -137,19 +116,19 @@ void Hero::viewing_range(Map level,bool flag, char c) // Вычесление области виде
 	}
 }
 
-int Hero::key_press(Map &level, View &viewer, RenderWindow &window)
+void Hero::key_press(Map &level, View &viewer, vector <Mob*> &arr_mob)
 {
 	//Mob a(1, 1, 1, 1, 'A', 5, 5, "ww");
 	//a.set_unit(level, 5, 5);
 	
-	if (this->get_hit_point() > 0)
+
+	if (Keyboard::isKeyPressed(Keyboard::Left)) // если нажата стрелка влево и т.д
 	{
-		if ((Keyboard::isKeyPressed(Keyboard::Left)) && ((level.get_cell(this->get_x() - 1, this->get_y()).is_limpid()))) // если нажата стрелка влево и т.д
+		if (level.get_cell(this->get_x() - 1, this->get_y()).is_permeable())
 		{
 			this->viewing_range(level, false, ' ');
 
-			active(level.get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y(), viewer, window);
-
+			active(level.get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y());
 			this->set_unit(level, this->_x - 1, this->_y);
 
 			/*this->sprite.move(-32, 0);
@@ -159,12 +138,26 @@ int Hero::key_press(Map &level, View &viewer, RenderWindow &window)
 			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
 
 			this->viewing_range(level, true, '1');
+			//mob.find_way(level_1, hero.get_x(), hero.get_y());
 		}
-		if ((Keyboard::isKeyPressed(Keyboard::Right)) && ((level.get_cell(this->get_x() + 1, this->get_y()).is_limpid())))
+		if (level.get_cell(this->get_x() - 1, this->get_y()).is_mob())
+		{
+			for (int i = 0; i < arr_mob.size(); i++)
+			{
+				if (this->get_x() - 1 == arr_mob[i]->get_x() && this->get_y() == arr_mob[i]->get_y())
+				{
+					this->attak(*arr_mob[i]);
+				}
+			}
+		}
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Right))
+	{
+		if (level.get_cell(this->get_x() + 1, this->get_y()).is_permeable())
 		{
 			this->viewing_range(level, false, ' ');
 
-			active(level.get_cell(this->get_x() + 1, this->get_y()).get_value(), level, this->get_x() + 1, this->get_y(), viewer, window);
+			active(level.get_cell(this->get_x() + 1, this->get_y()).get_value(), level, this->get_x() + 1, this->get_y());
 			this->set_unit(level, this->_x + 1, this->_y);
 
 			/*this->sprite.move(32, 0);
@@ -174,14 +167,25 @@ int Hero::key_press(Map &level, View &viewer, RenderWindow &window)
 			this->viewing_range(level, true, '1');
 
 			viewer.setCenter(this->get_x() * 32, this->get_y() * 32);
-
-
 		}
-		if (((Keyboard::isKeyPressed(Keyboard::Up))) && ((level.get_cell(this->get_x(), this->get_y() - 1).is_limpid())))
+		if (level.get_cell(this->get_x() + 1, this->get_y()).is_mob())
+		{
+			for (int i = 0; i < arr_mob.size(); i++)
+			{
+				if (this->get_x() + 1 == arr_mob[i]->get_x() && this->get_y() == arr_mob[i]->get_y())
+				{
+					this->attak(*arr_mob[i]);
+				}
+			}
+		}
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Up))
+	{
+		if (level.get_cell(this->get_x(), this->get_y() - 1).is_permeable())
 		{
 			this->viewing_range(level, false, ' ');
 
-			active(level.get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1, viewer, window);
+			active(level.get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1);
 			this->set_unit(level, this->_x, this->_y - 1);
 
 			/*this->sprite.move(0, -32);
@@ -192,12 +196,24 @@ int Hero::key_press(Map &level, View &viewer, RenderWindow &window)
 
 			this->viewing_range(level, true, '1');
 		}
-		if ((Keyboard::isKeyPressed(Keyboard::Down)) && (level.get_cell(this->get_x(), this->get_y() + 1).is_limpid()))
+		if (level.get_cell(this->get_x(), this->get_y() - 1).is_mob())
+		{
+			for (int i = 0; i < arr_mob.size(); i++)
+			{
+				if (this->get_x() == arr_mob[i]->get_x() && this->get_y() - 1 == arr_mob[i]->get_y())
+				{
+					this->attak(*arr_mob[i]);
+				}
+			}
+		}
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Down))
+	{
+		if (level.get_cell(this->get_x(), this->get_y() + 1).is_permeable())
 		{
 			this->viewing_range(level, false, ' ');
 
-			active(level.get_cell(this->get_x(), this->get_y() + 1).get_value(), level, this->get_x(), this->get_y() + 1, viewer, window);
-
+			active(level.get_cell(this->get_x(), this->get_y() + 1).get_value(), level, this->get_x(), this->get_y() + 1);
 			this->set_unit(level, this->_x, this->_y + 1);
 			//this->sprite.move(0, 32);
 
@@ -207,26 +223,22 @@ int Hero::key_press(Map &level, View &viewer, RenderWindow &window)
 
 			this->viewing_range(level, true, '1');
 		}
+		if (level.get_cell(this->get_x(), this->get_y() + 1).is_mob())
+		{
+			for (int i = 0; i < arr_mob.size(); i++)
+			{
+				if (this->get_x() == arr_mob[i]->get_x() && this->get_y() + 1 == arr_mob[i]->get_y())
+				{
+					this->attak(*arr_mob[i]);
+				}
+			}
+		}
 	}
-	else
-	{
-		Font font;//шрифт 
-		font.loadFromFile("HelveticaNeue-Bold.ttf");//передаем нашему шрифту файл шрифта
-		Text text("", font, 50);//создаем объект текст. закидываем в объект текст строку, шрифт, размер шрифта(в пикселях);//сам объект текст (не строка)
-		text.setFillColor(Color::Red);//покрасили текст в красный. если убрать эту строку, то по умолчанию он белый
-		text.setString("You died!");//задает строку тексту
-		text.setPosition(viewer.getCenter().x-64, viewer.getCenter().y);//задаем позицию текста, центр камеры
 
-		window.draw(text);
-		window.display();
-		Sleep(1000);
-		return false;
-			
-	}
 }
 
-void Hero::move(short x, short y)
+void Hero::move(int x, int y)
 {
-	_x += x;
-	_y += y;
+	this->_x += x;
+	this->_y += y;
 }

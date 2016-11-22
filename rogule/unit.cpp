@@ -4,15 +4,23 @@ Unit::Unit(int hit_point, // Здоровье
 	int viewing_range, // Радиус обзора
 	int damage, // Урон
 	int armor, // Броня
+	char icon, // Иконка cущества
 	short x, short y // Координаты существа
 	) // Конструктор
 {
+
 	this->_hit_point = hit_point;
 	this->_viewing_range = viewing_range;
 	this->_damage = damage;
 	this->_armor = armor;
+	this->_icon = icon;
 	this->_x = x;
 	this->_y = y;
+}
+
+int Unit::get_hit_point()
+{
+	return this->_hit_point;
 }
 
 //void Unit::viewing_range(Map level, char c) // Вычесление области видемости
@@ -82,19 +90,22 @@ int Unit::get_y()
 {
 	return _y;
 }
-void Unit::attak(Unit *unit2) // Атака текущего юнита вторым юнитом
+
+// Юнит вызвавший ф-ию атакую переданный юнит
+void Unit::attak(Unit &unit2) 
 {
-	if (unit2->_damage <= this->_armor) //если броня больше дамага
+	if (this->_damage <= unit2._armor) //если броня больше дамага
 	{
-		this->_hit_point -= 1;
+		unit2._hit_point -= 1;
 	}
 	else
 	{
-		this->_hit_point -= unit2->_damage - this->_armor;
+		unit2._hit_point -= this->_damage - unit2._armor;
 		
 	}
-	if (this->_hit_point <= 0) // Смерть юнита
+	if (unit2._hit_point <= 0) // Смерть юнита
 	{ 
+		//exit(1);
 		// Обработать смерть
 	}
 	return;
