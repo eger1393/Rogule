@@ -16,18 +16,15 @@ public:
 		short x, short y // Координаты существа
 		); 
 
-	int key_press(Map &level, View&,vector <Mob*> &arr_mob, RenderWindow&); // Перехват клавиш
-
-	void viewing_range(Map level, bool flag_view, char c); // Вычесление области видимости
-
-	void active(char Symbol, Map &level, short,short, RenderWindow &window, View &view); // чтото с сундучками
-
-	void move(int x, int y);
+	// Перехват клавиш
+	int key_press(Map &level, View&,vector <Mob*> &arr_mob, RenderWindow&); 
+	// Вычесление области видимости
+	void viewing_range(Map level, bool flag_view, char c); 
+	//Антон
+	void active(char Symbol, Map &level, short,short, RenderWindow &window, View &view); 
 	//установка жизней героя
 	void set_hit_point(int);
 
-	int get_viewing_range();
-	
 private:
     
 };

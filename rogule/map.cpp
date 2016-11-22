@@ -4,18 +4,25 @@
 static int error;
 bool flag = true, flag_0 = true;
 
+// Видит ли герой клетку
 bool Cell::get_view()
 {
 	return this->_view;
 }
+
+// Установка параметра видимости клетки
 void Cell::set_view(bool bl)
 {
 	_view = bl;
 }
+
+// Установка разведки клетки
 void Cell::set_prospected(bool value)
 {
 	this->_prospected = value;
 }
+
+// Разведанна ли клетка
 bool Cell::get_prospected()
 {
 	return this->_prospected;
@@ -35,16 +42,19 @@ Cell::Cell(char symbol, bool prospected, bool view)
 	_view = view;
 }
 
+// Установка символа клетки
 void Cell::set_value(char symbol)
 {
 	_value = symbol;
 }
 
+// Получение символа клетки
 char Cell::get_value()
 {
 	return _value;
 }
 
+//клетка прозрачна?
 bool Cell::is_limpid() // Прозрачность
 {
 	if (this->_value == '#')
@@ -57,6 +67,7 @@ bool Cell::is_limpid() // Прозрачность
 	}
 }
 
+// Клетка проходима?
 bool Cell::is_permeable() // Проходимость
 {
 	if (this->_value == '#' || (this->_value >= 'A' && this->_value <= 'Z'))
@@ -112,6 +123,7 @@ Map::Map(short n, short m)
 	map.loadFromFile("images/map.png");
 }
 
+// перересовывает клетку в консоли
 void Map::reprint_cell(short x, short y)
 {
 	COORD position = { x, y }; //позиция x и y
@@ -120,11 +132,13 @@ void Map::reprint_cell(short x, short y)
 	cout << this->_game_field_level[y][x].get_value();
 }
 
+//Антон
 void Room::fill_room()
 {
 	_room[this->_left_angle_y + rand() % 5][this->_left_angle_x + rand() % 5].set_value('$');
 }
 
+//Антон
 Room* Map::initialize_Level()
 {
 	Room *Head;
@@ -139,6 +153,7 @@ Room* Map::initialize_Level()
 	}
 }
 
+//Антон
 int Map::Create_room(Room *room)
 {
 
@@ -166,6 +181,7 @@ int Map::Create_room(Room *room)
 	}
 }
 
+//Антон
 int Map::Create_corridor(Room *room)
 {
 	bool flag_2, flag_3;
@@ -296,6 +312,7 @@ int Map::Create_corridor(Room *room)
 //
 //}
 
+// Возвращает клетку по координатам х, у
 Cell& Map::get_cell(short x, short y)
 {
 	if (x >= this->_m || y >= this->_n)
@@ -303,6 +320,7 @@ Cell& Map::get_cell(short x, short y)
 	return this->_game_field_level[y][x];
 }
 
+// устанавливает значение клетки по координатам х, у
 void Map::set_cell(Cell cell, short x, short y)
 {
 	if (x >= this->_m || y >= this->_n)
@@ -310,6 +328,7 @@ void Map::set_cell(Cell cell, short x, short y)
 	this->_game_field_level[y][x] = cell;
 }
 
+// Устанавливает значение клетки по координатам х, у
 void Map::set_cell(char c, short x, short y)
 {
 	if (x >= this->_m || y >= this->_n)
@@ -317,6 +336,7 @@ void Map::set_cell(char c, short x, short y)
 	this->_game_field_level[y][x].set_value(c);
 }
 
+// Рисует уровень в окне
 void Map::print_level(RenderWindow &window)
 {
 	RectangleShape rectangle(Vector2f(32, 32));
@@ -403,7 +423,7 @@ void Map::print_level(RenderWindow &window)
 //	}
 //}
 
-
+// Стоит ли на клетке моб
 bool Cell::is_mob()
 {
 	if (this->_value >= 'A' && this->_value <= 'Z')

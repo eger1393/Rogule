@@ -25,8 +25,11 @@ public:
 	void attak(Unit &unit2); 
 	// Передвинуть юнит
 	void set_unit(Map level, short x, short y); 
+	// Вернуть кол-во жизне юнита
 	int get_hit_point();
+	// Вернуть координату х
 	int get_x();
+	// Вернуть координату У
 	int get_y();
 protected:
 	int _hit_point, // Здоровье

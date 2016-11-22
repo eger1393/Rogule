@@ -82,14 +82,14 @@ int Mob::find_way(Map level, Hero &hero) // ИИ моба движется к герою
 {
 	int temp_x = this->_x, temp_y = this->_y; //Временные переменные нужны для корректной работы ф-ии set_unit
 	//Движение по оси Х
-	if (this->_x > hero.get_x() && level.get_cell(this->_x - 1, this->_y).get_value() == ' ') //если герой правее моба и правая клетка свободна
+	if (this->_x > hero.get_x() && level.get_cell(temp_x - 1, temp_y).get_value() == ' ') //если герой правее моба и правая клетка свободна
 		temp_x--; // То моб движется вправо
-	if (this->_x < hero.get_x() && level.get_cell(this->_x + 1, this->_y).get_value() == ' ')
+	if (this->_x < hero.get_x() && level.get_cell(temp_x + 1, temp_y).get_value() == ' ')
 		temp_x++;
 	// Движение по оси У
-	if (this->_y > hero.get_y() && level.get_cell(this->_x, this->_y - 1).get_value() == ' ')
+	if (this->_y > hero.get_y() && level.get_cell(temp_x, temp_y - 1).get_value() == ' ')
 		temp_y--;
-	if (this->_y < hero.get_y() && level.get_cell(this->_x, this->_y + 1).get_value() == ' ')
+	if (this->_y < hero.get_y() && level.get_cell(temp_x, temp_y + 1).get_value() == ' ')
 		temp_y++;
 
 	if (temp_x != hero.get_x() || temp_y != hero.get_y()) // если моб не дошел до героя
@@ -135,6 +135,9 @@ void work_to_mobs(vector <Mob*> &arr_mob, RenderWindow &window, Map &level)
 			arr_mob.erase(arr_mob.begin() + i); // удалаю моба из массива мобов
 		}
 		else // если моб жив
-			window.draw(arr_mob[i]->sprite); //отрисовка моба
+		{
+			if(level.get_cell(arr_mob[i]->get_x(), arr_mob[i]->get_y()).get_view()) // Если герой видит моба
+				window.draw(arr_mob[i]->sprite); //отрисовка моба
+		}
 	}
 }
