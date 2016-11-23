@@ -41,6 +41,18 @@ void Hero::active(char Symbol, Map &level, short x, short y, RenderWindow &windo
 
 		break;
 	}
+	case '`':
+	{
+		this->set_hit_point((this->get_hit_point())*-1);
+
+		break;
+	}
+	case '%':
+	{
+		this->set_hit_point((this->get_hit_point())*-1);
+
+		break;
+	}
 	default:
 		break;
 	}

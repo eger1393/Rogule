@@ -76,7 +76,7 @@ int main()
 		level_1.print_level(window); // Отрисовка карты
 		
 		//вывод текста
-		for (int i = 1; i < 4; i++)
+		for (int i = 1; i < 5; i++)
 		{
 			Message message_box(&hero, i, view,Color::White);
 			window.draw(message_box);

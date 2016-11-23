@@ -132,11 +132,6 @@ void Map::reprint_cell(short x, short y)
 	cout << this->_game_field_level[y][x].get_value();
 }
 
-//Антон
-void Room::fill_room()
-{
-	_room[this->_left_angle_y + rand() % 5][this->_left_angle_x + rand() % 5].set_value('$');
-}
 
 //Антон
 Room* Map::initialize_Level()
@@ -168,16 +163,92 @@ int Map::Create_room(Room *room)
 			_game_field_level[i][j].set_value(' ');
 		}
 	}
-	_game_field_level[room->_left_angle_y + rand() % 5][room->_left_angle_x + rand() % 5].set_value('$');
-	_game_field_level[room->_left_angle_y + rand() % 3][room->_left_angle_x + rand() % 3].set_value('!');
-	if (flag)
+	//добавляем сундучки
 	{
-		Create_corridor(room);
+		_game_field_level[room->_left_angle_y + rand() % 5][room->_left_angle_x + rand() % 5].set_value('$');
 	}
-	else
+	
+	//добавляем опасность
 	{
-		return flag_0 = false;
+		int temp;
+		do
+		{
+			temp = 1 + rand() % 3;
+		} while (((room->_left_angle_y + temp + 2) > room->_nStr) && ((room->_left_angle_x + temp + 2) > room->_nStlb));
+		
+		int value = rand() % 10;
+		switch (value)
+		{
+
+		case 1:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('!');
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 1].set_value('!');
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 2].set_value('!');
+			break;
+		}
+		case 2:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('!');
+			_game_field_level[room->_left_angle_y + temp+1][room->_left_angle_x + temp].set_value('!');
+			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp].set_value('!');
+			break;
+		}
+		case 3:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('!');
+			_game_field_level[room->_left_angle_y + temp+1][room->_left_angle_x + temp + 1].set_value('!');
+			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp + 2].set_value('!');
+			break;
+		}
+		case 4:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('`');
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 1].set_value('`');
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 2].set_value('`');
+			break;
+		}
+		case 5:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('`');
+			_game_field_level[room->_left_angle_y + temp+1][room->_left_angle_x + temp + 1].set_value('`');
+			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp + 2].set_value('`');
+			break;
+		}
+		case 6:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('`');
+			_game_field_level[room->_left_angle_y + temp+1][room->_left_angle_x + temp].set_value('`');
+			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp].set_value('`');
+			break;
+		}
+		case 7:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('%');
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 1].set_value('%');
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 2].set_value('%');
+			break;
+		}
+		case 8:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('%');
+			_game_field_level[room->_left_angle_y + temp+1][room->_left_angle_x + temp + 1].set_value('%');
+			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp + 2].set_value('%');
+		}
+		case 9:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('%');
+			_game_field_level[room->_left_angle_y + temp+1][room->_left_angle_x + temp].set_value('%');
+			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp].set_value('%');
+			break;
+		}
+		default:
+			break;
+		}
+		
 	}
+	
+
 	while (rand() % 10 < 5)
 	{
 		int temp_x = room->_left_angle_x + rand() % 5, // х координата моба
@@ -210,6 +281,15 @@ int Map::Create_room(Room *room)
 		default:
 			break;
 		}
+	}
+
+	if (flag)
+	{
+		Create_corridor(room);
+	}
+	else
+	{
+		return flag_0 = false;
 	}
 }
 
@@ -407,6 +487,15 @@ void Map::print_level(RenderWindow &window)
 				case '!': // Опасность
 					rectangle.setTextureRect(IntRect(160, 0, 32, 32));;
 					break;
+
+				case '`': // Опасность
+					rectangle.setTextureRect(IntRect(128, 0, 32, 32));;
+					break;
+
+				case '%': // Опасность
+					rectangle.setTextureRect(IntRect(192, 0, 32, 32));;
+					break;
+
 
 				default:
 					break;

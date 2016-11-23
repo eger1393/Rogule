@@ -57,8 +57,8 @@ Message::Message(Hero *hero, int flag, View &view, Color color)
 	}
 	case 3:
 	{
-		playerData << hero->get_viewing_range();
-		this->setString("View:" + playerData.str()); //задаем строку тексту и вызываем сформированную выше строку методом .str() 
+		playerData << hero->get_armor();
+		this->setString("Armor" + playerData.str()); //задаем строку тексту и вызываем сформированную выше строку методом .str() 
 		break;
 	}
 	case 4:
@@ -72,5 +72,5 @@ Message::Message(Hero *hero, int flag, View &view, Color color)
 	}
 
 	this->setPosition(view.getCenter().x + GetSystemMetrics(SM_CXSCREEN) / 2 - 250,
-		(view.getCenter().y - GetSystemMetrics(SM_CYSCREEN) / 2 + 100) + 25 * flag);//задаем позицию текста
+		(view.getCenter().y - GetSystemMetrics(SM_CYSCREEN) / 2 + 100) + 35 * flag);//задаем позицию текста
 }
