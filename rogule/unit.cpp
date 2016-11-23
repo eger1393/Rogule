@@ -91,24 +91,32 @@ int Unit::get_y()
 	return _y;
 }
 
+int Unit::get_damage()
+{
+	return this->_damage;
+}
 // Юнит вызвавший ф-ию атакую переданный юнит
-void Unit::attak(Unit &unit2) 
+int Unit::attak(Unit &unit2)
 {
 	if (this->_damage <= unit2._armor) //если броня больше дамага
 	{
 		unit2._hit_point -= 1;
+		return 0;
 	}
 	else
 	{
 		unit2._hit_point -= this->_damage - unit2._armor;
-		
+		if (unit2._icon == '@')
+			return 1;
+		else
+			return 2;
 	}
+
 	if (unit2._hit_point <= 0) // Смерть юнита
 	{ 
-		
+		return 3;
 		// Обработать смерть
 	}
-	return;
 }
 
 void Unit::set_unit(Map level, short x, short y) // Передвинуть юнит

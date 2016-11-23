@@ -26,8 +26,6 @@ public:
 	void set_hit_point(int);
 	//вернуть радиус обзора
 	int get_viewing_range();
-	//вернуть урон
-	int get_damage();
 	//вернуть броню
 	int get_armor();
 

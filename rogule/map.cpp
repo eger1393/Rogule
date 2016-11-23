@@ -165,7 +165,12 @@ int Map::Create_room(Room *room)
 	}
 	//добавляем сундучки
 	{
-		_game_field_level[room->_left_angle_y + rand() % 5][room->_left_angle_x + rand() % 5].set_value('$');
+		int temp;
+		//do{
+			temp = 1 + rand() % 4;
+		//} while (((room->_left_angle_y + temp + 2) > room->_nStr) && ((room->_left_angle_x + temp + 2) > room->_nStlb));
+
+		_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('$');
 	}
 	
 	//добавляем опасность
@@ -179,7 +184,7 @@ int Map::Create_room(Room *room)
 		int value = rand() % 10;
 		switch (value)
 		{
-
+				//огонь в ряд
 		case 1:
 		{
 			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('!');
@@ -187,6 +192,7 @@ int Map::Create_room(Room *room)
 			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 2].set_value('!');
 			break;
 		}
+			//огонь в столбец
 		case 2:
 		{
 			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('!');
@@ -194,6 +200,7 @@ int Map::Create_room(Room *room)
 			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp].set_value('!');
 			break;
 		}
+			//огонь в диагональ
 		case 3:
 		{
 			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('!');
@@ -201,6 +208,7 @@ int Map::Create_room(Room *room)
 			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp + 2].set_value('!');
 			break;
 		}
+			//огонь в столбец
 		case 4:
 		{
 			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('`');
@@ -208,6 +216,7 @@ int Map::Create_room(Room *room)
 			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 2].set_value('`');
 			break;
 		}
+			//огонь в столбец
 		case 5:
 		{
 			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('`');
@@ -215,6 +224,7 @@ int Map::Create_room(Room *room)
 			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp + 2].set_value('`');
 			break;
 		}
+			//огонь в столбец
 		case 6:
 		{
 			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('`');
@@ -222,6 +232,7 @@ int Map::Create_room(Room *room)
 			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp].set_value('`');
 			break;
 		}
+			//шипы в ряд
 		case 7:
 		{
 			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('%');
@@ -229,12 +240,14 @@ int Map::Create_room(Room *room)
 			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 2].set_value('%');
 			break;
 		}
+			//шипы в диагональ
 		case 8:
 		{
 			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('%');
 			_game_field_level[room->_left_angle_y + temp+1][room->_left_angle_x + temp + 1].set_value('%');
 			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp + 2].set_value('%');
 		}
+			//шипы в столбец
 		case 9:
 		{
 			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('%');
@@ -258,25 +271,25 @@ int Map::Create_room(Room *room)
 		{
 		case 0: // Летающий имп
 			arr_mob.push_back(new Mob(5 + rand() % 5, 5, rand() % 5 + 5, rand() % 5, 'A',
-				temp_x, temp_y, "imp", *this));
+				temp_x, temp_y, "Imp ", *this));
 			break;
 		case 1: // Питон
 			arr_mob.push_back(new Mob(10 + rand() % 5, 5, rand() % 5 + 7, rand() % 5 + 2, 'B',
-				temp_x, temp_y, "python", *this));
+				temp_x, temp_y, "Snake ", *this));
 			break;
 
 		case 2: // Скелет
 			arr_mob.push_back(new Mob(15 + rand() % 5, 5, rand() % 5 + 10, rand() % 5 + 5, 'C',
-				temp_x, temp_y, "skileton", *this));
+				temp_x, temp_y, "Skeleton ", *this));
 			break;
 
 		case 3: // Чеширский кот
 			arr_mob.push_back(new Mob(20 + rand() % 5, 5, rand() % 5 + 13, rand() % 5 + 7, 'D',
-				temp_x, temp_y, "cat", *this));
+				temp_x, temp_y, "Evil cat ", *this));
 			break;
 		case 4: // Дракон
 			arr_mob.push_back(new Mob(30 + rand() % 5, 5, rand() % 5 + 15, rand() % 5  + 10, 'E',
-				temp_x, temp_y, "The Dragon", *this));
+				temp_x, temp_y, "The Dragon ", *this));
 			break;
 		default:
 			break;

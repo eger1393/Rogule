@@ -9,7 +9,7 @@
 int main()
 {
 	srand((unsigned int)time(0));
-
+	setlocale(0, "");
 	sf::RenderWindow window(sf::VideoMode(GetSystemMetrics(SM_CXSCREEN) - 100, GetSystemMetrics(SM_CYSCREEN) - 100), "Rogule!"); //sf::Style::Fullscreen); //окно
 
 	view.reset(sf::FloatRect(0, 0, GetSystemMetrics(SM_CXSCREEN) - 100, GetSystemMetrics(SM_CYSCREEN) - 100)); //камера 
@@ -78,7 +78,7 @@ int main()
 		//вывод текста
 		for (int i = 1; i < 5; i++)
 		{
-			Message message_box(&hero, i, view,Color::White);
+			Message message_box(&hero, i, view ,Color::White);
 			window.draw(message_box);
 		}
 		

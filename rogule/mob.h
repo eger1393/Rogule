@@ -19,7 +19,7 @@ public:
 	// Социальное агро(добовляет флаг _is_attack всем мобам в радиусе видимисти)
 	void social_agro(Map level); 
 	// Моб преследует героя
-	int find_way(Map level, Hero &hero); //level - уровень, х,у координаты героя возвращает 1 если мод атакует героя
+	int find_way(Map level, Hero &hero, View &viewer, RenderWindow &window); //level - уровень, х,у координаты героя возвращает 1 если мод атакует героя
 	// Устанавливает значение флага атаки
 	void set_is_attack(bool value); 
 	// Вовзвращает значение флага атаки

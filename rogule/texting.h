@@ -4,11 +4,11 @@
 class Message : public Text
 {
 private:
-	static int count;
 	Font font;
 public:
+	static int count;
 
-	Message(View &view, string str, Color color,  int size = 30, int value = 0);
+	Message(View &view, string str, Color color, int value = 0, int size = 30 );
 	
 	Message(Hero *hero, int flag, View &view, Color);
 	
