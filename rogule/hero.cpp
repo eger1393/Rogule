@@ -1,6 +1,8 @@
 
 #include "stdafx.h"
 
+
+
 Hero::Hero(int hit_point, // Здоровье
 	int viewing_range, // Радиус обзора
 	int damage, // Урон
@@ -8,13 +10,16 @@ Hero::Hero(int hit_point, // Здоровье
 	short x, short y // Координаты существа
 	) : Unit(hit_point, viewing_range, damage, armor, '@', y, x)
 {
+
 	texture.loadFromFile("images/hero.png"); //картинка
 
 	sprite.setTexture(texture);//передаём в него объект Texture (текстуры)
 
 	sprite.setPosition((float)y*32, (float)x*32);//задаем начальные координаты появления спрайта
+
 	
 }
+
 void Hero::set_hit_point(int hit)
 {
 	_hit_point += hit;
@@ -33,6 +38,7 @@ void Hero::active(char Symbol, Map &level, short x, short y, RenderWindow &windo
 	case '$':
 	{
 		level.get_cell(x, y).set_value(' ');
+
 		break;
 	}
 	case '!':
@@ -196,8 +202,8 @@ int Hero::key_press(Map &level, View &viewer, RenderWindow &window)
 					{
 						if (this->get_x() - 1 == level.arr_mob[i]->get_x() && this->get_y() == level.arr_mob[i]->get_y())
 						{
-							temp = this->attak(*level.arr_mob[i]);
-							Message box(viewer, "You damage : ", Color::Green,this->get_damage());
+							this->attak(*level.arr_mob[i]);
+							/*Message box(viewer, "You damage : ", Color::Green,this->get_damage());
 							window.draw(box);
 							if (temp == 3)
 							{
@@ -205,7 +211,7 @@ int Hero::key_press(Map &level, View &viewer, RenderWindow &window)
 								window.draw(box_1);
 							}
 							window.display();
-							Sleep(300);
+							Sleep(300);*/
 						}
 					}
 				}
@@ -229,19 +235,12 @@ int Hero::key_press(Map &level, View &viewer, RenderWindow &window)
 					{
 						if (this->get_x() + 1 == level.arr_mob[i]->get_x() && this->get_y() == level.arr_mob[i]->get_y())
 						{
-							temp = this->attak(*level.arr_mob[i]);
-							Message box(viewer, "You damage : ", Color::Green, this->get_damage());
-							window.draw(box);
-							if (temp == 3)
-							{
-								Message box_1(viewer, "You killed the mob! ", Color::Color(191, 62, 255, 255));
-								window.draw(box_1);
-							}
-							window.display();
-							Sleep(300);
+							this->attak(*level.arr_mob[i]);
 						}
+
 					}
 				}
+
 				if (level.get_cell(this->get_x() + 1, this->get_y()).is_permeable())
 				{
 					this->viewing_range(level, false);
@@ -262,16 +261,7 @@ int Hero::key_press(Map &level, View &viewer, RenderWindow &window)
 					{
 						if (this->get_x() == level.arr_mob[i]->get_x() && this->get_y() - 1 == level.arr_mob[i]->get_y())
 						{
-							temp = this->attak(*level.arr_mob[i]);
-							Message box(viewer, "You damage : ", Color::Green, this->get_damage());
-							window.draw(box);
-							if (temp == 3)
-							{
-								Message box_1(viewer, "You killed the mob! ", Color::Color(191, 62, 255, 255));
-								window.draw(box_1);
-							}
-							window.display();
-							Sleep(300);
+							 this->attak(*level.arr_mob[i]);
 						}
 					}
 				}
@@ -295,16 +285,8 @@ int Hero::key_press(Map &level, View &viewer, RenderWindow &window)
 					{
 						if (this->get_x() == level.arr_mob[i]->get_x() && this->get_y() + 1 == level.arr_mob[i]->get_y())
 						{
-							temp = this->attak(*level.arr_mob[i]);
-							Message box(viewer, "You damage : ", Color::Green, this->get_damage());
-							window.draw(box);
-							if (temp == 3)
-							{
-								Message box_1(viewer, "You killed the mob! ", Color::Color(191, 62, 255, 255));
-								window.draw(box_1);
-							}
-							window.display();
-							Sleep(300);
+							 this->attak(*level.arr_mob[i]);
+						
 							
 						}
 					}
@@ -327,7 +309,7 @@ int Hero::key_press(Map &level, View &viewer, RenderWindow &window)
 		}
 		else // 
 		{
-			Message message_box(viewer, "You died!", Color::Red);
+			Message message_box("You died!", Color::Red);
 			message_box.setPosition(viewer.getCenter().x - 64, viewer.getCenter().y);//задаем позицию текста, центр камеры
 
 			window.draw(message_box);

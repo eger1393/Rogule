@@ -33,6 +33,11 @@ public:
 	int get_y();
 	//вернуть урон
 	int get_damage();
+
+	void push_log(string);
+
+	Text text;
+
 protected:
 	int _hit_point, // Здоровье
 		_viewing_range, // Радиус обзора

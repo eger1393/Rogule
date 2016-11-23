@@ -16,6 +16,7 @@ Unit::Unit(int hit_point, // Здоровье
 	this->_icon = icon;
 	this->_x = x;
 	this->_y = y;
+
 }
 
 int Unit::get_hit_point()
@@ -95,6 +96,12 @@ int Unit::get_damage()
 {
 	return this->_damage;
 }
+
+void Unit::push_log(string str)
+{
+	this->text.setString(this->text.getString() + "\n" + str);
+}
+
 // Юнит вызвавший ф-ию атакую переданный юнит
 int Unit::attak(Unit &unit2)
 {
@@ -107,7 +114,9 @@ int Unit::attak(Unit &unit2)
 	{
 		unit2._hit_point -= this->_damage - unit2._armor;
 		if (unit2._icon == '@')
-			return 1;
+		{
+			unit2.push_log("You hit! Damage: ");
+		}
 		else
 			return 2;
 	}

@@ -112,8 +112,8 @@ int Mob::find_way(Map level, Hero &hero, View &viewer, RenderWindow &window) // 
 	{
 		//if (this->get_hit_point() > 0)
 		{
-			temp = this->attak(hero);
-			if (temp == 0)
+			 this->attak(hero);
+			/*if (temp == 0)
 			{
 				Message box(viewer, "You do not hit hard :)", Color::White);
 				Message box_1(viewer, this->_description, Color::White,this->get_hit_point());
@@ -129,7 +129,7 @@ int Mob::find_way(Map level, Hero &hero, View &viewer, RenderWindow &window) // 
 
 			}
 			window.display();
-			Sleep(300);
+			Sleep(300);*/
 		}
 			
 		return 1;

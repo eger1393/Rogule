@@ -14,6 +14,8 @@ int main()
 
 	view.reset(sf::FloatRect(0, 0, GetSystemMetrics(SM_CXSCREEN) - 100, GetSystemMetrics(SM_CYSCREEN) - 100)); //камера 
 
+	//view_text.reset(sf::FloatRect(GetSystemMetrics(SM_CXSCREEN) - 400, GetSystemMetrics(SM_CYSCREEN) - 100, 300, GetSystemMetrics(SM_CYSCREEN) - 100));
+
 	Map level_1(50, 50); // сам уровень
 
 	Room *head; //эт голова дерева комнат
@@ -31,6 +33,7 @@ int main()
 	Clock clock;
 
 	/*level_1.print_level(window);*/
+
 	hero.viewing_range(level_1, true);
 	while (window.isOpen()) // пока открыто окно
 
@@ -85,6 +88,11 @@ int main()
 		window.draw(hero.sprite); //отрисовка героя
 
 		level_1.work_to_mobs(window);
+
+
+		hero.text.setPosition(view.getCenter().x, view.getCenter().y);
+
+		window.draw(hero.text);
 
 		window.display(); //вывод
 

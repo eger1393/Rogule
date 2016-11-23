@@ -8,12 +8,8 @@ private:
 public:
 	static int count;
 
-	Message(View &view, string str, Color color, int value = 0, int size = 30 );
+	Message(string str, Color color, int value = 0, int size = 30 );
 	
 	Message(Hero *hero, int flag, View &view, Color);
 	
-
-
-
-
 };

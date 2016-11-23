@@ -7,8 +7,6 @@ class Hero : public Unit
 {
 public:
 
-    //Hero();
-
     Hero(int hit_point, // Здоровье
 		int viewing_range, // Радиус обзора
 		int damage, // Урон
@@ -28,6 +26,10 @@ public:
 	int get_viewing_range();
 	//вернуть броню
 	int get_armor();
+	
+	//Message message_box;
+
+	
 
 private:
     

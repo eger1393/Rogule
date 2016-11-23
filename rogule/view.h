@@ -2,29 +2,24 @@
 #include "stdafx.h" 
 
 sf::View view;//объ€вили sfml объект "вид", который и €вл€етс€ камерой
-
-void getplayercoordinateforview(float x, float y) { //функци€ дл€ считывани€ координат игрока
-
-	view.setCenter(x, y); //следим за игроком, передава€ его координаты. 
-}
-
+sf::View view_text;
 
 void viewmap(float time) { //функци€ дл€ перемещени€ камеры по карте. принимает врем€ sfml
 
 
 	if (Keyboard::isKeyPressed(Keyboard::D)) {
-		view.move((float)0.5*time, 0);//скроллим карту вправо (см урок, когда мы двигали геро€ - всЄ тоже самое)
+		view.move((float)0.5*time, 0);//скроллим карту вправо 
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::S)) {
-		view.move(0, (float)0.5*time);//скроллим карту вниз (см урок, когда мы двигали геро€ - всЄ тоже самое)
+		view.move(0, (float)0.5*time);//скроллим карту вниз
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::A)) {
-		view.move((float)-0.5*time, 0);//скроллим карту влево (см урок, когда мы двигали геро€ - всЄ тоже самое)
+		view.move((float)-0.5*time, 0);//скроллим карту влево 
 	}
 	if (Keyboard::isKeyPressed(Keyboard::W)) {
-		view.move(0, (float)-0.5*time);//скроллим карту вправо (см урок, когда мы двигали геро€ - всЄ тоже самое)
+		view.move(0, (float)-0.5*time);//скроллим карту вправо
 	}
 
 }
