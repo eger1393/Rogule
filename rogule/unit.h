@@ -16,7 +16,8 @@ public:
 		int damage, // Урон
 		int armor, // Броня
 		char icon, // Иконка cущества
-	short x, short y // Координаты существа
+	short x, short y, // Координаты существа
+		std::string description // Описание монстра
 	); // Конструктор
 	
 	//void viewing_range(Map level, char c); // Вычесление области видимости
@@ -32,6 +33,7 @@ public:
 	// Вернуть координату У
 	int get_y();
 protected:
+	std::string _description; // Описание монстра
 	int _hit_point, // Здоровье
 		_viewing_range, // Радиус обзора
 		_damage, // Урон

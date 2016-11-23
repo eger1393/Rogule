@@ -8,7 +8,7 @@ Mob::Mob(int hit_point, // Здоровье
 	short x, short y, // Координаты существа
 	std::string description, // Описание монстра
 	Map level // где сгенерирован моб (нужно для его размещения)
-	) : Unit(hit_point, viewing_range, damage, armor, icon, x, y)
+	) : Unit(hit_point, viewing_range, damage, armor, icon, x, y, description)
 {
 	texture.loadFromFile("images/mob.png"); //картинка
 	sprite.setTexture(texture);//передаём в него объект Texture (текстуры)

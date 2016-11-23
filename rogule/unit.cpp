@@ -5,7 +5,8 @@ Unit::Unit(int hit_point, // Здоровье
 	int damage, // Урон
 	int armor, // Броня
 	char icon, // Иконка cущества
-	short x, short y // Координаты существа
+	short x, short y, // Координаты существа
+	std::string description // Описание монстра
 	) // Конструктор
 {
 
@@ -16,6 +17,7 @@ Unit::Unit(int hit_point, // Здоровье
 	this->_icon = icon;
 	this->_x = x;
 	this->_y = y;
+	this->_description = description;
 }
 
 int Unit::get_hit_point()

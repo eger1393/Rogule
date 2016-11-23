@@ -6,7 +6,7 @@ Hero::Hero(int hit_point, // Здоровье
 	int damage, // Урон
 	int armor, // Броня
 	short x, short y // Координаты существа
-	) : Unit(hit_point, viewing_range, damage, armor, '@', y, x)
+	) : Unit(hit_point, viewing_range, damage, armor, '@', y, x, "Hero")
 {
 	texture.loadFromFile("images/hero.png"); //картинка
 
