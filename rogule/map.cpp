@@ -487,3 +487,4 @@ void Map::work_to_mobs(RenderWindow &window)
 		}
 	}
 }
+

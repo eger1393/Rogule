@@ -297,14 +297,10 @@ int Hero::key_press(Map &level, View &viewer, RenderWindow &window)
 		}
 		else // 
 		{
-			Font font;//шрифт 
-			font.loadFromFile("HelveticaNeue-Bold.ttf");//передаем нашему шрифту файл шрифта
-			Text text("", font, 50);//создаем объект текст. закидываем в объект текст строку, шрифт, размер шрифта(в пикселях);//сам объект текст (не строка)
-			text.setFillColor(Color::Red);//покрасили текст в красный. если убрать эту строку, то по умолчанию он белый
-			text.setString("You died!");//задает строку тексту
-			text.setPosition(viewer.getCenter().x - 64, viewer.getCenter().y);//задаем позицию текста, центр камеры
+			Message message_box(viewer, "You died!", Color::Red,50);
+			message_box.setPosition(viewer.getCenter().x - 64, viewer.getCenter().y);//задаем позицию текста, центр камеры
 
-			window.draw(text);
+			window.draw(message_box);
 			window.display();
 			Sleep(500);
 			return false;

@@ -30,6 +30,7 @@ using namespace sf;
 #include "unit.h"
 #include "hero.h"
 #include "mob.h"
+#include "texting.h"
 
 
 

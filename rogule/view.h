@@ -1,7 +1,5 @@
 #pragma once
-
-#include <SFML/Graphics.hpp>
-using namespace sf;
+#include "stdafx.h" 
 
 sf::View view;//объ€вили sfml объект "вид", который и €вл€етс€ камерой
 
@@ -31,7 +29,7 @@ void viewmap(float time) { //функци€ дл€ перемещени€ камеры по карте. принимает 
 
 }
 
-void changeview(Hero hero) {
+void changeview() {
 
 
 	if (Keyboard::isKeyPressed(Keyboard::U)) {
@@ -50,7 +48,7 @@ void changeview(Hero hero) {
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::P)) {
-		view.setCenter((float)hero.get_x()*32, (float)hero.get_y()*32);//например другой размер
+		
 	}
 
 
