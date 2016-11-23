@@ -51,7 +51,7 @@ int main()
 
 	head = level_1.initialize_Level(); // ну тут понятно
 
-	Hero hero(100, 10, 1, 1, 1, 1); // герой
+	Hero hero(10, 10, 10, 10, 1, 1); // герой
 
 	vector <Mob*> arr_mob;
 	arr_mob.push_back(new Mob(5, 5, 15, 2, 'A', 5, 5, "test mob", level_1));
