@@ -15,6 +15,7 @@ public:
 		Map level // где сгенерирован моб (нужно для его размещения)
 		);// Конструктор
 	Mob();
+	//Mob(char icon, short x, short y, Map level);
 	// Социальное агро(добовляет флаг _is_attack всем мобам в радиусе видимисти)
 	void social_agro(Map level); 
 	// Моб преследует героя

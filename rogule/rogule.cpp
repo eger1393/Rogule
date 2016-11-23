@@ -34,16 +34,17 @@ void setting_text(Text *text,Hero *hero, int flag, View &view, int value = 0, st
 		text->setString(str + playerData.str()); //задаем строку тексту и вызываем сформированную выше строку методом .str() 
 			break;
 	}
-	text->setPosition(view.getCenter().x - 950, (view.getCenter().y - 540) + 25*flag);//задаем позицию текста
+	text->setPosition(view.getCenter().x + GetSystemMetrics(SM_CXSCREEN) / 2 - 250, 
+		(view.getCenter().y - GetSystemMetrics(SM_CYSCREEN) / 2 + 100) + 25*flag);//задаем позицию текста
 }
 
 int main()
 {
 	srand((unsigned int)time(0));
 
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Rogule!"); //sf::Style::Fullscreen); //окно
+	sf::RenderWindow window(sf::VideoMode(GetSystemMetrics(SM_CXSCREEN) - 100, GetSystemMetrics(SM_CYSCREEN) - 100), "Rogule!"); //sf::Style::Fullscreen); //окно
 
-	view.reset(sf::FloatRect(0, 0, 1920, 1080)); //камера 
+	view.reset(sf::FloatRect(0, 0, GetSystemMetrics(SM_CXSCREEN) - 100, GetSystemMetrics(SM_CYSCREEN) - 100)); //камера 
 
 	Map level_1(50, 50); // сам уровень
 
@@ -51,11 +52,11 @@ int main()
 
 	head = level_1.initialize_Level(); // ну тут понятно
 
-	Hero hero(10, 10, 10, 10, 1, 1); // герой
+	Hero hero(1000, 10, 10, 10, 1, 1); // герой
 
 	vector <Mob*> arr_mob;
-	arr_mob.push_back(new Mob(5, 5, 15, 2, 'A', 5, 5, "test mob", level_1));
-	arr_mob.push_back(new Mob(5, 5, 15, 2, 'B', 11, 11, "test mob", level_1));
+	//arr_mob.push_back(new Mob(5, 5, 15, 2, 'A', 5, 5, "test mob", level_1));
+	//arr_mob.push_back(new Mob(5, 5, 15, 2, 'B', 11, 11, "test mob", level_1));
 
 	Font font;//шрифт 
 	font.loadFromFile("HelveticaNeue-Bold.ttf");//передаем нашему шрифту файл шрифта
@@ -63,8 +64,12 @@ int main()
 
 	Clock clock;
 
-	/*level_1.print_level(window);*/
+	Text text1("", font, 50);//создаем объект текст. закидываем в объект текст строку, шрифт, размер шрифта(в пикселях);//сам объект текст (не строка)
+	text1.setFillColor(Color::Red);//покрасили текст в красный. если убрать эту строку, то по умолчанию он белый
+	text1.setString("You died!");//задает строку тексту
 
+	/*level_1.print_level(window);*/
+	hero.viewing_range(level_1, true);
 	while (window.isOpen()) // пока открыто окно
 
 	{
@@ -85,13 +90,17 @@ int main()
 			{
 				window.close(); 
 			}
-			hero.key_press(level_1, view,arr_mob,window);
-			if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Right)
-				|| Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Down)) {
-				for (int i = 0; i < arr_mob.size(); i++)
-					if (arr_mob[i]->get_is_attack()) // если установлен флаг атаки
-						arr_mob[i]->find_way(level_1, hero); // моб бежит к герою
-			}
+			//if (hero.get_hit_point() > 0)
+			//{
+				hero.key_press(level_1, view, window);
+				
+			//}
+			//else
+			//{
+			//	text1.setPosition(view.getCenter().x - 64, view.getCenter().y);//задаем позицию текста, центр камеры
+			//	window.draw(text);
+			//	//window.display();
+			//}
 		}
 
 		viewmap(time);//функция скроллинга карты, передаем ей время sfml
@@ -113,7 +122,7 @@ int main()
 		
 		window.draw(hero.sprite); //отрисовка героя
 
-		work_to_mobs(arr_mob, window, level_1);
+		level_1.work_to_mobs(window);
 
 		window.display(); //вывод
 

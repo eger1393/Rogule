@@ -11,9 +11,8 @@ Mob::Mob(int hit_point, // Здоровье
 	) : Unit(hit_point, viewing_range, damage, armor, icon, x, y)
 {
 	texture.loadFromFile("images/mob.png"); //картинка
-
 	sprite.setTexture(texture);//передаём в него объект Texture (текстуры)
-
+	sprite.setTextureRect(IntRect((icon - 'A') * 32, 0, 32, 32));//передаём в него объект Texture (текстуры)
 	sprite.setPosition((float)x * 32, (float)y * 32);//задаем начальные координаты появления спрайта
 
 	this->_description = description;
@@ -21,6 +20,11 @@ Mob::Mob(int hit_point, // Здоровье
 	this->_is_retreat = false;
 	this->set_unit(level, this->_x, this->_y);
 }
+
+//Mob::Mob(char icon, short x, short y, Map level)
+//{
+//	Unit();
+//}
 
 //void Mob::social_agro(Map level) // социальное агро(добовляет флаг _is_attack всем мобам в радиусе видимисти)
 //{
@@ -105,7 +109,8 @@ int Mob::find_way(Map level, Hero &hero) // ИИ моба движется к герою
 	}
 	else
 	{
-		this->attak(hero);
+		if(this->get_hit_point() > 0)
+			this->attak(hero);
 		return 1;
 	}
 

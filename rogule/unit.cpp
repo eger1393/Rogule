@@ -105,7 +105,7 @@ void Unit::attak(Unit &unit2)
 	}
 	if (unit2._hit_point <= 0) // Смерть юнита
 	{ 
-		//exit(1);
+		
 		// Обработать смерть
 	}
 	return;

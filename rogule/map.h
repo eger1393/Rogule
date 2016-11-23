@@ -3,6 +3,7 @@
 
 using namespace std;
 
+class Mob;
 
 class Cell
 {
@@ -65,11 +66,12 @@ public:
     void set_cell(char c, short x, short y); //задает ячейку
 	//рисует карту
     void print_level(RenderWindow&);
-
+	// Отрисовка мобов на карте
+	void work_to_mobs(RenderWindow &window);
 	//void print_circular();
 
 	friend Room;
-
+	vector <Mob*> arr_mob;
 	Cell **_game_field_level;
 
 private:

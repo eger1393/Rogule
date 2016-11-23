@@ -168,7 +168,6 @@ int Map::Create_room(Room *room)
 			_game_field_level[i][j].set_value(' ');
 		}
 	}
-
 	_game_field_level[room->_left_angle_y + rand() % 5][room->_left_angle_x + rand() % 5].set_value('$');
 	_game_field_level[room->_left_angle_y + rand() % 3][room->_left_angle_x + rand() % 3].set_value('!');
 	if (flag)
@@ -178,6 +177,39 @@ int Map::Create_room(Room *room)
 	else
 	{
 		return flag_0 = false;
+	}
+	while (rand() % 10 < 5)
+	{
+		int temp_x = room->_left_angle_x + rand() % 5, // х координата моба
+			temp_y = room->_left_angle_y + rand() % 5, // у координата моба
+			temp = rand() % 5; // тип моба
+		switch (temp)
+		{
+		case 0: // Летающий имп
+			arr_mob.push_back(new Mob(5 + rand() % 5, 5, rand() % 5 + 5, rand() % 5, 'A',
+				temp_x, temp_y, "imp", *this));
+			break;
+		case 1: // Питон
+			arr_mob.push_back(new Mob(10 + rand() % 5, 5, rand() % 5 + 7, rand() % 5 + 2, 'B',
+				temp_x, temp_y, "python", *this));
+			break;
+
+		case 2: // Скелет
+			arr_mob.push_back(new Mob(15 + rand() % 5, 5, rand() % 5 + 10, rand() % 5 + 5, 'C',
+				temp_x, temp_y, "skileton", *this));
+			break;
+
+		case 3: // Чеширский кот
+			arr_mob.push_back(new Mob(20 + rand() % 5, 5, rand() % 5 + 13, rand() % 5 + 7, 'D',
+				temp_x, temp_y, "cat", *this));
+			break;
+		case 4: // Дракон
+			arr_mob.push_back(new Mob(30 + rand() % 5, 5, rand() % 5 + 15, rand() % 5  + 10, 'E',
+				temp_x, temp_y, "The Dragon", *this));
+			break;
+		default:
+			break;
+		}
 	}
 }
 
@@ -433,5 +465,25 @@ bool Cell::is_mob()
 	else
 	{
 		return false;
+	}
+}
+
+void Map::work_to_mobs(RenderWindow &window)
+{
+	for (int i = 0; i < this->arr_mob.size(); i++)
+	{
+		if (this->arr_mob[i]->get_hit_point() < 0) // если моб умер
+		{
+			this->get_cell(this->arr_mob[i]->get_x(), this->arr_mob[i]->get_y()).set_value(' '); //ставлю вместо моба пол
+			this->arr_mob.erase(this->arr_mob.begin() + i); // удалаю моба из массива мобов
+		}
+		else // если моб жив
+		{
+			if (this->get_cell(this->arr_mob[i]->get_x(), this->arr_mob[i]->get_y()).get_view()) // Если герой видит моба
+			{
+				this->arr_mob[i]->set_unit(*this, this->arr_mob[i]->get_x(), this->arr_mob[i]->get_y()); // Костыль
+				window.draw(this->arr_mob[i]->sprite); //отрисовка моба
+			}
+		}
 	}
 }
