@@ -7,14 +7,14 @@ bool flag = true, flag_0 = true;
 Cell::Cell()
 {
 	_value = ' ';
-	_move = true;
+	//_move = true;
 	_view = false;
 }
 
 Cell::Cell(char symbol, bool go_to, bool use)
 {
 	_value = symbol;
-	_move = go_to;
+	//_move = go_to;
 	_view = use;
 }
 
@@ -88,7 +88,7 @@ Map::Map(short n, short m)
 		for (int j = 0; j < this->_m; j++)
 		{
 			_game_field_level[i][j].set_value('#');
-			_game_field_level[i][j].set_view(false);
+			//_game_field_level[i][j].set_view(false);
 		}
 	}
 
@@ -321,10 +321,10 @@ void Map::print_level(RenderWindow &window)
 			{
 				rectangle.setTexture(&floor);
 			}
-			if ((this->_game_field_level[i][j].get_value() == '1'))// && (this->_game_field_level[i][j].get_view()))
-			{
-				rectangle.setTexture(&empty);
-			}
+			//if ((this->_game_field_level[i][j].get_value() == '1'))//&& (this->_game_field_level[i][j].get_view()))
+			//{
+			//	rectangle.setTexture(&empty);
+			//}
 			if ((this->_game_field_level[i][j].get_value() == '$'))//&& (this->_game_field_level[i][j].get_view()))
 			{
 				rectangle.setTexture(&chest);

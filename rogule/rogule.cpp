@@ -6,11 +6,11 @@ int main()
 {
 	srand(time(0));
 
-	sf::RenderWindow window(sf::VideoMode(1920,1080), "Rogule!"); //sf::Style::Fullscreen); //окно
+	sf::RenderWindow window(sf::VideoMode(1280, 800), "Rogule!");//sf::Style::Fullscreen); //окно
 
-	view.reset(sf::FloatRect(0, 0, 1920, 1080)); //камера 
+	view.reset(sf::FloatRect(0, 0, 1280, 800)); //камера 
 
-	Map level_1(100, 150); // сам уровень
+	Map level_1(50, 50); // сам уровень
 
 	Room *head; //эт голова дерева комнат
 

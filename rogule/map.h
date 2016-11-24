@@ -35,8 +35,6 @@ private:
     //short _x, _y; //Координаты клетки
 	char _value;
 
-	bool _move;
-
 	bool _view;
 
 };

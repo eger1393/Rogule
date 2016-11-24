@@ -22,7 +22,7 @@ void Hero::active(char Symbol, Map &level, short x, short y)
 	{
 	case '$':
 	{
-		level.get_cell(x, y).set_value('1');
+		level.get_cell(x, y).set_value(' ');
 		break;
 	}
 
