@@ -2,24 +2,39 @@
 //
 #include "stdafx.h"
 #include "view.h"
+
+
+
+
 int main()
 {
-	srand(time(0));
+	srand((unsigned int)time(0));
+	setlocale(0, "");
+	sf::RenderWindow window(sf::VideoMode(GetSystemMetrics(SM_CXSCREEN) - 100, GetSystemMetrics(SM_CYSCREEN) - 100), "Rogule!"); //sf::Style::Fullscreen); //окно
 
-	sf::RenderWindow window(sf::VideoMode(1280, 800), "Rogule!");//sf::Style::Fullscreen); //окно
+	view.reset(sf::FloatRect(0, 0, GetSystemMetrics(SM_CXSCREEN) - 100, GetSystemMetrics(SM_CYSCREEN) - 100)); //камера 
 
-	view.reset(sf::FloatRect(0, 0, 1280, 800)); //камера 
+	//view_text.reset(sf::FloatRect(GetSystemMetrics(SM_CXSCREEN) - 400, GetSystemMetrics(SM_CYSCREEN) - 100, 300, GetSystemMetrics(SM_CYSCREEN) - 100));
 
 	Map level_1(50, 50); // сам уровень
 
 	Room *head; //эт голова дерева комнат
 
 	head = level_1.initialize_Level(); // ну тут понятно
-	
-	Hero hero(10,10,10,10,1,1); // герой
+
+	Hero hero(1000, 10, 10, 10, 1, 1); // герой
+
+	vector <Mob*> arr_mob;
+
+	Font font;//шрифт 
+	font.loadFromFile("HelveticaNeue-Bold.ttf");//передаем нашему шрифту файл шрифта
+	Text text("", font, 20);
 
 	Clock clock;
 
+	/*level_1.print_level(window);*/
+
+	hero.viewing_range(level_1, true);
 	while (window.isOpen()) // пока открыто окно
 
 	{
@@ -28,6 +43,8 @@ int main()
 		time = time / 800;
 
 		sf::Event event; //событие
+
+		
 
 		while (window.pollEvent(event)) //хз как это работает
 
@@ -38,21 +55,44 @@ int main()
 			{
 				window.close(); 
 			}
-
-			hero.key_press(level_1, view);
+			//if (hero.get_hit_point() > 0)
+			//{
+				hero.key_press(level_1, view, window);
+				
+			//}
+			//else
+			//{
+			//	text1.setPosition(view.getCenter().x - 64, view.getCenter().y);//задаем позицию текста, центр камеры
+			//	window.draw(text);
+			//	//window.display();
+			//}
 		}
 
 		viewmap(time);//функция скроллинга карты, передаем ей время sfml
 
-		changeview(hero);//прикалываемся с камерой вида
+		changeview();//прикалываемся с камерой вида
 
 		window.setView(view);//"оживляем" камеру в окне sfml
 
 		window.clear(Color::Black); //белый фон
 	
-			level_1.print_level(window);
-
+		level_1.print_level(window); // Отрисовка карты
+		
+		//вывод текста
+		for (int i = 1; i < 5; i++)
+		{
+			Message message_box(&hero, i, view ,Color::White);
+			window.draw(message_box);
+		}
+		
 		window.draw(hero.sprite); //отрисовка героя
+
+		level_1.work_to_mobs(window);
+
+
+		hero.text.setPosition(view.getCenter().x, view.getCenter().y);
+
+		window.draw(hero.text);
 
 		window.display(); //вывод
 
@@ -60,4 +100,5 @@ int main()
 	}
 	return 0;
 }
+
 

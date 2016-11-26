@@ -1,22 +1,30 @@
 #include "stdafx.h"
 
-const std::string name_mobs[] = {
-	"z","Z","x","X"
-};
-
 Mob::Mob(int hit_point, // Здоровье
 	int viewing_range, // Радиус обзора
 	int damage, // Урон
 	int armor, // Броня
 	char icon, // Иконка cущества
 	short x, short y, // Координаты существа
-	std::string description // Описание монстра
-	) : Unit(hit_point, viewing_range, damage, armor,x,y)
+	std::string description, // Описание монстра
+	Map level // где сгенерирован моб (нужно для его размещения)
+	) : Unit(hit_point, viewing_range, damage, armor, icon, x, y)
 {
+	texture.loadFromFile("images/mob.png"); //картинка
+	sprite.setTexture(texture);//передаём в него объект Texture (текстуры)
+	sprite.setTextureRect(IntRect((icon - 'A') * 32, 0, 32, 32));//передаём в него объект Texture (текстуры)
+	sprite.setPosition((float)x * 32, (float)y * 32);//задаем начальные координаты появления спрайта
+
 	this->_description = description;
 	this->_is_attack = false;
 	this->_is_retreat = false;
+	this->set_unit(level, this->_x, this->_y);
 }
+
+//Mob::Mob(char icon, short x, short y, Map level)
+//{
+//	Unit();
+//}
 
 //void Mob::social_agro(Map level) // социальное агро(добовляет флаг _is_attack всем мобам в радиусе видимисти)
 //{
@@ -76,24 +84,56 @@ Mob::Mob(int hit_point, // Здоровье
 //}
 
 
-int Mob::find_way(Map level, short x, short y)
+int Mob::find_way(Map level, Hero &hero, View &viewer, RenderWindow &window) // ИИ моба движется к герою
 {
-	if (this->_x > x && level.get_cell(this->_x-1, this->_y).is_permeable())
-		this->_x--;
-	if (this->_x < x && level.get_cell(this->_x + 1, this->_y).is_permeable())
-		this->_x++;
+	int temp_x = this->_x, temp_y = this->_y; //Временные переменные нужны для корректной работы ф-ии set_unit
+	int temp = 0;
+	//Движение по оси Х
+	if (this->_x > hero.get_x() && level.get_cell(temp_x - 1, temp_y).get_value() == ' ' || 
+		level.get_cell(temp_x - 1, temp_y).get_value() == '@') //если герой правее моба и правая клетка свободна
+		temp_x--; // То моб движется вправо
+	if (this->_x < hero.get_x() && level.get_cell(temp_x + 1, temp_y).get_value() == ' ' ||
+		level.get_cell(temp_x + 1, temp_y).get_value() == '@')
+		temp_x++;
+	// Движение по оси У
+	if (this->_y > hero.get_y() && level.get_cell(temp_x, temp_y - 1).get_value() == ' ' ||
+		level.get_cell(temp_x, temp_y - 1).get_value() == '@')
+		temp_y--;
+	if (this->_y < hero.get_y() && level.get_cell(temp_x, temp_y + 1).get_value() == ' ' ||
+		level.get_cell(temp_x, temp_y + 1).get_value() == '@')
+		temp_y++;
 
-	if (this->_y > y && level.get_cell(this->_x, this->_y - 1).is_permeable())
-		this->_y--;
-	if (this->_y < y && level.get_cell(this->_x - 1, this->_y - 1).is_permeable())
-		this->_y++;
-	if (this->_x != x || this->_y != y)
+	if (temp_x != hero.get_x() || temp_y != hero.get_y()) // если моб не дошел до героя
 	{
-		this->set_unit(level, this->_x, this->_y);
+		this->set_unit(level, temp_x, temp_y); // Он смещается
 		return 0;
 	}
 	else
+	{
+		//if (this->get_hit_point() > 0)
+		{
+			 this->attak(hero);
+			/*if (temp == 0)
+			{
+				Message box(viewer, "You do not hit hard :)", Color::White);
+				Message box_1(viewer, this->_description, Color::White,this->get_hit_point());
+				window.draw(box);
+				window.draw(box_1);
+			}
+			else if (temp == 1)
+			{
+				Message box(viewer, "You hit! Damage: ", Color::Red, this->get_damage());
+				Message box_1(viewer, this->_description, Color::Red,this->get_hit_point());
+				window.draw(box);
+				window.draw(box_1);
+
+			}
+			window.display();
+			Sleep(300);*/
+		}
+			
 		return 1;
+	}
 
 }
 
@@ -115,4 +155,21 @@ void Mob::set_is_retreat(bool value)
 bool Mob::get_is_retreat()
 {
 	return this->_is_retreat;
+}
+
+void work_to_mobs(vector <Mob*> &arr_mob, RenderWindow &window, Map &level)
+{
+	for (int i = 0; i < arr_mob.size(); i++)
+	{
+		if (arr_mob[i]->get_hit_point() < 0) // если моб умер
+		{
+			level.get_cell(arr_mob[i]->get_x(), arr_mob[i]->get_y()).set_value(' '); //ставлю вместо моба пол
+			arr_mob.erase(arr_mob.begin() + i); // удалаю моба из массива мобов
+		}
+		else // если моб жив
+		{
+			if(level.get_cell(arr_mob[i]->get_x(), arr_mob[i]->get_y()).get_view()) // Если герой видит моба
+				window.draw(arr_mob[i]->sprite); //отрисовка моба
+		}
+	}
 }

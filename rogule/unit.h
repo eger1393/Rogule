@@ -9,18 +9,35 @@ public:
 	Texture texture;
 	Sprite sprite;
 	//Unit(); // Не должен исспользоваться
+
+	// Конструктор
 	Unit(int hit_point, // Здоровье
 		int viewing_range, // Радиус обзора
 		int damage, // Урон
 		int armor, // Броня
+		char icon, // Иконка cущества
 	short x, short y // Координаты существа
 	); // Конструктор
 	
 	//void viewing_range(Map level, char c); // Вычесление области видимости
-	void attak(Unit *unit2); // Атака текущего юнита вторым юнитом
-	void set_unit(Map level, short x, short y); // Передвинуть юнит
+
+	// Юнит вызвавший ф-ию атакую переданный юнит
+	int attak(Unit &unit2);
+	// Передвинуть юнит
+	void set_unit(Map level, short x, short y); 
+	// Вернуть кол-во жизне юнита
+	int get_hit_point();
+	// Вернуть координату х
 	int get_x();
+	// Вернуть координату У
 	int get_y();
+	//вернуть урон
+	int get_damage();
+
+	void push_log(string);
+
+	Text text;
+
 protected:
 	int _hit_point, // Здоровье
 		_viewing_range, // Радиус обзора

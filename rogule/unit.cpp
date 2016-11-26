@@ -4,15 +4,24 @@ Unit::Unit(int hit_point, // Здоровье
 	int viewing_range, // Радиус обзора
 	int damage, // Урон
 	int armor, // Броня
+	char icon, // Иконка cущества
 	short x, short y // Координаты существа
 	) // Конструктор
 {
+
 	this->_hit_point = hit_point;
 	this->_viewing_range = viewing_range;
 	this->_damage = damage;
 	this->_armor = armor;
+	this->_icon = icon;
 	this->_x = x;
 	this->_y = y;
+
+}
+
+int Unit::get_hit_point()
+{
+	return this->_hit_point;
 }
 
 //void Unit::viewing_range(Map level, char c) // Вычесление области видемости
@@ -82,28 +91,48 @@ int Unit::get_y()
 {
 	return _y;
 }
-void Unit::attak(Unit *unit2) // Атака текущего юнита вторым юнитом
+
+int Unit::get_damage()
 {
-	if (unit2->_damage <= this->_armor) //если броня больше дамага
+	return this->_damage;
+}
+
+void Unit::push_log(string str)
+{
+	this->text.setString(this->text.getString() + "\n" + str);
+}
+
+// Юнит вызвавший ф-ию атакую переданный юнит
+int Unit::attak(Unit &unit2)
+{
+	if (this->_damage <= unit2._armor) //если броня больше дамага
 	{
-		this->_hit_point -= 1;
+		unit2._hit_point -= 1;
+		return 0;
 	}
 	else
 	{
-		this->_hit_point -= unit2->_damage - this->_armor;
-		
+		unit2._hit_point -= this->_damage - unit2._armor;
+		if (unit2._icon == '@')
+		{
+			unit2.push_log("You hit! Damage: ");
+		}
+		else
+			return 2;
 	}
-	if (this->_hit_point <= 0) // Смерть юнита
+
+	if (unit2._hit_point <= 0) // Смерть юнита
 	{ 
+		return 3;
 		// Обработать смерть
 	}
-	return;
 }
 
 void Unit::set_unit(Map level, short x, short y) // Передвинуть юнит
 {
 	level.get_cell(this->_x, this->_y).set_value(' ');
 	level.reprint_cell(this->_x, this->_y);
+	this->sprite.move((float)(x - this->_x) * 32, (float)(y - this->_y) * 32);
 	this->_x = x;
 	this->_y = y;
 	level.get_cell(x, y).set_value(this->_icon);

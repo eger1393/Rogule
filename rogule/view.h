@@ -1,37 +1,30 @@
 #pragma once
-
-#include <SFML/Graphics.hpp>
-using namespace sf;
+#include "stdafx.h" 
 
 sf::View view;//объявили sfml объект "вид", который и является камерой
-
-void getplayercoordinateforview(float x, float y) { //функция для считывания координат игрока
-
-	view.setCenter(x, y); //следим за игроком, передавая его координаты. 
-}
-
+sf::View view_text;
 
 void viewmap(float time) { //функция для перемещения камеры по карте. принимает время sfml
 
 
 	if (Keyboard::isKeyPressed(Keyboard::D)) {
-		view.move(0.5*time, 0);//скроллим карту вправо (см урок, когда мы двигали героя - всё тоже самое)
+		view.move((float)0.5*time, 0);//скроллим карту вправо 
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::S)) {
-		view.move(0, 0.5*time);//скроллим карту вниз (см урок, когда мы двигали героя - всё тоже самое)
+		view.move(0, (float)0.5*time);//скроллим карту вниз
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::A)) {
-		view.move(-0.5*time, 0);//скроллим карту влево (см урок, когда мы двигали героя - всё тоже самое)
+		view.move((float)-0.5*time, 0);//скроллим карту влево 
 	}
 	if (Keyboard::isKeyPressed(Keyboard::W)) {
-		view.move(0, -0.5*time);//скроллим карту вправо (см урок, когда мы двигали героя - всё тоже самое)
+		view.move(0, (float)-0.5*time);//скроллим карту вправо
 	}
 
 }
 
-void changeview(Hero hero) {
+void changeview() {
 
 
 	if (Keyboard::isKeyPressed(Keyboard::U)) {
@@ -50,7 +43,7 @@ void changeview(Hero hero) {
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::P)) {
-		view.setCenter(hero.get_x()*32, hero.get_y()*32);//например другой размер
+		
 	}
 
 

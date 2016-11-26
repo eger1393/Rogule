@@ -4,57 +4,85 @@
 static int error;
 bool flag = true, flag_0 = true;
 
+// Видит ли герой клетку
+bool Cell::get_view()
+{
+	return this->_view;
+}
+
+// Установка параметра видимости клетки
+void Cell::set_view(bool bl)
+{
+	_view = bl;
+}
+
+// Установка разведки клетки
+void Cell::set_prospected(bool value)
+{
+	this->_prospected = value;
+}
+
+// Разведанна ли клетка
+bool Cell::get_prospected()
+{
+	return this->_prospected;
+}
+
 Cell::Cell()
 {
 	_value = ' ';
-	//_move = true;
+	_prospected = false;
 	_view = false;
 }
 
-Cell::Cell(char symbol, bool go_to, bool use)
+Cell::Cell(char symbol, bool prospected, bool view)
 {
 	_value = symbol;
-	//_move = go_to;
-	_view = use;
+	_prospected = prospected;
+	_view = view;
 }
 
+// Установка символа клетки
 void Cell::set_value(char symbol)
 {
 	_value = symbol;
 }
 
+// Получение символа клетки
 char Cell::get_value()
 {
 	return _value;
 }
 
-bool Cell::is_limpid()
+//клетка прозрачна?
+bool Cell::is_limpid() // Прозрачность
 {
 	if (this->_value == '#')
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
-bool Cell::is_permeable()
+// Клетка проходима?
+bool Cell::is_permeable() // Проходимость
 {
-	if (this->_value == '#')
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+	if (this->_value == '#' || (this->_value >= 'A' && this->_value <= 'Z'))
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 Cell::~Cell()
 {
-	
+
 }
 
 //void Cell::set_x_y(short x, short y) //задает координаты х, у
@@ -88,19 +116,14 @@ Map::Map(short n, short m)
 		for (int j = 0; j < this->_m; j++)
 		{
 			_game_field_level[i][j].set_value('#');
-			//_game_field_level[i][j].set_view(false);
+			_game_field_level[i][j].set_view(false);
 		}
 	}
 
-	floor.loadFromFile("images/floor.png");
-	
-	wall.loadFromFile("images/wall.png");
-
-	chest.loadFromFile("images/chest.png");
-
-	empty.loadFromFile("images/empty.png");
+	map.loadFromFile("images/map.png");
 }
 
+// перересовывает клетку в консоли
 void Map::reprint_cell(short x, short y)
 {
 	COORD position = { x, y }; //позиция x и y
@@ -109,11 +132,8 @@ void Map::reprint_cell(short x, short y)
 	cout << this->_game_field_level[y][x].get_value();
 }
 
-void Room::fill_room()
-{
-	_room[this->_left_angle_y + rand() % 5][this->_left_angle_x + rand() % 5].set_value('$');
-}
 
+//Антон
 Room* Map::initialize_Level()
 {
 	Room *Head;
@@ -128,9 +148,10 @@ Room* Map::initialize_Level()
 	}
 }
 
+//Антон
 int Map::Create_room(Room *room)
 {
-	
+
 	for (int i = room->_left_angle_y; i < room->_nStr; i++)
 	{
 		if (i == this->_n - 1)
@@ -142,8 +163,138 @@ int Map::Create_room(Room *room)
 			_game_field_level[i][j].set_value(' ');
 		}
 	}
+	//добавляем сундучки
+	{
+		int temp;
+		//do{
+			temp = 1 + rand() % 4;
+		//} while (((room->_left_angle_y + temp + 2) > room->_nStr) && ((room->_left_angle_x + temp + 2) > room->_nStlb));
 
-	_game_field_level[room->_left_angle_y + rand() % 5][room->_left_angle_x + rand() % 5].set_value('$');
+		_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('$');
+	}
+	
+	//добавляем опасность
+	{
+		int temp;
+		do
+		{
+			temp = 1 + rand() % 3;
+		} while (((room->_left_angle_y + temp + 2) > room->_nStr) && ((room->_left_angle_x + temp + 2) > room->_nStlb));
+		
+		int value = rand() % 10;
+		switch (value)
+		{
+				//огонь в ряд
+		case 1:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('!');
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 1].set_value('!');
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 2].set_value('!');
+			break;
+		}
+			//огонь в столбец
+		case 2:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('!');
+			_game_field_level[room->_left_angle_y + temp+1][room->_left_angle_x + temp].set_value('!');
+			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp].set_value('!');
+			break;
+		}
+			//огонь в диагональ
+		case 3:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('!');
+			_game_field_level[room->_left_angle_y + temp+1][room->_left_angle_x + temp + 1].set_value('!');
+			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp + 2].set_value('!');
+			break;
+		}
+			//огонь в столбец
+		case 4:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('`');
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 1].set_value('`');
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 2].set_value('`');
+			break;
+		}
+			//огонь в столбец
+		case 5:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('`');
+			_game_field_level[room->_left_angle_y + temp+1][room->_left_angle_x + temp + 1].set_value('`');
+			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp + 2].set_value('`');
+			break;
+		}
+			//огонь в столбец
+		case 6:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('`');
+			_game_field_level[room->_left_angle_y + temp+1][room->_left_angle_x + temp].set_value('`');
+			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp].set_value('`');
+			break;
+		}
+			//шипы в ряд
+		case 7:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('%');
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 1].set_value('%');
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp + 2].set_value('%');
+			break;
+		}
+			//шипы в диагональ
+		case 8:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('%');
+			_game_field_level[room->_left_angle_y + temp+1][room->_left_angle_x + temp + 1].set_value('%');
+			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp + 2].set_value('%');
+		}
+			//шипы в столбец
+		case 9:
+		{
+			_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('%');
+			_game_field_level[room->_left_angle_y + temp+1][room->_left_angle_x + temp].set_value('%');
+			_game_field_level[room->_left_angle_y + temp+2][room->_left_angle_x + temp].set_value('%');
+			break;
+		}
+		default:
+			break;
+		}
+		
+	}
+	
+
+	while (rand() % 10 < 5)
+	{
+		int temp_x = room->_left_angle_x + rand() % 5, // х координата моба
+			temp_y = room->_left_angle_y + rand() % 5, // у координата моба
+			temp = rand() % 5; // тип моба
+		switch (temp)
+		{
+		case 0: // Летающий имп
+			arr_mob.push_back(new Mob(5 + rand() % 5, 5, rand() % 5 + 5, rand() % 5, 'A',
+				temp_x, temp_y, "Imp ", *this));
+			break;
+		case 1: // Питон
+			arr_mob.push_back(new Mob(10 + rand() % 5, 5, rand() % 5 + 7, rand() % 5 + 2, 'B',
+				temp_x, temp_y, "Snake ", *this));
+			break;
+
+		case 2: // Скелет
+			arr_mob.push_back(new Mob(15 + rand() % 5, 5, rand() % 5 + 10, rand() % 5 + 5, 'C',
+				temp_x, temp_y, "Skeleton ", *this));
+			break;
+
+		case 3: // Чеширский кот
+			arr_mob.push_back(new Mob(20 + rand() % 5, 5, rand() % 5 + 13, rand() % 5 + 7, 'D',
+				temp_x, temp_y, "Evil cat ", *this));
+			break;
+		case 4: // Дракон
+			arr_mob.push_back(new Mob(30 + rand() % 5, 5, rand() % 5 + 15, rand() % 5  + 10, 'E',
+				temp_x, temp_y, "The Dragon ", *this));
+			break;
+		default:
+			break;
+		}
+	}
 
 	if (flag)
 	{
@@ -155,16 +306,17 @@ int Map::Create_room(Room *room)
 	}
 }
 
+//Антон
 int Map::Create_corridor(Room *room)
 {
 	bool flag_2, flag_3;
-	Room *Buff_1 = NULL , *Buff_2 = NULL;
+	Room *Buff_1 = NULL, *Buff_2 = NULL;
 
-	if ((error == 10) || (flag_0 == false)||(flag == false))
+	if ((error == 10) || (flag_0 == false) || (flag == false))
 	{
 		return flag = false;
 	}
-	 //corridor down
+	//corridor down
 	{
 
 		const int lenght_corridor_y_down = room->_nStr + 2 + rand() % 5;
@@ -174,30 +326,30 @@ int Map::Create_corridor(Room *room)
 			j = room->_left_angle_x + rand() % 5;
 		} while ((j >= this->_m - 1) || (j > room->_nStlb));
 
-		if ((lenght_corridor_y_down> this->_n-10) || (_game_field_level[lenght_corridor_y_down + 9][j].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 9][j + 1].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 9][j - 1].get_value() != '#'))
+		if ((lenght_corridor_y_down > this->_n - 10) || (_game_field_level[lenght_corridor_y_down + 9][j].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 9][j + 1].get_value() != '#') || (_game_field_level[lenght_corridor_y_down + 9][j - 1].get_value() != '#'))
 		{
 			flag_2 = false;
 			//Create_corridor(room);
 		}
 		else {
-				flag_2 = true;
-				for (int i = room->_nStr; i < lenght_corridor_y_down; i++)
+			flag_2 = true;
+			for (int i = room->_nStr; i < lenght_corridor_y_down; i++)
+			{
+				if (i == this->_n - 1)
 				{
-					if (i == this->_n - 1)
-					{
-						break;
-					}
-						_game_field_level[i][j].set_value(' ');
+					break;
 				}
-					Buff_1 = new Room(lenght_corridor_y_down, room->_left_angle_x, this);
-					room->next_1 = Buff_1;
-				
+				_game_field_level[i][j].set_value(' ');
+			}
+			Buff_1 = new Room(lenght_corridor_y_down, room->_left_angle_x, this);
+			room->next_1 = Buff_1;
+
 		}
 	}
 	//corridor right
 	{
 
-		const int lenght_corridor_x_right = room->_nStlb + 2 +  rand() % 5;
+		const int lenght_corridor_x_right = room->_nStlb + 2 + rand() % 5;
 		int i;
 
 		do
@@ -205,7 +357,7 @@ int Map::Create_corridor(Room *room)
 			i = room->_left_angle_y + 1 + rand() % 5;
 		} while ((i >= this->_n - 1) || (i > room->_nStr));
 
-		if (((lenght_corridor_x_right) > this->_m-10) || (_game_field_level[i][lenght_corridor_x_right + 9].get_value() != '#') || (_game_field_level[i + 1][lenght_corridor_x_right + 9].get_value() != '#') || (_game_field_level[i - 1][lenght_corridor_x_right + 9].get_value() != '#'))
+		if (((lenght_corridor_x_right) > this->_m - 10) || (_game_field_level[i][lenght_corridor_x_right + 9].get_value() != '#') || (_game_field_level[i + 1][lenght_corridor_x_right + 9].get_value() != '#') || (_game_field_level[i - 1][lenght_corridor_x_right + 9].get_value() != '#'))
 		{
 			flag_3 = false;
 			//Create_corridor(room);
@@ -221,15 +373,15 @@ int Map::Create_corridor(Room *room)
 				_game_field_level[i][j].set_value(' ');
 			}
 
-				Buff_2 = new Room(room->_left_angle_y, lenght_corridor_x_right, this);
-				room->next_2 = Buff_2;
+			Buff_2 = new Room(room->_left_angle_y, lenght_corridor_x_right, this);
+			room->next_2 = Buff_2;
 
-			
-			
-			
+
+
+
 		}
 
-		if ((flag_2 == false)&&(flag_3 == false))
+		if ((flag_2 == false) && (flag_3 == false))
 		{
 			error++;
 			Create_corridor(room);
@@ -238,7 +390,7 @@ int Map::Create_corridor(Room *room)
 		{
 			Create_room(Buff_1);
 		}
-		else if ((flag_3 == true)&&(flag_2 == false))
+		else if ((flag_3 == true) && (flag_2 == false))
 		{
 			Create_room(Buff_2);
 		}
@@ -250,7 +402,7 @@ int Map::Create_corridor(Room *room)
 			Create_room(Buff_2);
 
 		}
-		
+
 	}
 }
 
@@ -285,54 +437,92 @@ int Map::Create_corridor(Room *room)
 //
 //}
 
+// Возвращает клетку по координатам х, у
 Cell& Map::get_cell(short x, short y)
 {
 	if (x >= this->_m || y >= this->_n)
 		_game_field_level[0][0]; // Костыль
-    return this->_game_field_level[y][x];
+	return this->_game_field_level[y][x];
 }
 
+// устанавливает значение клетки по координатам х, у
 void Map::set_cell(Cell cell, short x, short y)
 {
-    if (x >= this->_m || y >= this->_n)
-        exit(2);
-    this->_game_field_level[y][x] = cell;
+	if (x >= this->_m || y >= this->_n)
+		exit(2);
+	this->_game_field_level[y][x] = cell;
 }
 
+// Устанавливает значение клетки по координатам х, у
 void Map::set_cell(char c, short x, short y)
 {
-    if (x >= this->_m || y >= this->_n)
-        exit(3);
-    this->_game_field_level[y][x].set_value(c);
+	if (x >= this->_m || y >= this->_n)
+		exit(3);
+	this->_game_field_level[y][x].set_value(c);
 }
 
+// Рисует уровень в окне
 void Map::print_level(RenderWindow &window)
 {
 	RectangleShape rectangle(Vector2f(32, 32));
+	rectangle.setTexture(&map);
+	//Sprite ss;
+//	ss.setTexture(wall);
 
-	for (int i = 0; i<this->_n; i++) //проход по всему лвл и замена символов на текстурки rectangle разных цветов
-		for (int j = 0; j<this->_m; j++)
+
+	for (int i = 0; i < this->_n; i++) //проход по всему лвл и замена символов на текстурки rectangle разных цветов
+		for (int j = 0; j < this->_m; j++)
 		{
-			if ((this->_game_field_level[i][j].get_value() == '#'))//&&(this->_game_field_level[i][j].get_view()))
+			if (this->_game_field_level[i][j].get_prospected()) //Если клетка разведанна
 			{
-				rectangle.setTexture(&wall);
+				if (this->_game_field_level[i][j].get_view()) // Если клетка СЕЙЧАС видна герою
+				{
+					rectangle.setFillColor(sf::Color(255, 255, 255, 255)); // Полная яркось
+				}
+				else
+				{
+					rectangle.setFillColor(sf::Color(255, 255, 255, 63)); // иначе четверть яркости
+				}
+				switch (this->_game_field_level[i][j].get_value())
+				{
+				case '#': // Стена
+					rectangle.setTextureRect(IntRect(32, 0, 32, 32));
+					break;
+
+				case ' ': // Пол
+					rectangle.setTextureRect(IntRect(0, 0, 32, 32));;
+					break;
+
+				case '$': // Сундук
+					rectangle.setTextureRect(IntRect(64, 0, 32, 32));;
+					break;
+
+				case '!': // Опасность
+					rectangle.setTextureRect(IntRect(160, 0, 32, 32));;
+					break;
+
+				case '`': // Опасность
+					rectangle.setTextureRect(IntRect(128, 0, 32, 32));;
+					break;
+
+				case '%': // Опасность
+					rectangle.setTextureRect(IntRect(192, 0, 32, 32));;
+					break;
+
+
+				default:
+					break;
+				}
 			}
-			if ((this->_game_field_level[i][j].get_value() == ' '))//&& (this->_game_field_level[i][j].get_view()))
+			else
 			{
-				rectangle.setTexture(&floor);
+				rectangle.setTextureRect(IntRect(96, 0, 32, 32));;; // Неразведанная область
 			}
-			//if ((this->_game_field_level[i][j].get_value() == '1'))//&& (this->_game_field_level[i][j].get_view()))
-			//{
-			//	rectangle.setTexture(&empty);
-			//}
-			if ((this->_game_field_level[i][j].get_value() == '$'))//&& (this->_game_field_level[i][j].get_view()))
-			{
-				rectangle.setTexture(&chest);
-			}
-			rectangle.setPosition(j * 32, i * 32);  //позиция
+			rectangle.setPosition((float)j * 32, (float)i * 32);  //позиция
 			window.draw(rectangle); // отрисовка
 		}
 }
+
 
 //void Map::print_circular()
 //{
@@ -367,4 +557,36 @@ void Map::print_level(RenderWindow &window)
 //	}
 //}
 
+// Стоит ли на клетке моб
+bool Cell::is_mob()
+{
+	if (this->_value >= 'A' && this->_value <= 'Z')
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void Map::work_to_mobs(RenderWindow &window)
+{
+	for (int i = 0; i < this->arr_mob.size(); i++)
+	{
+		if (this->arr_mob[i]->get_hit_point() < 0) // если моб умер
+		{
+			this->get_cell(this->arr_mob[i]->get_x(), this->arr_mob[i]->get_y()).set_value(' '); //ставлю вместо моба пол
+			this->arr_mob.erase(this->arr_mob.begin() + i); // удалаю моба из массива мобов
+		}
+		else // если моб жив
+		{
+			if (this->get_cell(this->arr_mob[i]->get_x(), this->arr_mob[i]->get_y()).get_view()) // Если герой видит моба
+			{
+				this->arr_mob[i]->set_unit(*this, this->arr_mob[i]->get_x(), this->arr_mob[i]->get_y()); // Костыль
+				window.draw(this->arr_mob[i]->sprite); //отрисовка моба
+			}
+		}
+	}
+}
 
