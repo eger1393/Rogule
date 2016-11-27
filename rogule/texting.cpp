@@ -4,6 +4,10 @@
 
 int Message::count = 0;
 
+Message::Message()
+{
+
+}
 Message::Message(string str, Color color, int value, int size)
 {
 	if (count > 10)
@@ -30,8 +34,9 @@ Message::Message(string str, Color color, int value, int size)
 		this->setString(str);
 	}
 
+
 	//this->setPosition(view.getCenter().x + GetSystemMetrics(SM_CXSCREEN) / 2 - 425,
-	//	(view.getCenter().y - GetSystemMetrics(SM_CYSCREEN) / 2 + 240) + 30 * Message::count);//задаем позицию текста
+	//(view.getCenter().y - GetSystemMetrics(SM_CYSCREEN) / 2 + 240) + 30 * Message::count);//задаем позицию текста
 	
 }
 

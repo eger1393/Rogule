@@ -16,13 +16,11 @@ int main()
 
 	//view_text.reset(sf::FloatRect(GetSystemMetrics(SM_CXSCREEN) - 400, GetSystemMetrics(SM_CYSCREEN) - 100, 300, GetSystemMetrics(SM_CYSCREEN) - 100));
 
-	Map level_1(50, 50); // сам уровень
+	Map *level_1 = new Map(50, 50); // сам уровень
 
-	Room *head; //эт голова дерева комнат
+	level_1->initialize_Level(); // ну тут понятно
 
-	head = level_1.initialize_Level(); // ну тут понятно
-
-	Hero hero(1000, 10, 10, 10, 1, 1); // герой
+	Hero hero(700, 10, 25, 20, 1, 1); // герой
 
 	vector <Mob*> arr_mob;
 
@@ -76,7 +74,7 @@ int main()
 
 		window.clear(Color::Black); //белый фон
 	
-		level_1.print_level(window); // Отрисовка карты
+		level_1->print_level(window); // Отрисовка карты
 		
 		//вывод текста
 		for (int i = 1; i < 5; i++)
@@ -87,12 +85,13 @@ int main()
 		
 		window.draw(hero.sprite); //отрисовка героя
 
-		level_1.work_to_mobs(window);
+		level_1->work_to_mobs(window);
 
 
-		hero.text.setPosition(view.getCenter().x, view.getCenter().y);
+		hero.text->setPosition(view.getCenter().x + GetSystemMetrics(SM_CXSCREEN) / 2 - 300,
+			(view.getCenter().y - GetSystemMetrics(SM_CYSCREEN) / 2 + 240) + 30);//задаем позицию текста
 
-		window.draw(hero.text);
+		window.draw(*hero.text);
 
 		window.display(); //вывод
 

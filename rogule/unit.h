@@ -24,7 +24,7 @@ public:
 	// Юнит вызвавший ф-ию атакую переданный юнит
 	int attak(Unit &unit2);
 	// Передвинуть юнит
-	void set_unit(Map level, short x, short y); 
+	void set_unit(Map *level, short x, short y); 
 	// Вернуть кол-во жизне юнита
 	int get_hit_point();
 	// Вернуть координату х
@@ -34,10 +34,10 @@ public:
 	//вернуть урон
 	int get_damage();
 
-	void push_log(string);
+	void push_log(string, int = 0);
 
-	Text text;
-
+	Text *text;
+	Font font;
 protected:
 	int _hit_point, // Здоровье
 		_viewing_range, // Радиус обзора
