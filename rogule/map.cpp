@@ -1,9 +1,6 @@
 
 #include "stdafx.h"
-
-static int error;
-bool flag = true, flag_0 = true;
-
+int Map::error = 0;
 // Видит ли герой клетку
 bool Cell::get_view()
 {
@@ -85,6 +82,18 @@ Cell::~Cell()
 
 }
 
+Map::~Map()
+{
+	for (int i = 0; i < this->_n; i++) {
+		delete _game_field_level[i];
+
+	}
+	delete _game_field_level;
+	this->arr_mob.clear();
+	this->flag = true;
+	this->flag_0 = true;
+	Map::error = 0;
+}
 //void Cell::set_x_y(short x, short y) //задает координаты х, у
 //{
 //	this->_x = x;
@@ -104,6 +113,9 @@ Cell::~Cell()
 
 Map::Map(short n, short m)
 {
+	this->flag = true;
+	this->flag_0 = true;
+	Map::error = 0;
 	this->_n = n;
 	this->_m = m;
 	_game_field_level = new Cell *[this->_n];
@@ -119,8 +131,9 @@ Map::Map(short n, short m)
 			_game_field_level[i][j].set_view(false);
 		}
 	}
-
+	
 	map.loadFromFile("images/map.png");
+
 }
 
 // перересовывает клетку в консоли
@@ -151,7 +164,7 @@ Room* Map::initialize_Level()
 //Антон
 int Map::Create_room(Room *room)
 {
-
+	
 	for (int i = room->_left_angle_y; i < room->_nStr; i++)
 	{
 		if (i == this->_n - 1)
@@ -162,6 +175,11 @@ int Map::Create_room(Room *room)
 				break;
 			_game_field_level[i][j].set_value(' ');
 		}
+		if ((room->_left_angle_y > 35) && (room->_left_angle_x > 35))
+		{
+		_game_field_level[room->_left_angle_y+3][room->_left_angle_x+3].set_value('0');
+		}
+		
 	}
 	//добавляем сундучки
 	{
@@ -271,25 +289,25 @@ int Map::Create_room(Room *room)
 		{
 		case 0: // Летающий имп
 			arr_mob.push_back(new Mob(5 + rand() % 5, 5, rand() % 5 + 5, rand() % 5, 'A',
-				temp_x, temp_y, "Imp ", *this));
+				temp_x, temp_y, "Imp ", this));
 			break;
 		case 1: // Питон
 			arr_mob.push_back(new Mob(10 + rand() % 5, 5, rand() % 5 + 7, rand() % 5 + 2, 'B',
-				temp_x, temp_y, "Snake ", *this));
+				temp_x, temp_y, "Snake ", this));
 			break;
 
 		case 2: // Скелет
 			arr_mob.push_back(new Mob(15 + rand() % 5, 5, rand() % 5 + 10, rand() % 5 + 5, 'C',
-				temp_x, temp_y, "Skeleton ", *this));
+				temp_x, temp_y, "Skeleton ", this));
 			break;
 
 		case 3: // Чеширский кот
 			arr_mob.push_back(new Mob(20 + rand() % 5, 5, rand() % 5 + 13, rand() % 5 + 7, 'D',
-				temp_x, temp_y, "Evil cat ", *this));
+				temp_x, temp_y, "Evil cat ", this));
 			break;
 		case 4: // Дракон
 			arr_mob.push_back(new Mob(30 + rand() % 5, 5, rand() % 5 + 15, rand() % 5  + 10, 'E',
-				temp_x, temp_y, "The Dragon ", *this));
+				temp_x, temp_y, "The Dragon ", this));
 			break;
 		default:
 			break;
@@ -509,6 +527,9 @@ void Map::print_level(RenderWindow &window)
 					rectangle.setTextureRect(IntRect(192, 0, 32, 32));;
 					break;
 
+				case '0': // Выход
+					rectangle.setTextureRect(IntRect(224, 0, 32, 32));;
+					break;
 
 				default:
 					break;
@@ -583,7 +604,7 @@ void Map::work_to_mobs(RenderWindow &window)
 		{
 			if (this->get_cell(this->arr_mob[i]->get_x(), this->arr_mob[i]->get_y()).get_view()) // Если герой видит моба
 			{
-				this->arr_mob[i]->set_unit(*this, this->arr_mob[i]->get_x(), this->arr_mob[i]->get_y()); // Костыль
+				this->arr_mob[i]->set_unit(this, this->arr_mob[i]->get_x(), this->arr_mob[i]->get_y()); // Костыль
 				window.draw(this->arr_mob[i]->sprite); //отрисовка моба
 			}
 		}

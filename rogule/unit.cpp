@@ -16,7 +16,8 @@ Unit::Unit(int hit_point, // Здоровье
 	this->_icon = icon;
 	this->_x = x;
 	this->_y = y;
-
+	font.loadFromFile("HelveticaNeue-Bold.ttf");//передаем нашему шрифту файл шрифта
+	text = new Message("", Color::Red, 0, 20);
 }
 
 int Unit::get_hit_point()
@@ -97,9 +98,24 @@ int Unit::get_damage()
 	return this->_damage;
 }
 
-void Unit::push_log(string str)
+void Unit::push_log(string str, int value)
 {
-	this->text.setString(this->text.getString() + "\n" + str);
+	if (str == "")
+	{
+		this->text->setString("");
+	}
+
+	std::ostringstream playerData;
+	playerData << value;
+
+	if (value != 0)
+	{
+		this->text->setString(this->text->getString() + "\n" + str + " Damage : " + playerData.str());
+	}
+	else
+	{
+		this->text->setString(this->text->getString() + "\n" + str);
+	}
 }
 
 // Юнит вызвавший ф-ию атакую переданный юнит
@@ -108,33 +124,45 @@ int Unit::attak(Unit &unit2)
 	if (this->_damage <= unit2._armor) //если броня больше дамага
 	{
 		unit2._hit_point -= 1;
-		return 0;
+
+		if (unit2._icon == '@')
+		{
+			unit2.push_log("You little hit!");
+		}
+		else
+		{
+			this->push_log("You set hit!", 1);
+		}
+			
 	}
 	else
 	{
 		unit2._hit_point -= this->_damage - unit2._armor;
 		if (unit2._icon == '@')
 		{
-			unit2.push_log("You hit! Damage: ");
+			unit2.push_log("You hit", this->_damage - unit2._armor);
 		}
 		else
-			return 2;
-	}
+		{
+			this->push_log("You set hit!", this->get_damage());
+		}
+			
 
-	if (unit2._hit_point <= 0) // Смерть юнита
-	{ 
-		return 3;
-		// Обработать смерть
+		if (unit2._hit_point <= 0) // Смерть юнита
+		{
+			return 3;
+			// Обработать смерть
+		}
 	}
 }
 
-void Unit::set_unit(Map level, short x, short y) // Передвинуть юнит
-{
-	level.get_cell(this->_x, this->_y).set_value(' ');
-	level.reprint_cell(this->_x, this->_y);
-	this->sprite.move((float)(x - this->_x) * 32, (float)(y - this->_y) * 32);
-	this->_x = x;
-	this->_y = y;
-	level.get_cell(x, y).set_value(this->_icon);
-	level.reprint_cell(this->_x, this->_y);
-}
+	void Unit::set_unit(Map *level, short x, short y) // Передвинуть юнит
+	{
+		level->get_cell(this->_x, this->_y).set_value(' ');
+		level->reprint_cell(this->_x, this->_y);
+		this->sprite.move((float)(x - this->_x) * 32, (float)(y - this->_y) * 32);
+		this->_x = x;
+		this->_y = y;
+		level->get_cell(x, y).set_value(this->_icon);
+		level->reprint_cell(this->_x, this->_y);
+	}
