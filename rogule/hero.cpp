@@ -1,7 +1,5 @@
 #pragma once
 #include "stdafx.h"
-#include "texting.h"
-
 
 Hero::Hero(int hit_point, // Здоровье
 	int viewing_range, // Радиус обзора
@@ -18,6 +16,18 @@ Hero::Hero(int hit_point, // Здоровье
 	sprite.setPosition((float)y*32, (float)x*32);//задаем начальные координаты появления спрайта
 
 	
+}
+void Hero::set_position(View &view, float _x, float _y)
+{
+	int tepmX = _x, tempY = _y;
+	if ((tepmX > ((GetSystemMetrics(SM_CXSCREEN) - 100) / 2)) || ((tempY > ((GetSystemMetrics(SM_CYSCREEN) - 100) / 2))))
+	{
+		view.setCenter(_x, _y);
+	}
+	else
+	{
+		view.setCenter((GetSystemMetrics(SM_CXSCREEN) - 100)/2, (GetSystemMetrics(SM_CYSCREEN) - 100)/2);
+	}
 }
 
 void Hero::set_hit_point(int hit)
@@ -231,7 +241,7 @@ int Hero::key_press(Map *level, View &viewer, RenderWindow &window)
 					active(level->get_cell(this->get_x() - 1, this->get_y()).get_value(), level, this->get_x() - 1, this->get_y(), window, viewer);
 					this->set_unit(level, this->_x - 1, this->_y);
 
-					viewer.setCenter((float)this->get_x() * 32, (float) this->get_y() * 32);
+					this->set_position(viewer,(float)this->get_x() * 32, (float) this->get_y() * 32);
 
 					this->viewing_range(level, true);
 				}
@@ -260,7 +270,7 @@ int Hero::key_press(Map *level, View &viewer, RenderWindow &window)
 
 					this->viewing_range(level, true);
 
-					viewer.setCenter((float)this->get_x() * 32, (float) this->get_y() * 32);
+					this->set_position(viewer, (float)this->get_x() * 32, (float) this->get_y() * 32);
 				}
 			}
 			if (Keyboard::isKeyPressed(Keyboard::Up))
@@ -283,7 +293,7 @@ int Hero::key_press(Map *level, View &viewer, RenderWindow &window)
 					active(level->get_cell(this->get_x(), this->get_y() - 1).get_value(), level, this->get_x(), this->get_y() - 1, window, viewer);
 					this->set_unit(level, this->_x, this->_y - 1);
 
-					viewer.setCenter((float)this->get_x() * 32, (float) this->get_y() * 32);
+					this->set_position(viewer, (float)this->get_x() * 32, (float) this->get_y() * 32);
 
 					this->viewing_range(level, true);
 				}
@@ -310,7 +320,7 @@ int Hero::key_press(Map *level, View &viewer, RenderWindow &window)
 					active(level->get_cell(this->get_x(), this->get_y() + 1).get_value(), level, this->get_x(), this->get_y() + 1, window, viewer);
 					this->set_unit(level, this->_x, this->_y + 1);
 			
-					viewer.setCenter((float)this->get_x() * 32, (float) this->get_y() * 32);
+					this->set_position(viewer, (float)this->get_x() * 32, (float) this->get_y() * 32);
 
 					this->viewing_range(level, true);
 				}
@@ -321,9 +331,8 @@ int Hero::key_press(Map *level, View &viewer, RenderWindow &window)
 		}
 		else // 
 		{
-			Message message_box("You died!", Color::Red);
+			Message message_box("     You died! \n Try again? Press 'R' ", Color::Red);
 			message_box.setPosition(viewer.getCenter().x - 64, viewer.getCenter().y);//задаем позицию текста, центр камеры
-
 			window.draw(message_box);
 			window.display();
 			Sleep(500);

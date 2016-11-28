@@ -1,8 +1,19 @@
 #pragma once
-#include "stdafx.h" 
 
-sf::View view;//объявили sfml объект "вид", который и является камерой
-sf::View view_text;
+sf::View view;//объявили 
+
+void set_position(View &view, int _x, int _y)
+{
+	int tepmX = _x, tempY = _y;
+	if ((tepmX > ((GetSystemMetrics(SM_CXSCREEN) - 100)))||((tempY > ((GetSystemMetrics(SM_CYSCREEN) - 100)))))
+	{
+		view.setCenter(_x, _y);
+	}
+	else
+	{
+		view.setCenter((GetSystemMetrics(SM_CXSCREEN) - 100), (GetSystemMetrics(SM_CYSCREEN) - 100));
+	}
+}
 
 void viewmap(float time) { //функция для перемещения камеры по карте. принимает время sfml
 
@@ -32,10 +43,10 @@ void changeview() {
 							//view.zoom(1.0006f); //тоже самое помедленнее соответственно
 	}
 
-	if (Keyboard::isKeyPressed(Keyboard::R)) {
-		//view.setRotation(90);//сразу же задает поворот камере
-		view.rotate(1);//постепенно поворачивает камеру (отрицательное значение - в обратную сторону)
-	}
+	//if (Keyboard::isKeyPressed(Keyboard::R)) {
+	//	//view.setRotation(90);//сразу же задает поворот камере
+	//	view.rotate(1);//постепенно поворачивает камеру (отрицательное значение - в обратную сторону)
+	//}
 
 
 	if (Keyboard::isKeyPressed(Keyboard::I)) {
