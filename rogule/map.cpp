@@ -29,7 +29,7 @@ bool Cell::get_prospected()
 Cell::Cell()
 {
 	_value = ' ';
-	_prospected = false;
+	_prospected = true;
 	_view = false;
 }
 
@@ -147,8 +147,8 @@ void Map::reprint_cell(short x, short y)
 }
 
 
-//Антон
-Room* Map::initialize_Level()
+//начинаем генерить уровень
+int Map::initialize_Level()
 {
 	Room *Head;
 	Head = new Room(1, 1, this);
@@ -158,14 +158,15 @@ Room* Map::initialize_Level()
 	}
 	else
 	{
-		return Head;
+		return 0;
 	}
 }
 
-//Антон
+//создаем комнату
 int Map::Create_room(Room *room)
 {
-	
+	bool check = false;
+
 	for (int i = room->_left_angle_y; i < room->_nStr; i++)
 	{
 		if (i == this->_n - 1)
@@ -176,15 +177,22 @@ int Map::Create_room(Room *room)
 				break;
 			_game_field_level[i][j].set_value(' ');
 		}
-
-			//переход на след уровень
-				if ((room->_left_angle_y > 35) && (room->_left_angle_x > 35))
-				{
-
-					_game_field_level[room->_left_angle_y+2][room->_left_angle_x+4].set_value('0');
 		
-				}	
+			//переход на след уровень
+		if ((room->_left_angle_y > 35) && (room->_left_angle_x > 35))
+		{
+
+			_game_field_level[room->_left_angle_y + 2][room->_left_angle_x + 4].set_value('0');
+			check = true;
+		}
+		
 	}
+
+	if (check == false)
+	{
+		_game_field_level[25][25].set_value('0');
+	}
+
 	//добавляем сундучки
 	{
 		int	temp = 1 + rand() % 4;
