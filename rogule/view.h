@@ -1,37 +1,41 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-using namespace sf;
+sf::View view;//объявили 
 
-sf::View view;//объявили sfml объект "вид", который и является камерой
-
-void getplayercoordinateforview(float x, float y) { //функция для считывания координат игрока
-
-	view.setCenter(x, y); //следим за игроком, передавая его координаты. 
+void set_position(View &view, int _x, int _y)
+{
+	int tepmX = _x, tempY = _y;
+	if ((tepmX > ((GetSystemMetrics(SM_CXSCREEN) - 100)))||((tempY > ((GetSystemMetrics(SM_CYSCREEN) - 100)))))
+	{
+		view.setCenter(_x, _y);
+	}
+	else
+	{
+		view.setCenter((GetSystemMetrics(SM_CXSCREEN) - 100), (GetSystemMetrics(SM_CYSCREEN) - 100));
+	}
 }
-
 
 void viewmap(float time) { //функция для перемещения камеры по карте. принимает время sfml
 
 
 	if (Keyboard::isKeyPressed(Keyboard::D)) {
-		view.move((float)0.5*time, 0);//скроллим карту вправо (см урок, когда мы двигали героя - всё тоже самое)
+		view.move((float)0.5*time, 0);//скроллим карту вправо 
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::S)) {
-		view.move(0, (float)0.5*time);//скроллим карту вниз (см урок, когда мы двигали героя - всё тоже самое)
+		view.move(0, (float)0.5*time);//скроллим карту вниз
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::A)) {
-		view.move((float)-0.5*time, 0);//скроллим карту влево (см урок, когда мы двигали героя - всё тоже самое)
+		view.move((float)-0.5*time, 0);//скроллим карту влево 
 	}
 	if (Keyboard::isKeyPressed(Keyboard::W)) {
-		view.move(0, (float)-0.5*time);//скроллим карту вправо (см урок, когда мы двигали героя - всё тоже самое)
+		view.move(0, (float)-0.5*time);//скроллим карту вправо
 	}
 
 }
 
-void changeview(Hero hero) {
+void changeview() {
 
 
 	if (Keyboard::isKeyPressed(Keyboard::U)) {
@@ -39,10 +43,10 @@ void changeview(Hero hero) {
 							//view.zoom(1.0006f); //тоже самое помедленнее соответственно
 	}
 
-	if (Keyboard::isKeyPressed(Keyboard::R)) {
-		//view.setRotation(90);//сразу же задает поворот камере
-		view.rotate(1);//постепенно поворачивает камеру (отрицательное значение - в обратную сторону)
-	}
+	//if (Keyboard::isKeyPressed(Keyboard::R)) {
+	//	//view.setRotation(90);//сразу же задает поворот камере
+	//	view.rotate(1);//постепенно поворачивает камеру (отрицательное значение - в обратную сторону)
+	//}
 
 
 	if (Keyboard::isKeyPressed(Keyboard::I)) {
@@ -50,7 +54,7 @@ void changeview(Hero hero) {
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::P)) {
-		view.setCenter((float)hero.get_x()*32, (float)hero.get_y()*32);//например другой размер
+		
 	}
 
 

@@ -23,15 +23,22 @@ public:
 	//void viewing_range(Map level, char c); // Вычесление области видимости
 
 	// Юнит вызвавший ф-ию атакую переданный юнит
-	void attak(Unit &unit2); 
+	int attak(Unit &unit2);
 	// Передвинуть юнит
-	void set_unit(Map level, short x, short y); 
+	void set_unit(Map *level, short x, short y); 
 	// Вернуть кол-во жизне юнита
 	int get_hit_point();
 	// Вернуть координату х
 	int get_x();
 	// Вернуть координату У
 	int get_y();
+	//вернуть урон
+	int get_damage();
+
+	void push_log(string, int = 0);
+
+	Text *text;
+	Font font;
 protected:
 	std::string _description; // Описание монстра
 	int _hit_point, // Здоровье

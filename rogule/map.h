@@ -48,13 +48,13 @@ class Map
 {
 public:
     Map(short n, short m);
-
+	virtual ~Map();
     //void test_Map(short n, short m); // Создание квадратной комнаты для теста
-	//Антон
-	Room* initialize_Level();
-	//Антон
+	//начинаем генерировать уровень
+	int initialize_Level();
+	//создаем комнату
 	int Create_room(Room *r);
-	//Антон
+	//создаем корридор
 	int Create_corridor(Room *r);
 	// Перерисовывает клетку в консоли
 	void reprint_cell(short x, short y); 
@@ -71,13 +71,18 @@ public:
 	//void print_circular();
 
 	friend Room;
+	//мобы
 	vector <Mob*> arr_mob;
+	//сам уровень
 	Cell **_game_field_level;
 
+	//массив вещей
+	bool flag = true, flag_0 = true;
+	static int error;
 private:
-
+	//текстурка карты
 	Texture map;
-
+	
     short _n, _m; //размеры карты
    
 };
