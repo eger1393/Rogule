@@ -26,7 +26,8 @@ public:
 	int get_viewing_range();
 	//вернуть броню
 	int get_armor();
-	
+	//перемещение камеры
+	void set_position(View&, float, float);
 	//Message message_box;
 
 	

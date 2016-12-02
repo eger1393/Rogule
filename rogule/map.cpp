@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 int Map::error = 0;
+
 // Видит ли герой клетку
 bool Cell::get_view()
 {
@@ -28,7 +29,7 @@ bool Cell::get_prospected()
 Cell::Cell()
 {
 	_value = ' ';
-	_prospected = false;
+	_prospected = true;
 	_view = false;
 }
 
@@ -110,7 +111,7 @@ Map::~Map()
 //	return this->_y;
 //}
 
-
+//конструктор карты
 Map::Map(short n, short m)
 {
 	this->flag = true;
@@ -146,8 +147,8 @@ void Map::reprint_cell(short x, short y)
 }
 
 
-//Антон
-Room* Map::initialize_Level()
+//начинаем генерить уровень
+int Map::initialize_Level()
 {
 	Room *Head;
 	Head = new Room(1, 1, this);
@@ -157,14 +158,15 @@ Room* Map::initialize_Level()
 	}
 	else
 	{
-		return Head;
+		return 0;
 	}
 }
 
-//Антон
+//создаем комнату
 int Map::Create_room(Room *room)
 {
-	
+	bool check = false;
+
 	for (int i = room->_left_angle_y; i < room->_nStr; i++)
 	{
 		if (i == this->_n - 1)
@@ -175,20 +177,26 @@ int Map::Create_room(Room *room)
 				break;
 			_game_field_level[i][j].set_value(' ');
 		}
+		
+			//переход на след уровень
 		if ((room->_left_angle_y > 35) && (room->_left_angle_x > 35))
 		{
-			_game_field_level[4][4].set_value('0');
-		/*_game_field_level[room->_left_angle_y+3][room->_left_angle_x+3].set_value('0');*/
+
+			_game_field_level[room->_left_angle_y + 2][room->_left_angle_x + 4].set_value('0');
+			check = true;
 		}
 		
 	}
+
+	if (check == false)
+	{
+		_game_field_level[25][25].set_value('0');
+	}
+
 	//добавляем сундучки
 	{
-		int temp;
-		//do{
-			temp = 1 + rand() % 4;
-		//} while (((room->_left_angle_y + temp + 2) > room->_nStr) && ((room->_left_angle_x + temp + 2) > room->_nStlb));
-
+		int	temp = 1 + rand() % 4;
+		
 		_game_field_level[room->_left_angle_y + temp][room->_left_angle_x + temp].set_value('$');
 	}
 	
@@ -280,7 +288,7 @@ int Map::Create_room(Room *room)
 		
 	}
 	
-
+	//добавляем мобов
 	while (rand() % 10 < 5)
 	{
 		int temp_x = room->_left_angle_x + rand() % 5, // х координата моба
@@ -424,37 +432,6 @@ int Map::Create_corridor(Room *room)
 
 	}
 }
-
-//void Map::test_Map(short n, short m)
-//{
-//    this->_n = n;
-//    this->_m = m;
-//    this->_game_field_level = new Cell*[this->_n];
-//    for (short i = 0; i < this->_n; i++)
-//    {
-//        this->_game_field_level[i] = new Cell[this->_m];
-//    }  
-//	 
-//    for (short i = 0; i < this->_n - 1; i++)
-//    {
-//        this->_game_field_level[0][i].set_value(35);
-//        this->_game_field_level[this->_n - 1][i].set_value(35);
-//        this->_game_field_level[i][0].set_value(35);
-//        this->_game_field_level[i][this->_n - 1].set_value(35);
-//
-//        for (short j = 1; j < this->_m - 1; j++)
-//        {
-//            this->_game_field_level[i][j].set_value(' ');
-//        }
-//    }
-//
-//    /*this->_game_field_level[0][0].set_value(218);
-//    this->_game_field_level[this->_n - 1][0].set_value(192);
-//    this->_game_field_level[0][this->_m - 1].set_value(191);
-//    this->_game_field_level[this->_n - 1][this->_m - 1].set_value(217);*/
-//
-//
-//}
 
 // Возвращает клетку по координатам х, у
 Cell& Map::get_cell(short x, short y)

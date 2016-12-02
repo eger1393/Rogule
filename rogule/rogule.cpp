@@ -1,8 +1,8 @@
 // rogule.cpp: определяет точку входа для консольного приложения.
 //
+#pragma once
 #include "stdafx.h"
 #include "view.h"
-
 
 
 
@@ -53,30 +53,35 @@ int main()
 			{
 				window.close(); 
 			}
-			//if (hero.get_hit_point() > 0)
-			//{
+			
+
+			if (Keyboard::isKeyPressed(Keyboard::R))
+			{
+				delete level_1;
+				level_1 = new Map(50, 50);
+				level_1->initialize_Level();
+
+				if (hero.get_hit_point() <= 0)
+				hero.set_hit_point(700);
+
+				hero.set_unit(level_1, 1, 1);
+			}
+
 				hero.key_press(level_1, view, window);
-				
-			//}
-			//else
-			//{
-			//	text1.setPosition(view.getCenter().x - 64, view.getCenter().y);//задаем позицию текста, центр камеры
-			//	window.draw(text);
-			//	//window.display();
-			//}
+		
 		}
 
 		viewmap(time);//функция скроллинга карты, передаем ей время sfml
 
-		changeview();//прикалываемся с камерой вида
+		changeview();//управление камерой 
 
 		window.setView(view);//"оживляем" камеру в окне sfml
 
-		window.clear(Color::Black); //белый фон
+		window.clear(Color::Black); //черный фон
 	
 		level_1->print_level(window); // Отрисовка карты
 		
-		//вывод текста
+		//вывод параметров героя
 		for (int i = 1; i < 5; i++)
 		{
 			Message message_box(&hero, i, view ,Color::White);
