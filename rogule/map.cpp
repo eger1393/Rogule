@@ -85,10 +85,10 @@ Cell::~Cell()
 Map::~Map()
 {
 	for (int i = 0; i < this->_n; i++) {
-		delete _game_field_level[i];
+		delete[] _game_field_level[i];
 
 	}
-	delete _game_field_level;
+	delete[] _game_field_level;
 	this->arr_mob.clear();
 	this->flag = true;
 	this->flag_0 = true;
@@ -177,7 +177,8 @@ int Map::Create_room(Room *room)
 		}
 		if ((room->_left_angle_y > 35) && (room->_left_angle_x > 35))
 		{
-		_game_field_level[room->_left_angle_y+3][room->_left_angle_x+3].set_value('0');
+			_game_field_level[4][4].set_value('0');
+		/*_game_field_level[room->_left_angle_y+3][room->_left_angle_x+3].set_value('0');*/
 		}
 		
 	}
