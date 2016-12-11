@@ -19,7 +19,7 @@ Message::Message(string str, Color color, int value, int size)
 
 	this->setCharacterSize(size);
 
-	font.loadFromFile("HelveticaNeue-Bold.ttf");//передаем нашему шрифту файл шрифта
+	font.loadFromFile("helveticaneue-bold.ttf");
 	this->setFont(font);
 
 	std::ostringstream playerData;
@@ -32,12 +32,7 @@ Message::Message(string str, Color color, int value, int size)
 	else
 	{
 		this->setString(str);
-	}
-
-
-	//this->setPosition(view.getCenter().x + GetSystemMetrics(SM_CXSCREEN) / 2 - 425,
-	//(view.getCenter().y - GetSystemMetrics(SM_CYSCREEN) / 2 + 240) + 30 * Message::count);//задаем позицию текста
-	
+	}	
 }
 
 Message::Message(Hero *hero, int flag, View &view, Color color)

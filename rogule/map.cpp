@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 int Map::error = 0;
+bool check = false;
 
 // Видит ли герой клетку
 bool Cell::get_view()
@@ -152,6 +153,7 @@ int Map::initialize_Level()
 {
 	Room *Head;
 	Head = new Room(1, 1, this);
+	check = false;
 	if (flag)
 	{
 		Create_room(Head);
@@ -165,7 +167,7 @@ int Map::initialize_Level()
 //создаем комнату
 int Map::Create_room(Room *room)
 {
-	bool check = false;
+	int temp_left_angle_y = 0, temp_left_angle_x = 0;
 
 	for (int i = room->_left_angle_y; i < room->_nStr; i++)
 	{
@@ -179,18 +181,13 @@ int Map::Create_room(Room *room)
 		}
 		
 			//переход на след уровень
-		if ((room->_left_angle_y > 35) && (room->_left_angle_x > 35))
+		if ((room->_left_angle_y > 35) && (room->_left_angle_x > 35) && (check==false))
 		{
-
-			_game_field_level[room->_left_angle_y + 2][room->_left_angle_x + 4].set_value('0');
+			this->exit_y = room->_left_angle_y;
+			this->exit_x = room->_left_angle_x;
 			check = true;
 		}
 		
-	}
-
-	if (check == false)
-	{
-		_game_field_level[25][25].set_value('0');
 	}
 
 	//добавляем сундучки
@@ -462,9 +459,8 @@ void Map::print_level(RenderWindow &window)
 {
 	RectangleShape rectangle(Vector2f(32, 32));
 	rectangle.setTexture(&map);
-	//Sprite ss;
-//	ss.setTexture(wall);
 
+	_game_field_level[this->exit_y][this->exit_x].set_value('0');
 
 	for (int i = 0; i < this->_n; i++) //проход по всему лвл и замена символов на текстурки rectangle разных цветов
 		for (int j = 0; j < this->_m; j++)

@@ -76,7 +76,8 @@ public:
 	//сам уровень
 	Cell **_game_field_level;
 
-	//массив вещей
+	int exit_x , exit_y;
+
 	bool flag = true, flag_0 = true;
 	static int error;
 private:

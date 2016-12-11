@@ -1,6 +1,8 @@
 #pragma once
 #include "stdafx.h"
 
+
+
 class Message : public Text
 {
 private:
@@ -15,3 +17,4 @@ public:
 	Message(Hero *hero, int flag, View &view, Color);
 	
 };
+

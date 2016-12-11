@@ -20,13 +20,16 @@ Hero::Hero(int hit_point, // Çהמנמגüו
 void Hero::set_position(View &view, float _x, float _y)
 {
 	int tepmX = _x, tempY = _y;
-	if ((tepmX > ((GetSystemMetrics(SM_CXSCREEN) - 100) / 2)) || ((tempY > ((GetSystemMetrics(SM_CYSCREEN) - 100) / 2))))
+
+		view.setCenter((GetSystemMetrics(SM_CXSCREEN) - 100) / 2, (GetSystemMetrics(SM_CYSCREEN) - 100) / 2);
+
+	if (tepmX > (((GetSystemMetrics(SM_CXSCREEN) - 312))/2))
 	{
-		view.setCenter(_x, _y);
+		view.move(224, 0);
 	}
-	else
+	if (tempY > (((GetSystemMetrics(SM_CYSCREEN) - 312))/2))
 	{
-		view.setCenter((GetSystemMetrics(SM_CXSCREEN) - 100)/2, (GetSystemMetrics(SM_CYSCREEN) - 100)/2);
+		view.move(0, 224);
 	}
 }
 
@@ -74,7 +77,7 @@ void Hero::active(char Symbol, Map *level, short x, short y, RenderWindow &windo
 		delete level;
 		level = new Map(50, 50);
 		level->initialize_Level();
-		this->set_unit(level, 1, 1);
+		this->set_unit(level, 2, 2);
 		break;
 	}
 	default:

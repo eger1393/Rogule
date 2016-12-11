@@ -16,7 +16,6 @@ Unit::Unit(int hit_point, // Çהמנמגüו
 	this->_icon = icon;
 	this->_x = x;
 	this->_y = y;
-	font.loadFromFile("HelveticaNeue-Bold.ttf");//ןונוהאול םארולף רנטפעף פאיכ רנטפעא
 	text = new Message("", Color::Red, 0, 20);
 }
 
