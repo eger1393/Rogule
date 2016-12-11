@@ -14,15 +14,19 @@ int main()
 
 	view.reset(sf::FloatRect(0, 0, GetSystemMetrics(SM_CXSCREEN) - 100, GetSystemMetrics(SM_CYSCREEN) - 100)); //камера 
 
+	//view_text.reset(sf::FloatRect(GetSystemMetrics(SM_CXSCREEN) - 400, GetSystemMetrics(SM_CYSCREEN) - 100, 300, GetSystemMetrics(SM_CYSCREEN) - 100));
+
 	Map *level_1 = new Map(50, 50); // сам уровень
 
 	level_1->initialize_Level(); // ну тут понятно
 
-	Hero hero(700, 10, 25, 20, 2, 2); // герой
+	Hero hero(150, 10, 10, 10, 1, 1); // герой
 
 	vector <Mob*> arr_mob;
 
 	Clock clock;
+
+	/*level_1.print_level(window);*/
 
 	hero.viewing_range(level_1, true);
 	while (window.isOpen()) // пока открыто окно
@@ -52,12 +56,9 @@ int main()
 				delete level_1;
 				level_1 = new Map(50, 50);
 				level_1->initialize_Level();
-				
-				if (hero.get_hit_point() <= 0)
-				hero.set_hit_point(700);
 
+				hero.set_default();
 				hero.set_unit(level_1, 1, 1);
-				hero.viewing_range(level_1, true);
 			}
 
 				hero.key_press(level_1, view, window);

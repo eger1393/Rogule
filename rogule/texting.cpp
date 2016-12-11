@@ -78,3 +78,8 @@ Message::Message(Hero *hero, int flag, View &view, Color color)
 	this->setPosition(view.getCenter().x + GetSystemMetrics(SM_CXSCREEN) / 2 - 250,
 		(view.getCenter().y - GetSystemMetrics(SM_CYSCREEN) / 2 + 100) + 35 * flag);//задаем позицию текста
 }
+
+Message::~Message()
+{
+	
+}

@@ -35,13 +35,23 @@ void Hero::set_position(View &view, float _x, float _y)
 
 void Hero::set_hit_point(int hit)
 {
-	_hit_point += hit;
-	/*if (_hit_point <= 0)
+	if (hit >= 500)
 	{
-	life = false;
+		this->_hit_point = 500;
+		push_log("HP max!");
 	}
-	*/
+
+	this->_hit_point = hit;
 }
+
+void Hero::set_default()
+{
+	this->_hit_point = 150;
+	this->_damage = 10;
+	this->_armor = 10;
+	this->_viewing_range = 10;
+}
+
 void Hero::active(char Symbol, Map *level, short x, short y, RenderWindow &window, View &view)
 {
 
@@ -51,7 +61,41 @@ void Hero::active(char Symbol, Map *level, short x, short y, RenderWindow &windo
 	case '$':
 	{
 		level->get_cell(x, y).set_value(' ');
-		push_log("Chest! \nYou have item_name");
+		push_log("Chest!\nYou have knowledge book!");
+		short flag = rand() % 4;
+		switch (flag)
+			{
+				case 0:
+				{
+					this->set_damage(this->get_damage() + (rand() % 3 + 1));
+					this->set_viewing_range(this->get_viewing_range() - (rand() % 3 + 1));
+					push_log("\nDamage up! View down :( ");
+					break;
+				}
+				case 1:
+				{
+					this->set_armor(this->get_armor() + (rand() % 3 + 1 ));
+					this->set_damage(this->get_damage() - (rand() % 3 + 1));
+					push_log("\nArmor up! Damage down :( ");
+					break;
+				}
+				case 2:
+				{
+					this->set_hit_point(this->get_hit_point() + (rand() % 40 + 10));
+					this->set_damage(this->get_damage() - (rand() % 3 + 1));
+					push_log("\nHP up! Damage down :( ");
+					break;
+				}
+				case 3:
+				{
+					this->set_viewing_range(this->get_viewing_range() + (rand() % 3 + 1));
+					this->set_hit_point(this->get_hit_point() - (rand() % 40 + 10));
+					push_log("\nView up! HP down :( ");
+					break;
+				}
+				default:
+					break;
+			}
 		break;
 	}
 	case '!':
@@ -104,6 +148,14 @@ int Hero::get_viewing_range()
 }
 void Hero::viewing_range(Map *level,bool flag) // Вычесление области видемости
 {
+	//if (this->_x == 0)
+	//{
+	//	this->_x = 1;
+	//}
+	//if (this->_y == 0)
+	//{
+	//	this->_y = 1;
+	//}
 	bool flag1 = false, flag2 = false, flag3 = false, flag4 = false;
 	//level->get_cell(this->_x + 5, this->_y + 5).set_value('1');
 	for (int i = 0; i <= this->_viewing_range; i++)
