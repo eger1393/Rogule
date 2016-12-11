@@ -20,13 +20,9 @@ int main()
 
 	level_1->initialize_Level(); // ну тут понятно
 
-	Hero hero(700, 10, 25, 20, 1, 1); // герой
+	Hero hero(150, 10, 10, 10, 1, 1); // герой
 
 	vector <Mob*> arr_mob;
-
-	Font font;//шрифт 
-	font.loadFromFile("HelveticaNeue-Bold.ttf");//передаем нашему шрифту файл шрифта
-	Text text("", font, 20);
 
 	Clock clock;
 
@@ -61,9 +57,7 @@ int main()
 				level_1 = new Map(50, 50);
 				level_1->initialize_Level();
 
-				if (hero.get_hit_point() <= 0)
-				hero.set_hit_point(700);
-
+				hero.set_default();
 				hero.set_unit(level_1, 1, 1);
 			}
 

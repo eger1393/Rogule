@@ -20,16 +20,18 @@ public:
 	void viewing_range(Map *level, bool flag_view); 
 	//Взаимодействие с активными клетками ( огонь-сундук и т.д)
 	void active(char Symbol, Map *level, short,short, RenderWindow &window, View &view); 
+	
 	//установка жизней героя
 	void set_hit_point(int);
 	//вернуть радиус обзора
 	int get_viewing_range();
 	//вернуть броню
 	int get_armor();
+
 	//перемещение камеры
 	void set_position(View&, float, float);
 	//Message message_box;
-
+	void set_default();
 	
 
 private:

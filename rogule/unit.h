@@ -31,8 +31,17 @@ public:
 	int get_x();
 	// Вернуть координату У
 	int get_y();
+
 	//вернуть урон
 	int get_damage();
+	//уставновить урон
+	void set_damage(int);
+	//уставновить броню
+	void set_armor(int);
+	//установить обзор
+	void set_viewing_range(int);
+
+
 
 	void push_log(string, int = 0);
 

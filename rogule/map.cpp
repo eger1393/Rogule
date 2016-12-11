@@ -2,6 +2,8 @@
 #include "stdafx.h"
 int Map::error = 0;
 
+static bool check = false;
+
 // Видит ли герой клетку
 bool Cell::get_view()
 {
@@ -29,7 +31,7 @@ bool Cell::get_prospected()
 Cell::Cell()
 {
 	_value = ' ';
-	_prospected = true;
+	_prospected = false;
 	_view = false;
 }
 
@@ -95,6 +97,7 @@ Map::~Map()
 	this->flag_0 = true;
 	Map::error = 0;
 }
+
 //void Cell::set_x_y(short x, short y) //задает координаты х, у
 //{
 //	this->_x = x;
@@ -165,8 +168,7 @@ int Map::initialize_Level()
 //создаем комнату
 int Map::Create_room(Room *room)
 {
-	bool check = false;
-
+	
 	for (int i = room->_left_angle_y; i < room->_nStr; i++)
 	{
 		if (i == this->_n - 1)
@@ -179,19 +181,15 @@ int Map::Create_room(Room *room)
 		}
 		
 			//переход на след уровень
-		if ((room->_left_angle_y > 35) && (room->_left_angle_x > 35))
+		if (((room->_left_angle_y > 35) || (room->_left_angle_x > 35))&&(check == false))
 		{
-
-			_game_field_level[room->_left_angle_y + 2][room->_left_angle_x + 4].set_value('0');
+			_game_field_level[room->_nStr - 1][room->_nStlb - 1].set_value('0');
 			check = true;
 		}
 		
 	}
 
-	if (check == false)
-	{
-		_game_field_level[25][25].set_value('0');
-	}
+	_game_field_level[3][3].set_value('0');
 
 	//добавляем сундучки
 	{

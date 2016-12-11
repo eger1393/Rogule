@@ -14,4 +14,6 @@ public:
 	
 	Message(Hero *hero, int flag, View &view, Color);
 	
+	virtual ~Message();
+	
 };

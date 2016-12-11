@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+
+
 Mob::Mob(int hit_point, // Здоровье
 	int viewing_range, // Радиус обзора
 	int damage, // Урон

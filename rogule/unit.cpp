@@ -16,7 +16,6 @@ Unit::Unit(int hit_point, // Здоровье
 	this->_icon = icon;
 	this->_x = x;
 	this->_y = y;
-	font.loadFromFile("HelveticaNeue-Bold.ttf");//передаем нашему шрифту файл шрифта
 	text = new Message("", Color::Red, 0, 20);
 }
 
@@ -24,7 +23,36 @@ int Unit::get_hit_point()
 {
 	return this->_hit_point;
 }
+void Unit::set_damage(int damage)
+{
+	if (damage >= 20)
+	{
+		this->_damage = 20;
+		push_log("Damage max!");
+	}
 
+	this->_damage = damage;
+}
+void Unit::set_armor(int armor)
+{
+	if (armor >= 20)
+	{
+		this->_armor = 20;
+		push_log("Armor max!");
+	}
+
+	this->_armor = armor;
+}
+void Unit::set_viewing_range(int view)
+{
+	if (view >= 15)
+	{
+		this->_viewing_range = 15;
+		push_log("View max!");
+	}
+
+	this->_viewing_range = view;
+}
 //void Unit::viewing_range(Map level, char c) // Вычесление области видемости
 //{
 //	bool flag1 = false, flag2 = false, flag3 = false, flag4 = false;
