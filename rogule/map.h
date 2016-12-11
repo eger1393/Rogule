@@ -80,6 +80,7 @@ public:
 
 	bool flag = true, flag_0 = true;
 	static int error;
+	static int count_win;
 private:
 	//текстурка карты
 	Texture map;

@@ -74,10 +74,18 @@ void Hero::active(char Symbol, Map *level, short x, short y, RenderWindow &windo
 	}
 	case '0':
 	{
-		delete level;
-		level = new Map(50, 50);
-		level->initialize_Level();
-		this->set_unit(level, 2, 2);
+		if (Map::count_win < 3)
+		{
+			delete level;
+			level = new Map(50, 50);
+			level->initialize_Level();
+			this->set_unit(level, 2, 2);
+			Map::count_win++;
+		}
+		else
+		{
+			Message message_box("     You winner! \n Congratulations! Hooray! ", Color::Red);
+		}
 		break;
 	}
 	default:

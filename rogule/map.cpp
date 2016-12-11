@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 int Map::error = 0;
+int Map::count_win = 0;
 bool check = false;
 
 // Видит ли герой клетку
