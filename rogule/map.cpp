@@ -31,7 +31,7 @@ bool Cell::get_prospected()
 Cell::Cell()
 {
 	_value = ' ';
-	_prospected = true;
+	_prospected = false;
 	_view = false;
 }
 
@@ -146,6 +146,18 @@ void Map::reprint_cell(short x, short y)
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(hConsole, position);
 	cout << this->_game_field_level[y][x].get_value();
+}
+
+
+void Map::initialize_win_level()
+{
+	for (int i = 0; i < this->_n-1; i++)
+	{
+		for (int j = 0; j < this->_m-1; j++)
+		{
+			_game_field_level[i][j].set_value('$');
+		}
+	}
 }
 
 

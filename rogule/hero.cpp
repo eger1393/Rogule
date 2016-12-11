@@ -50,6 +50,7 @@ void Hero::set_default()
 	this->_damage = 10;
 	this->_armor = 10;
 	this->_viewing_range = 10;
+	Map::count_win = 0;
 }
 
 void Hero::active(char Symbol, Map *level, short x, short y, RenderWindow &window, View &view)
@@ -128,7 +129,16 @@ void Hero::active(char Symbol, Map *level, short x, short y, RenderWindow &windo
 		}
 		else
 		{
+	/*		delete level;
+			level = new Map(5, 5);
+			level->initialize_win_level();
+			this->set_unit(level, 2, 2);*/
+
 			Message message_box("     You winner! \n Congratulations! Hooray! ", Color::Red);
+			message_box.setPosition(view.getCenter().x - 64, view.getCenter().y);//задаем позицию текста, центр камеры
+			window.draw(message_box);
+			window.display();
+			Sleep(5000);
 		}
 		break;
 	}
@@ -148,14 +158,6 @@ int Hero::get_viewing_range()
 }
 void Hero::viewing_range(Map *level,bool flag) // Вычесление области видемости
 {
-	//if (this->_x == 0)
-	//{
-	//	this->_x = 1;
-	//}
-	//if (this->_y == 0)
-	//{
-	//	this->_y = 1;
-	//}
 	bool flag1 = false, flag2 = false, flag3 = false, flag4 = false;
 	//level->get_cell(this->_x + 5, this->_y + 5).set_value('1');
 	for (int i = 0; i <= this->_viewing_range; i++)

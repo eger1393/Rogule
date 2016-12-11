@@ -52,6 +52,8 @@ public:
     //void test_Map(short n, short m); // Создание квадратной комнаты для теста
 	//начинаем генерировать уровень
 	int initialize_Level();
+	//победный уровень
+	void initialize_win_level();
 	//создаем комнату
 	int Create_room(Room *r);
 	//создаем корридор

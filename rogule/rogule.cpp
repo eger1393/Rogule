@@ -59,6 +59,7 @@ int main()
 
 				hero.set_default();
 				hero.set_unit(level_1, 1, 1);
+				hero.viewing_range(level_1, true);
 			}
 
 				hero.key_press(level_1, view, window);
